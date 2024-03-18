@@ -19,6 +19,7 @@ public class FootballPlayer {
     private String nationality;
 
     private Byte shirtNumber;
+    private int budget = 10000000;
 
     private Position position;
 
@@ -156,5 +157,13 @@ public class FootballPlayer {
 
     public void setGoalkeeping(Byte goalkeeping) {
         this.goalkeeping = goalkeeping;
+    }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public void setBudget(int budget) {
+        this.budget = budget;
     }
 }
