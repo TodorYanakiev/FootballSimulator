@@ -1,5 +1,6 @@
 package com.example.FootballSimulator;
 
+import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import jakarta.persistence.*;
 
 import java.util.List;

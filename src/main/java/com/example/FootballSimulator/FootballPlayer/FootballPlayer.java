@@ -1,5 +1,7 @@
-package com.example.FootballSimulator;
+package com.example.FootballSimulator.FootballPlayer;
 
+import com.example.FootballSimulator.FootballTeam;
+import com.example.FootballSimulator.Position;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
