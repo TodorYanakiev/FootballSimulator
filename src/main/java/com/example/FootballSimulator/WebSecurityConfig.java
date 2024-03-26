@@ -30,6 +30,7 @@ public class WebSecurityConfig {
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
+                        .usernameParameter("usernameOrEmail")
                         .permitAll()
                 )
                 .logout((logout) -> logout.permitAll());

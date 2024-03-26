@@ -1,0 +1,35 @@
+package com.example.FootballSimulator;
+
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private UserRegistrationMapper userRegistrationMapper;
+    @Autowired
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    public String addUser(@Valid UserRegistrationDTO userRegistrationDTO, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()){
+           return "/users/registration";
+        }
+        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getRepeatPassword())){
+            model.addAttribute("passwordMessage", !userRegistrationDTO.getPassword().equals(userRegistrationDTO.getRepeatPassword()) ? "The passwords do not match!" : "");
+        }
+        User user = userRegistrationMapper.toEntity(userRegistrationDTO);
+        user.setPassword(passwordEncoder().encode(user.getPassword()));
+        user.setEnabled(true);
+        user.setRole(Role.ROLE_USER);
+        userRepository.save(user);
+        return "";
+    }
+
+}

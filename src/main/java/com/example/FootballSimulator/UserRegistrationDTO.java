@@ -1,17 +1,9 @@
 package com.example.FootballSimulator;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false)
-    private Long id;
+public class UserRegistrationDTO {
     @NotEmpty(message = "The field must not be empty!")
     @Size(max = 50,message = "The maximum length is 50 characters!")
     private String name;
@@ -19,24 +11,15 @@ public class User {
     @Size(max = 50,message = "The maximum length is 50 characters!")
     private String lastName;
     @NotEmpty(message = "The field must not be empty!")
-    private String password;
-    @NotEmpty(message = "The field must not be empty!")
     @Size(min = 4, message = "The minimum length is 4 characters!")
     @Size(max = 20, message = "The maximum length is 20 characters!")
     private String username;
     @NotEmpty(message = "The field must not be empty!")
     private String email;
-    @Column(columnDefinition = "boolean DEFAULT '1'")
-    private boolean enabled;
-    private Role role;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @NotEmpty(message = "The field must not be empty!")
+    private String password;
+    @NotEmpty(message = "The field must not be empty!")
+    private String repeatPassword;
 
     public String getName() {
         return name;
@@ -46,12 +29,12 @@ public class User {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUsername() {
@@ -70,27 +53,19 @@ public class User {
         this.email = email;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public String getRepeatPassword() {
+        return repeatPassword;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setRepeatPassword(String repeatPassword) {
+        this.repeatPassword = repeatPassword;
     }
 }
