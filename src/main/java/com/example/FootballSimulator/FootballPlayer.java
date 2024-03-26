@@ -1,6 +1,7 @@
 package com.example.FootballSimulator;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class FootballPlayer {
@@ -12,31 +13,64 @@ public class FootballPlayer {
     @ManyToOne
     private FootballTeam team;
 
+    @NotEmpty
+    @Size(min = 2)
     private String name;
 
+    @NotEmpty
+    @Size(min = 2)
     private String lastName;
 
+    @NotEmpty
+    @Size(min = 2)
     private String nationality;
 
+    @NotEmpty
+    @Min(1)
+    @Max(99)
     private Byte shirtNumber;
-    private int budget = 10000000;
 
+    @NotNull
     private Position position;
 
+    @NotEmpty
+    @Min(1)
+    @Max(99)
     private Byte defending;
 
+    @NotEmpty
+    @Min(1)
+    @Max(99)
     private Byte speed;
 
+    @NotEmpty
+    @Min(1)
+    @Max(99)
     private Byte dribble;
 
+    @NotEmpty
+    @Min(1)
+    @Max(99)
     private Byte scoring;
 
+    @NotEmpty
+    @Min(1)
+    @Max(99)
     private Byte passing;
 
+    @NotEmpty
+    @Min(1)
+    @Max(99)
     private Byte stamina;
 
+    @NotEmpty
+    @Min(1)
+    @Max(99)
     private Byte positioning;
 
+    @NotEmpty
+    @Min(1)
+    @Max(99)
     private Byte goalkeeping;
 
     public Long getId() {
@@ -157,13 +191,5 @@ public class FootballPlayer {
 
     public void setGoalkeeping(Byte goalkeeping) {
         this.goalkeeping = goalkeeping;
-    }
-
-    public int getBudget() {
-        return budget;
-    }
-
-    public void setBudget(int budget) {
-        this.budget = budget;
     }
 }
