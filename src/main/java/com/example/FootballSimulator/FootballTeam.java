@@ -14,7 +14,6 @@ public class FootballTeam {
     private String name;
 
     private String logoPictureName;
-
     private User manager;
 
     private String establishmentYear;
