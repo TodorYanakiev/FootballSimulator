@@ -15,10 +15,11 @@ public class FootballTeam {
     private String name;
 
     private String logoPictureName;
-    private User manager;
+    //private User manager;
 
     private String establishmentYear;
 
+    @OneToMany
     private List<FootballPlayer> playerList;
 
     public Long getId() {
@@ -45,13 +46,13 @@ public class FootballTeam {
         this.logoPictureName = logoPictureName;
     }
 
-    public User getManager() {
-        return manager;
-    }
-
-    public void setManager(User manager) {
-        this.manager = manager;
-    }
+//    public User getManager() {
+//        return manager;
+//    }
+//
+//    public void setManager(User manager) {
+//        this.manager = manager;
+//    }
 
     public String getEstablishmentYear() {
         return establishmentYear;

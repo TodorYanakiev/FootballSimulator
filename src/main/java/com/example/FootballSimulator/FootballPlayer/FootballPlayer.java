@@ -13,6 +13,7 @@ public class FootballPlayer {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name="team_id")
     private FootballTeam team;
 
     @NotEmpty
@@ -27,50 +28,51 @@ public class FootballPlayer {
     @Size(min = 2)
     private String nationality;
 
-    @NotEmpty
+    @NotNull
     @Min(1)
     @Max(99)
     private Byte shirtNumber;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Position position;
 
-    @NotEmpty
+    @NotNull
     @Min(1)
     @Max(99)
     private Byte defending;
 
-    @NotEmpty
+    @NotNull
     @Min(1)
     @Max(99)
     private Byte speed;
 
-    @NotEmpty
+    @NotNull
     @Min(1)
     @Max(99)
     private Byte dribble;
 
-    @NotEmpty
+    @NotNull
     @Min(1)
     @Max(99)
     private Byte scoring;
 
-    @NotEmpty
+    @NotNull
     @Min(1)
     @Max(99)
     private Byte passing;
 
-    @NotEmpty
+    @NotNull
     @Min(1)
     @Max(99)
     private Byte stamina;
 
-    @NotEmpty
+    @NotNull
     @Min(1)
     @Max(99)
     private Byte positioning;
 
-    @NotEmpty
+    @NotNull
     @Min(1)
     @Max(99)
     private Byte goalkeeping;
