@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
     @Autowired
     private UserService userService;
+    @GetMapping("/login")
+    private String login() {
+        return "login";
+    }
     @GetMapping("/registration")
     public String register(Model model){
         model.addAttribute("userRegistrationDTO",new UserRegistrationDTO());

@@ -29,7 +29,7 @@ public class UserService {
         user.setEnabled(true);
         user.setRole(Role.ROLE_USER);
         userRepository.save(user);
-        return "";
+        return "registered";
     }
 
 }
