@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new football player</title>
+</head>
+<body>
+  <h2>New base football player:</h2>
+<form action="#" th:action="@{/base-football-player/add}" th:object=${baseFootballPlayer} method="post">
+  <p>
+    First name:
+    <input type="text" th:field="*{firstName}"/>
+    <span th:if="${#fields.hasErrors('firstName')}" th:error="*{firstName}"></span>
+  </p>
+  <p>
+    Last name:
+    <input type="text" th:field="*{lastName}"/>
+    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+  </p>
+  <p>
+    Nationality:
+    <input type="text" th:field="*{nationality}"/>
+    <span th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}"></span>
+  </p>
+  <p>
+  <p>
+    Age:
+    <input type="text" th:field="*{age}"/>
+    <span th:if="${#fields.hasErrors('age')}" th:error="*{age}"></span>
+  </p>
+    Shirt number:
+    <input type="number" th:field="*{shirtNumber}"/>
+    <span th:if="${#fields.hasErrors('shirtNumber')}" th:errors="*{shirtNumber}"></span>
+  </p>
+  <p>
+    Preferred position:
+    <select th:field="*{position}">
+      <option th:each="position : ${positions}" th:text="${position.name}" th:value="${position.name}"></option>
+    </select>
+    <span th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></span>
+  </p>
+  <p>
+    Speed:
+    <input type="number" th:field="*{startSpeed}"/>
+    <span th:if="${#fields.hasErrors('startSpeed')}" th:errors="*{startSpeed}"></span>
+  </p>
+  <p>
+    Dribble:
+    <input type="number" th:field="*{startDribble}"/>
+    <span th:if="${#fields.hasErrors('startDribble')}" th:errors="*{startDribble}"></span>
+  </p>
+  <p>
+    Scoring:
+    <input type="number" th:field="*{startScoring}"/>
+    <span th:if="${#fields.hasErrors('startScoring')}" th:errors="*{startScoring}"></span>
+  </p>
+  <p>
+    Passing:
+    <input type="number" th:field="*{startPassing}"/>
+    <span th:if="${#fields.hasErrors('startPassing')}" th:errors="*{startPassing}"></span>
+  </p>
+  <p>
+    Stamina:
+    <input type="number" th:field="*{startStamina}"/>
+    <span th:if="${#fields.hasErrors('startStamina')}" th:errors="*{startStamina}"></span>
+  </p>
+  <p>
+    Defending:
+    <input type="number" th:field="*{startDefending}"/>
+    <span th:if="${#fields.hasErrors('startDefending')}" th:errors="*{startDefending}"></span>
+  </p>
+  <p>
+    Positioning:
+    <input type="number" th:field="*{startPositioning}"/>
+    <span th:if="${#fields.hasErrors('startPositioning')}" th:errors="*{startPositioning}"></span>
+  </p>
+  <p>
+    Goalkeeping:
+    <input type="number" th:field="*{startGoalkeeping}"/>
+    <span th:if="${#fields.hasErrors('startGoalkeeping')}" th:errors="*{startGoalkeeping}"></span>
+  </p>
+  <input type="submit" value="ADD"/>
+</form>
+</body>
+</html>

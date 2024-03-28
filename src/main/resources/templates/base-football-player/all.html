@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>All players</title>
+</head>
+<body>
+<h2>All players</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Nationality</th>
+            <th>Age</th>
+            <th>ShirtNumber</th>
+            <th>Position</th>
+            <th>Defending</th>
+            <th>Speed</th>
+            <th>Dribble</th>
+            <th>Scoring</th>
+            <th>Passing</th>
+            <th>Stamina</th>
+            <th>Positioning</th>
+            <th>Goalkeeping</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="basePlayer : ${basePlayers}">
+            <td th:text="${basePlayer.getId()}"></td>
+            <td th:text="${basePlayer.getFirstName()}"></td>
+            <td th:text="${basePlayer.getLastName()}"></td>
+            <td th:text="${basePlayer.getNationality()}"></td>
+            <td th:text="${basePlayer.getAge()}"></td>
+            <td th:text="${basePlayer.getShirtNumber()}"></td>
+            <td th:text="${basePlayer.getPosition()}"></td>
+            <td th:text="${basePlayer.getStartDefending()}"></td>
+            <td th:text="${basePlayer.getStartSpeed()}"></td>
+            <td th:text="${basePlayer.getStartDribble()}"></td>
+            <td th:text="${basePlayer.getStartScoring}"></td>
+            <td th:text="${basePlayer.getStartPassing()}"></td>
+            <td th:text="${basePlayer.getStartStamina()}"></td>
+            <td th:text="${basePlayer.getStartPositioning()}"></td>
+            <td th:text="${basePlayer.getStartGoalkeeping()}"></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,6 +1,6 @@
 package com.example.FootballSimulator;
 
-import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
+import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayer;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class FootballTeam {
     private String establishmentYear;
 
     @OneToMany
-    private List<FootballPlayer> playerList;
+    private List<BaseFootballPlayer> playerList;
 
     public Long getId() {
         return id;
@@ -62,11 +62,11 @@ public class FootballTeam {
         this.establishmentYear = establishmentYear;
     }
 
-    public List<FootballPlayer> getPlayerList() {
+    public List<BaseFootballPlayer> getPlayerList() {
         return playerList;
     }
 
-    public void setPlayerList(List<FootballPlayer> playerList) {
+    public void setPlayerList(List<BaseFootballPlayer> playerList) {
         this.playerList = playerList;
     }
 }
