@@ -1,6 +1,7 @@
 package com.example.FootballSimulator.FootballPlayer;
 
 import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayer;
+import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -17,6 +18,10 @@ public class FootballPlayer {
     @ManyToOne
     @JoinColumn(name = "base_player_id")
     private BaseFootballPlayer baseFootballPlayer;
+
+    @ManyToOne
+    @JoinColumn(name = "football_team_id")
+    private FootballTeam footballTeam;
 
     @NotNull
     @Min(0)
