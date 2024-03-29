@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>All base teams</title>
+</head>
+<body>
+<h2>All base football teams</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Abbreviation</th>
+            <th>StadiumName</th>
+            <th>StartBudged</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="baseTeam : ${baseTeams}">
+            <td th:text="${baseTeam.getId()}"></td>
+            <td th:text="${baseTeam.getName()}"></td>
+            <td th:text="${baseTeam.getAbbreviation()}"></td>
+            <td th:text="${baseTeam.getStadiumName()}"></td>
+            <td th:text="${baseTeam.getStartBudged()}"></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

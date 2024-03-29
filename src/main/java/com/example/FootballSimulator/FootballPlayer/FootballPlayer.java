@@ -1,6 +1,11 @@
-package com.example.FootballSimulator;
+package com.example.FootballSimulator.FootballPlayer;
 
+import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayer;
+import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class FootballPlayer {
@@ -9,34 +14,57 @@ public class FootballPlayer {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @NotNull
     @ManyToOne
-    private FootballTeam team;
+    @JoinColumn(name = "base_player_id")
+    private BaseFootballPlayer baseFootballPlayer;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "football_team_id")
+    private FootballTeam footballTeam;
 
-    private String lastName;
+    @NotNull
+    @Min(0)
+    private Integer price;
 
-    private String nationality;
-
-    private Byte shirtNumber;
-    private int budget = 10000000;
-
-    private Position position;
-
+    @NotNull
+    @Min(1)
+    @Max(99)
     private Byte defending;
 
+    @NotNull
+    @Min(1)
+    @Max(99)
     private Byte speed;
 
+    @NotNull
+    @Min(1)
+    @Max(99)
     private Byte dribble;
 
+    @NotNull
+    @Min(1)
+    @Max(99)
     private Byte scoring;
 
+    @NotNull
+    @Min(1)
+    @Max(99)
     private Byte passing;
 
+    @NotNull
+    @Min(1)
+    @Max(99)
     private Byte stamina;
 
+    @NotNull
+    @Min(1)
+    @Max(99)
     private Byte positioning;
 
+    @NotNull
+    @Min(1)
+    @Max(99)
     private Byte goalkeeping;
 
     public Long getId() {
@@ -47,52 +75,20 @@ public class FootballPlayer {
         this.id = id;
     }
 
-    public FootballTeam getTeam() {
-        return team;
+    public BaseFootballPlayer getBaseFootballPlayer() {
+        return baseFootballPlayer;
     }
 
-    public void setTeam(FootballTeam team) {
-        this.team = team;
+    public void setBaseFootballPlayer(BaseFootballPlayer baseFootballPlayer) {
+        this.baseFootballPlayer = baseFootballPlayer;
     }
 
-    public String getName() {
-        return name;
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    public Byte getShirtNumber() {
-        return shirtNumber;
-    }
-
-    public void setShirtNumber(Byte shirtNumber) {
-        this.shirtNumber = shirtNumber;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
     public Byte getDefending() {
@@ -157,13 +153,5 @@ public class FootballPlayer {
 
     public void setGoalkeeping(Byte goalkeeping) {
         this.goalkeeping = goalkeeping;
-    }
-
-    public int getBudget() {
-        return budget;
-    }
-
-    public void setBudget(int budget) {
-        this.budget = budget;
     }
 }
