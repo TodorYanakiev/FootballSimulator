@@ -14,10 +14,11 @@ public class FootballTeam {
     private String name;
 
     private String logoPictureName;
+    @OneToOne
     private User manager;
 
     private String establishmentYear;
-
+    @OneToMany
     private List<FootballPlayer> playerList;
 
     public Long getId() {
