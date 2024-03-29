@@ -1,12 +1,9 @@
 package com.example.FootballSimulator;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-
+@Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -28,6 +25,7 @@ public class User {
     private String email;
     @Column(columnDefinition = "boolean DEFAULT '1'")
     private boolean enabled;
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public Long getId() {

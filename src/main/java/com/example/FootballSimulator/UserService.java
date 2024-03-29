@@ -19,10 +19,11 @@ public class UserService {
     }
     public String addUser(@Valid UserRegistrationDTO userRegistrationDTO, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()){
-           return "/users/registration";
+           return "index";
         }
-        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getRepeatPassword())){
-            model.addAttribute("passwordMessage", !userRegistrationDTO.getPassword().equals(userRegistrationDTO.getRepeatPassword()) ? "The passwords do not match!" : "");
+        if (!comparePasswords(userRegistrationDTO.getPassword(),userRegistrationDTO.getRepeatPassword())){
+            model.addAttribute("passwordsDoNotMatch","Passwords do not match!");
+            return "index";
         }
         User user = userRegistrationMapper.toEntity(userRegistrationDTO);
         user.setPassword(passwordEncoder().encode(user.getPassword()));
@@ -30,6 +31,9 @@ public class UserService {
         user.setRole(Role.ROLE_USER);
         userRepository.save(user);
         return "registered";
+    }
+    public boolean comparePasswords(String password,String repeatPassword){
+        return password.equals(repeatPassword);
     }
 
 }

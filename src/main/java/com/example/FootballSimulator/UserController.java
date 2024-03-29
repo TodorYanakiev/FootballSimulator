@@ -10,18 +10,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/auth")
 public class UserController {
     @Autowired
     private UserService userService;
-    @GetMapping("/login")
-    private String login() {
-        return "login";
+    @GetMapping("/home")
+    public String home(){
+        return "home";
     }
+
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("userRegistrationDTO",new UserRegistrationDTO());
+        return "redirect:/auth/home";
+    }
+
     @GetMapping("/registration")
     public String register(Model model){
         model.addAttribute("userRegistrationDTO",new UserRegistrationDTO());
-        return "registration";
+        return "index";
     }
     @PostMapping("/submitRegistration")
     public String submitRegistration(@Valid UserRegistrationDTO userRegistrationDTO, BindingResult bindingResult,Model model){
