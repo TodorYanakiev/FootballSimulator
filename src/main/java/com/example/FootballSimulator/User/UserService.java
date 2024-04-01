@@ -18,13 +18,20 @@ public class UserService {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    public String addUser(@Valid UserRegistrationDTO userRegistrationDTO, BindingResult bindingResult, Model model){
+    public String login(){
+        return "/user/login";
+    }
+    public String register(Model model){
+        model.addAttribute("userRegistrationDTO",new UserRegistrationDTO());
+        return "/user/registration";
+    }
+    public String addUser(@Valid UserRegistrationDTO userRegistrationDTO,BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()){
-           return "/user/index";
+           return "/user/registration";
         }
         if (!comparePasswords(userRegistrationDTO.getPassword(),userRegistrationDTO.getRepeatPassword())){
             model.addAttribute("passwordsDoNotMatch","Passwords do not match!");
-            return "/user/index";
+            return "/user/registration";
         }
         User user = userRegistrationMapper.toEntity(userRegistrationDTO);
         user.setPassword(passwordEncoder().encode(user.getPassword()));
