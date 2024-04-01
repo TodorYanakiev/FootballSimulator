@@ -154,4 +154,12 @@ public class FootballPlayer {
     public void setGoalkeeping(Byte goalkeeping) {
         this.goalkeeping = goalkeeping;
     }
+
+    public FootballTeam getFootballTeam() {
+        return footballTeam;
+    }
+
+    public void setFootballTeam(FootballTeam footballTeam) {
+        this.footballTeam = footballTeam;
+    }
 }

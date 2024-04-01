@@ -1,6 +1,7 @@
 package com.example.FootballSimulator.GameWeek;
 
 import com.example.FootballSimulator.Football_Match.Football_Match;
+import com.example.FootballSimulator.League.League;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,7 +18,9 @@ public class GameWeek {
     @OneToMany(mappedBy = "gameWeek")
     private List<Football_Match> matchList;
 
-//    private League league;
+    @ManyToOne
+    @JoinColumn(name = "league_id")
+    private League league;
 
     public Long getId() {
         return id;
@@ -25,5 +28,29 @@ public class GameWeek {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Byte getWeekNumber() {
+        return weekNumber;
+    }
+
+    public void setWeekNumber(Byte weekNumber) {
+        this.weekNumber = weekNumber;
+    }
+
+    public List<Football_Match> getMatchList() {
+        return matchList;
+    }
+
+    public void setMatchList(List<Football_Match> matchList) {
+        this.matchList = matchList;
+    }
+
+    public League getLeague() {
+        return league;
+    }
+
+    public void setLeague(League league) {
+        this.league = league;
     }
 }

@@ -39,4 +39,52 @@ public class Football_Match {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public FootballTeam getHomeTeam() {
+        return homeTeam;
+    }
+
+    public void setHomeTeam(FootballTeam homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    public FootballTeam getAwayTeam() {
+        return awayTeam;
+    }
+
+    public void setAwayTeam(FootballTeam awayTeam) {
+        this.awayTeam = awayTeam;
+    }
+
+    public Byte getHomeTeamScore() {
+        return homeTeamScore;
+    }
+
+    public void setHomeTeamScore(Byte homeTeamScore) {
+        this.homeTeamScore = homeTeamScore;
+    }
+
+    public Byte getAwayTeamScore() {
+        return awayTeamScore;
+    }
+
+    public void setAwayTeamScore(Byte awayTeamScore) {
+        this.awayTeamScore = awayTeamScore;
+    }
+
+    public GameWeek getGameWeek() {
+        return gameWeek;
+    }
+
+    public void setGameWeek(GameWeek gameWeek) {
+        this.gameWeek = gameWeek;
+    }
+
+    public MatchStatus getMatchStatus() {
+        return matchStatus;
+    }
+
+    public void setMatchStatus(MatchStatus matchStatus) {
+        this.matchStatus = matchStatus;
+    }
 }
