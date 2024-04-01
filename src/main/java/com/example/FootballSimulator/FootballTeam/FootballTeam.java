@@ -2,6 +2,7 @@ package com.example.FootballSimulator.FootballTeam;
 
 import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeam;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
+import com.example.FootballSimulator.League.League;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,6 +19,9 @@ public class FootballTeam {
 
     @OneToMany(mappedBy = "footballTeam")
     private List<FootballPlayer> playerList;
+    @ManyToOne
+    @JoinColumn(name="league_id")
+    private League league;
 
     private Integer budged;
 

@@ -192,7 +192,7 @@ form
   </div>
   <div class="form login">
     <header>Login</header>
-    <form th:action="@{/auth/login}" method="post" th:object="${userRegistrationDTO}" class="col-md-8">
+    <form th:action="@{/auth/login}" method="get" th:object="${userRegistrationDTO}" class="col-md-8">
       <br>
     <input type="text" name="usernameOrEmail"  placeholder="Username or Email" required />
       <input type="password" name="password" placeholder="Password" required />
