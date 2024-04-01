@@ -1,0 +1,169 @@
+<!--register.html-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src=https://code.jquery.com/jquery-3.6.0.js></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <style>
+        input{
+        width: 30;
+        }
+    </style>
+</head>
+<body>
+<!--<div class="container">
+<form th:action="@{/register}" th:object="${user}" method="post">
+    <h2>Registration</h2><br/>
+    <input type="text" th:field="*{username}" placeholder="Username" minlength="5" maxlength="30" required/>
+    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color:red">username error</span> <br/><br/>
+    <input type="password" th:field="*{password}" placeholder="Password" minlength="5" maxlength="30" required/>
+    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red">password error</span>
+    <br/><br/>
+    <select th:field="${user.role}">
+        <option th:each="userRole : ${T(com.waiter.waiter.enums.Role).values()}"
+                th:value="${userRole}"
+                th:text="${userRole.getValue}">
+        </option>
+    </select>
+    <p>Име: <input type="text" th:field="*{firstName}" placeholder="Въведете име" minlength="2" maxlength="30"
+                   class="form-control border-3" required></p>
+    <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger">name error</p>
+    <p>Презиме: <input type="text" th:field="*{secondName}" placeholder="Въведете презиме" minlength="2" maxlength="30"
+                   class="form-control border-3" required></p>
+    <p th:if="${#fields.hasErrors('secondName')}" th:errors="*{secondName}" class="text-danger">second name error</p>
+    <p>Фамилия: <input type="text" th:field="*{lastName}" placeholder="Въведете фамилия" minlength="2" maxlength="30"
+                   class="form-control border-3" required></p>
+    <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger">last name error</p>
+    <p>Имейл: <input type="email" th:field="*{email}" placeholder="Въведете имейл" minlength="2" maxlength="30"
+                       class="form-control border-3" required></p>
+    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">email error</p>
+    <p>Телефонен номер: <input type="text" th:field="*{phoneNumber}" placeholder="Въведете телефонен номер" minlength="3" maxlength="13"
+                     class="form-control border-3" required></p>
+    <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger">phone number error</p>
+    <select th:field="${user.gender}">
+        <option th:each="state : ${T(com.waiter.waiter.enums.Gender).values()}"
+                th:value="${state}"
+                th:text="${state.getValue}">
+        </option>
+    </select>
+    <p>Адрес: <input type="text" th:field="*{address}" placeholder="Въведете адрес" minlength="3" maxlength="13"
+                               class="form-control border-3" required></p>
+    <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger">address error</p>
+
+
+    <p>Рождена дата: <input type="date" th:field="*{dateOfBirth}" class="form-control border-3" required></p>
+    <p th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}" class="text-danger">date error</p>
+
+
+    <p>Работещ в ресторанта от: <input type="date" th:field="*{hireDate}" class="form-control border-3" required></p>
+    <p th:if="${#fields.hasErrors('hireDate')}" th:errors="*{hireDate}" class="text-danger">date error</p>
+
+
+    <p>Описание: <textarea th:field="*{description}" placeholder="Въведете описание"
+                           class="form-control border-3"></textarea></p>
+    <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">description</p>
+    <br/><br/>
+    <button type="submit">Register</button><br/><br/>
+    <a th:href="@{|/login|}" th:text="'Log in'"></a><br/><br/>
+    <span th:utext="${successMessage}"></span>
+</form>
+    </div> -->
+
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+
+          <div class="btn-group" role="group" aria-label="Basic outlined example">
+            <a href="/login" class="list-group-item list-group-item-action text-center p-3">Вход</a>
+            <a href="/register" class="list-group-item list-group-item-action active text-center p-3">Регистрация</a>
+
+          </div>
+
+
+          <div class="card-body p-4 p-md-5">
+            <!--<h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Регистрация</h3>-->
+
+            <form th:action="@{/register}" th:object="${user}" method="post">
+
+              <div class="row">
+                <div class="col-md-6 mb-4"> <!--Име 1/2-->
+                  <div class="form-outline">
+                    <!--<input type="text" id="firstName" class="form-control form-control-lg" />
+                    <label class="form-label" for="firstName">First Name</label>-->
+                    <label class="form-label" for="name">Име*: </label>
+                    <input type="text" id="name" th:field="*{name}" minlength="2" maxlength="30"
+                           class="form-control form-control-lg" required>
+                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">name error</p>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4"><!--Фамилия 1/2-->
+                  <div class="form-outline">
+                    <!--<input type="text" id="lastName" class="form-control form-control-lg" />
+                    <label class="form-label" for="lastName">Last Name</label>-->
+                    <label class="form-label" for="lastName">Фамилия*: </label>
+                    <input type="text" id="lastName" th:field="*{lastName}" minlength="2" maxlength="30"
+                           class="form-control form-control-lg" required>
+                    <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger">last name error</p>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="row">
+                <div class="col-md-6 mb-4"> <!--Потребителско име 1/2-->
+                  <div class="form-outline">
+                    <!--<input type="text" id="firstName" class="form-control form-control-lg" />
+                    <label class="form-label" for="firstName">First Name</label>-->
+                    <label class="form-label" for="username">Потребителско име*: </label>
+                    <input type="text" id="username" th:field="*{username}" minlength="2" maxlength="30"
+                           class="form-control form-control-lg" required>
+                    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger">username error</p>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4"> <!--Парола 1/2-->
+                  <div class="form-outline">
+                    <!--<input type="text" id="firstName" class="form-control form-control-lg" />
+                    <label class="form-label" for="firstName">First Name</label>-->
+                    <label class="form-label" for="password">Парола*: </label>
+                    <input type="password" id="password" th:field="*{password}" minlength="2" maxlength="30"
+                           class="form-control form-control-lg" required>
+                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger">password error</p>
+                  </div>
+                </div>
+              </div>
+              <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger">Invalid password</p>
+              <input type="password" id="repeatPassword" th:field="*{repeatPassword}" placeholder="Repeat password" minlength="1" maxlength="50" class="form-control border-3" required>
+
+
+              <div class="row">
+                <div class="col-md-6 mb-4 pb-2"> <!-- Имейл 1/2 -->
+                  <div class="form-outline">
+                    <label class="form-label" for="emailAddress">Email*:</label>
+                    <input type="email" id="emailAddress" th:field="*{email}" minlength="2" maxlength="30"
+                           class="form-control form-control-lg" required>
+                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">email error</p>
+                  </div>
+                </div>
+
+              <div class="mt-4 pt-2">
+                <button type="submit" class="btn btn-primary btn-lg">Регистрация</button>
+              </div>
+              <span th:utext="${successMessage}"></span>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

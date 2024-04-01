@@ -1,4 +1,4 @@
-package com.example.FootballSimulator;
+package com.example.FootballSimulator.Constants;
 
 public enum Role {
     ROLE_ADMIN("Admin"),

@@ -1,5 +1,7 @@
-package com.example.FootballSimulator;
+package com.example.FootballSimulator.User;
 
+import com.example.FootballSimulator.User.User;
+import com.example.FootballSimulator.User.UserRegistrationDTO;
 import org.springframework.stereotype.Component;
 
 @Component

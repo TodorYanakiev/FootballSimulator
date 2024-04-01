@@ -1,6 +1,6 @@
 package com.example.FootballSimulator.BaseFootballPlayer;
 
-import com.example.FootballSimulator.Position;
+import com.example.FootballSimulator.Constants.Position;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
