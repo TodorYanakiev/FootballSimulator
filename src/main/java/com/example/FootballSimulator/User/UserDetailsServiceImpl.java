@@ -1,4 +1,4 @@
-package com.example.FootballSimulator;
+package com.example.FootballSimulator.User;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

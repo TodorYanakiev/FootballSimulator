@@ -1,5 +1,10 @@
-package com.example.FootballSimulator;
+package com.example.FootballSimulator.User;
 
+import com.example.FootballSimulator.Constants.Role;
+import com.example.FootballSimulator.User.User;
+import com.example.FootballSimulator.User.UserRegistrationDTO;
+import com.example.FootballSimulator.User.UserRegistrationMapper;
+import com.example.FootballSimulator.User.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

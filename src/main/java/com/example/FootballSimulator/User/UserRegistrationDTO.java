@@ -1,4 +1,4 @@
-package com.example.FootballSimulator;
+package com.example.FootballSimulator.User;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
