@@ -15,43 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
     @Autowired
     private UserService userService;
-    @GetMapping("/home")
-    public String home(){
-        return "home";
-    }
     @GetMapping("/login")
     public String login(){
-        return "/user/login";
+      return userService.login();
     }
-
-    @GetMapping("/register")
-    public String register(Model model){
-        model.addAttribute("user", new User());
-        return "/user/registration";
-    }
-    /*
-
-
-    @GetMapping("/login")
-    public String login(Model model, HttpServletRequest request) {
-        model.addAttribute("userRegistrationDTO",new UserRegistrationDTO());
-        String referer = request.getHeader("referer");
-        return "redirect:" + referer;
-    }
-
     @GetMapping("/registration")
     public String register(Model model){
-        model.addAttribute("userRegistrationDTO",new UserRegistrationDTO());
-        return "/user/index";
+       return userService.register(model);
     }
     @PostMapping("/submitRegistration")
-    public String submitRegistration(@Valid UserRegistrationDTO userRegistrationDTO, BindingResult bindingResult,Model model){
+    public String submitRegistration(@Valid UserRegistrationDTO userRegistrationDTO,BindingResult bindingResult,Model model){
        return userService.addUser(userRegistrationDTO,bindingResult,model);
     }
-    @PostMapping("/submitLogin")
-    public String submitLogin(){
-        return "home";
-    }
-
-     */
 }
