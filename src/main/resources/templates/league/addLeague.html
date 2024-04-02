@@ -12,6 +12,15 @@
     <input type="text" th:field="*{name}"/>
     <span th:if="${#fields.hasErrors('name')}" th:error="*{name}"></span>
   </p>
+    <p>
+        Football Teams:
+        <select name="selectedFootballTeamIds" multiple>
+            <option th:each="baseFootballTeam : ${allBaseFootballTeams}"
+                    th:value="${baseFootballTeam.id}"
+                    th:text="${baseFootballTeam.name}">Football team name</option>
+        </select>
+    </p>
+    <input type="submit" value="Submit">
 </form>
 </body>
 </html>
