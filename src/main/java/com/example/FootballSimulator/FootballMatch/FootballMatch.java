@@ -1,4 +1,4 @@
-package com.example.FootballSimulator.Football_Match;
+package com.example.FootballSimulator.FootballMatch;
 
 import com.example.FootballSimulator.Constants.MatchStatus;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
@@ -6,7 +6,7 @@ import com.example.FootballSimulator.GameWeek.GameWeek;
 import jakarta.persistence.*;
 
 @Entity
-public class Football_Match {
+public class FootballMatch {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)

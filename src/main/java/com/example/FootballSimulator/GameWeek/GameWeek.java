@@ -1,6 +1,6 @@
 package com.example.FootballSimulator.GameWeek;
 
-import com.example.FootballSimulator.Football_Match.Football_Match;
+import com.example.FootballSimulator.FootballMatch.FootballMatch;
 import com.example.FootballSimulator.League.League;
 import jakarta.persistence.*;
 
@@ -16,7 +16,7 @@ public class GameWeek {
     private Byte weekNumber;
 
     @OneToMany(mappedBy = "gameWeek")
-    private List<Football_Match> matchList;
+    private List<FootballMatch> matchList;
 
     @ManyToOne
     @JoinColumn(name = "league_id")
@@ -38,11 +38,11 @@ public class GameWeek {
         this.weekNumber = weekNumber;
     }
 
-    public List<Football_Match> getMatchList() {
+    public List<FootballMatch> getMatchList() {
         return matchList;
     }
 
-    public void setMatchList(List<Football_Match> matchList) {
+    public void setMatchList(List<FootballMatch> matchList) {
         this.matchList = matchList;
     }
 
