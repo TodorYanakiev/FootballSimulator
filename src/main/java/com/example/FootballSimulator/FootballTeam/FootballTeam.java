@@ -40,4 +40,28 @@ public class FootballTeam {
     public void setPlayerList(List<FootballPlayer> playerList) {
         this.playerList = playerList;
     }
+
+    public BaseFootballTeam getBaseFootballTeam() {
+        return baseFootballTeam;
+    }
+
+    public void setBaseFootballTeam(BaseFootballTeam baseFootballTeam) {
+        this.baseFootballTeam = baseFootballTeam;
+    }
+
+    public League getLeague() {
+        return league;
+    }
+
+    public void setLeague(League league) {
+        this.league = league;
+    }
+
+    public Integer getBudged() {
+        return budged;
+    }
+
+    public void setBudged(Integer budged) {
+        this.budged = budged;
+    }
 }

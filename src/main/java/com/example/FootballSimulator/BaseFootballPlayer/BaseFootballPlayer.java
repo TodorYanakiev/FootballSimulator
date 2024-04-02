@@ -195,4 +195,6 @@ public class BaseFootballPlayer {
     public void setStartGoalkeeping(Byte startGoalkeeping) {
         this.startGoalkeeping = startGoalkeeping;
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.example.FootballSimulator.League;
 
 import com.example.FootballSimulator.FootballPlayer.FootballPlayerController;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
+import com.example.FootballSimulator.GameWeek.GameWeek;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,6 +16,9 @@ public class League {
     private String name;
     @OneToMany(mappedBy = "league")
     private List<FootballTeam> footballTeamList;
+
+    @OneToMany(mappedBy = "league")
+    private List<GameWeek> gameWeekList;
 
     public Long getId() {
         return id;
@@ -38,5 +42,13 @@ public class League {
 
     public void setFootballTeamList(List<FootballTeam> footballTeamList) {
         this.footballTeamList = footballTeamList;
+    }
+
+    public List<GameWeek> getGameWeekList() {
+        return gameWeekList;
+    }
+
+    public void setGameWeekList(List<GameWeek> gameWeekList) {
+        this.gameWeekList = gameWeekList;
     }
 }
