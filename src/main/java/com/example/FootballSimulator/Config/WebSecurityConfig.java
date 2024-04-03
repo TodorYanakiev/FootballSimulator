@@ -31,23 +31,12 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/league/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
-                        .formLogin((form) -> form
-                        .loginPage("/auth/login")
-                        .usernameParameter("usernameOrEmail")
-                        .permitAll()
-               )
-                .logout((logout) -> logout.permitAll());
-        http
-                .authorizeHttpRequests((requests) -> requests
-                        .anyRequest().permitAll()
-                )
                 .formLogin((form) -> form
                         .loginPage("/auth/login")
                         .usernameParameter("usernameOrEmail")
                         .permitAll()
                 )
                 .logout((logout) -> logout.permitAll());
-
         return http.build();
     }
 }
