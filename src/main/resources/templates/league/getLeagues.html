@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <title>All leagues</title>
+  <title>All leagues and football teams</title>
 </head>
 <body>
-<h2>All leagues</h2>
+<h2>All leagues and football teams</h2>
 <table>
   <thead>
   <tr>
@@ -17,6 +17,18 @@
   <tr th:each="league : ${getAllLeagues}">
     <td th:text="${league.getId()}"></td>
     <td th:text="${league.getName()}"></td>
+  </tr>
+  </tbody>
+</table>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="footballTeam : ${allFootballTeams}">
+    <td th:text="${footballTeam.getId()}"></td>
   </tr>
   </tbody>
 </table>
