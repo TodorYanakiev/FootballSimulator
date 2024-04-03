@@ -10,7 +10,7 @@
   <p>
     First name:
     <input type="text" th:field="*{firstName}"/>
-    <span th:if="${#fields.hasErrors('firstName')}" th:error="*{firstName}"></span>
+    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
   </p>
   <p>
     Last name:
@@ -26,7 +26,7 @@
   <p>
     Age:
     <input type="text" th:field="*{age}"/>
-    <span th:if="${#fields.hasErrors('age')}" th:error="*{age}"></span>
+    <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span>
   </p>
     Shirt number:
     <input type="number" th:field="*{shirtNumber}"/>

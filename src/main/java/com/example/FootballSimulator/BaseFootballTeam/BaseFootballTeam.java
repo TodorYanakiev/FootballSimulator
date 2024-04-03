@@ -15,7 +15,7 @@ public class BaseFootballTeam {
 
     @NotEmpty
     @Size(min = 3)
-    private String name;
+    private String baseTeamName;
 
     @NotEmpty
     @Size(min = 2, max = 4)
@@ -37,12 +37,12 @@ public class BaseFootballTeam {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getBaseTeamName() {
+        return baseTeamName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setBaseTeamName(String baseTeamName) {
+        this.baseTeamName = baseTeamName;
     }
 
     public String getAbbreviation() {

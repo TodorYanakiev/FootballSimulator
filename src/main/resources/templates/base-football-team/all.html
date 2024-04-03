@@ -19,7 +19,7 @@
     <tbody>
         <tr th:each="baseTeam : ${baseTeams}">
             <td th:text="${baseTeam.getId()}"></td>
-            <td th:text="${baseTeam.getName()}"></td>
+            <td th:text="${baseTeam.getBaseTeamName()}"></td>
             <td th:text="${baseTeam.getAbbreviation()}"></td>
             <td th:text="${baseTeam.getStadiumName()}"></td>
             <td th:text="${baseTeam.getStartBudged()}"></td>
