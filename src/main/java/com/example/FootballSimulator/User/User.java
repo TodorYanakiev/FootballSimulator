@@ -1,5 +1,6 @@
-package com.example.FootballSimulator;
+package com.example.FootballSimulator.User;
 
+import com.example.FootballSimulator.Constants.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

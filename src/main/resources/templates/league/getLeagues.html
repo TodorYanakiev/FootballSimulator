@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>All leagues</title>
+</head>
+<body>
+<h2>All leagues</h2>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="league : ${getAllLeagues}">
+    <td th:text="${league.getId()}"></td>
+    <td th:text="${league.getName()}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

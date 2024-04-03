@@ -1,6 +1,6 @@
 package com.example.FootballSimulator.BaseFootballPlayer;
 
-import com.example.FootballSimulator.Position;
+import com.example.FootballSimulator.Constants.Position;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -195,4 +195,6 @@ public class BaseFootballPlayer {
     public void setStartGoalkeeping(Byte startGoalkeeping) {
         this.startGoalkeeping = startGoalkeeping;
     }
+
+
 }

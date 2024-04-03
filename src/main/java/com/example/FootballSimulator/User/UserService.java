@@ -1,5 +1,6 @@
-package com.example.FootballSimulator;
+package com.example.FootballSimulator.User;
 
+import com.example.FootballSimulator.Constants.Role;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,20 +18,27 @@ public class UserService {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    public String addUser(@Valid UserRegistrationDTO userRegistrationDTO, BindingResult bindingResult, Model model){
+    public String login(){
+        return "/user/login";
+    }
+    public String register(Model model){
+        model.addAttribute("userRegistrationDTO",new UserRegistrationDTO());
+        return "/user/registration";
+    }
+    public String addUser(@Valid UserRegistrationDTO userRegistrationDTO,BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()){
-           return "index";
+           return "/user/registration";
         }
         if (!comparePasswords(userRegistrationDTO.getPassword(),userRegistrationDTO.getRepeatPassword())){
             model.addAttribute("passwordsDoNotMatch","Passwords do not match!");
-            return "index";
+            return "/user/registration";
         }
         User user = userRegistrationMapper.toEntity(userRegistrationDTO);
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         user.setEnabled(true);
         user.setRole(Role.ROLE_USER);
         userRepository.save(user);
-        return "registered";
+        return "/user/registered";
     }
     public boolean comparePasswords(String password,String repeatPassword){
         return password.equals(repeatPassword);
