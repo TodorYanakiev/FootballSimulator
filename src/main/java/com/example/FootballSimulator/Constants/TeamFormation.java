@@ -10,7 +10,7 @@ public enum TeamFormation {
     FIVE_FOUR_ONE ("541"),
     FIVE_THREE_TWO ("532");
 
-    private String label;
+    String label;
 
     TeamFormation(String label) {
         this.label = label;
