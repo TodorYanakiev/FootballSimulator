@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -31,7 +32,7 @@ public class BaseFootballTeamController {
     }
 
     @PostMapping("/add")
-    public String submitTeam(@Valid BaseFootballTeam baseFootballTeam, BindingResult bindingResult) {
+    public String submitTeam(@Valid @ModelAttribute("baseFootballTeam") BaseFootballTeam baseFootballTeam, BindingResult bindingResult) {
         return baseFootballTeamService.teamSubmit(baseFootballTeam, bindingResult);
     }
 }

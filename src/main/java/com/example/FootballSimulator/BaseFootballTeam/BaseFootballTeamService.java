@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Service
 public class BaseFootballTeamService {
@@ -19,15 +20,15 @@ public class BaseFootballTeamService {
     }
 
     public String teamForm(Model model) {
-        model.addAttribute("baseTeam", new BaseFootballTeam());
+        model.addAttribute("baseFootballTeam", new BaseFootballTeam());
         return "/base-football-team/add";
     }
 
-    public String teamSubmit(@Valid BaseFootballTeam baseTeam, BindingResult bindingResult) {
+    public String teamSubmit(@Valid @ModelAttribute("baseFootballTeam") BaseFootballTeam baseFootballTeam, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "/base-football-team/add";
         }
-        baseFootballTeamRepository.save(baseTeam);
+        baseFootballTeamRepository.save(baseFootballTeam);
         return "redirect:/base-football-team/all";
     }
 }
