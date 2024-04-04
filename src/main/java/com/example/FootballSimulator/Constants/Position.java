@@ -8,8 +8,6 @@ public enum Position {
     RB,
     LM,
     CM,
-    CDM,//?
-    CAM,//?
     RM,
     RF,
     CF,

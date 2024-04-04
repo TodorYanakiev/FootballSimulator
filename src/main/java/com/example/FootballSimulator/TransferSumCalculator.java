@@ -51,18 +51,10 @@ public class TransferSumCalculator {
             overall = (byte) (0.15 * player.getSpeed() + 0.15 * player.getStamina() + 0.15 * player.getDribble() +
                     0.1 * player.getScoring() + 0.05 * player.getDefending() + 0.15 * player.getPositioning()
                     + 0.25 * player.getPassing());
-        } else if (position.equals(Position.CDM)) {
-            overall = (byte) (0.05 * player.getSpeed() + 0.15 * player.getStamina() + 0.05 * player.getDribble() +
-                    0.05 * player.getScoring() + 0.2 * player.getDefending() + 0.25 * player.getPositioning()
-                    + 0.25 * player.getPassing());
         } else if (position.equals(Position.CM)) {
             overall = (byte) (0.05 * player.getSpeed() + 0.1 * player.getStamina() + 0.1 * player.getDribble() +
                     0.1 * player.getScoring() + 0.1 * player.getDefending() + 0.25 * player.getPositioning()
                     + 0.3 * player.getPassing());
-        } else if (position.equals(Position.CAM)) {
-            overall = (byte) (0.1 * player.getSpeed() + 0.1 * player.getStamina() + 0.15 * player.getDribble() +
-                    0.15 * player.getScoring() + 0.25 * player.getPositioning()
-                    + 0.25 * player.getPassing());
         } else if (position.equals(Position.LF) || position.equals(Position.RF)) {
             overall = (byte) (0.25 * player.getSpeed() + 0.15 * player.getStamina() + 0.2 * player.getDribble() +
                     0.1 * player.getScoring() + 0.1 * player.getPositioning() + 0.2 * player.getPassing());
