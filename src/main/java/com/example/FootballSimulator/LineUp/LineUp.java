@@ -36,5 +36,27 @@ public class LineUp {
         this.id = id;
     }
 
+    public FootballTeam getFootballTeam() {
+        return footballTeam;
+    }
 
+    public void setFootballTeam(FootballTeam footballTeam) {
+        this.footballTeam = footballTeam;
+    }
+
+    public TeamFormation getFootballFormation() {
+        return footballFormation;
+    }
+
+    public void setFootballFormation(TeamFormation footballFormation) {
+        this.footballFormation = footballFormation;
+    }
+
+    public Map<Position, FootballPlayer> getPositionFootballPlayerMap() {
+        return positionFootballPlayerMap;
+    }
+
+    public void setPositionFootballPlayerMap(Map<Position, FootballPlayer> positionFootballPlayerMap) {
+        this.positionFootballPlayerMap = positionFootballPlayerMap;
+    }
 }
