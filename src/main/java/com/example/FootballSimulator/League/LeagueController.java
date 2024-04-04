@@ -20,9 +20,7 @@ public class LeagueController {
     private LeagueService leagueService;
     @GetMapping("/add")
     public String addLeague(Model model){
-
         return leagueService.addLeague(model);
-
     }
     @GetMapping("/get")
     public String getLeague(Model model){

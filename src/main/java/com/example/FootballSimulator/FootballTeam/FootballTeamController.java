@@ -86,6 +86,7 @@ public class FootballTeamController {
             footballPlayer.setPrice(calculator.getTransferSumForPlayer(footballPlayer));
             footballPlayerRepository.save(footballPlayer);
         }
-        return "redirect:/football-team/getFootballPlayers";
+//        return "redirect:/football-team/getFootballPlayers";
+        return "redirect:/football-team/players/" + teamId;
     }
 }
