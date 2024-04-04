@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 public class FootballPlayer {
@@ -66,6 +67,8 @@ public class FootballPlayer {
     @Min(1)
     @Max(99)
     private Byte goalkeeping;
+    @NotNull
+    private boolean footballPlayerStatus;
 
     public Long getId() {
         return id;
@@ -161,5 +164,13 @@ public class FootballPlayer {
 
     public void setFootballTeam(FootballTeam footballTeam) {
         this.footballTeam = footballTeam;
+    }
+
+    public boolean isFootballPlayerStatus() {
+        return footballPlayerStatus;
+    }
+
+    public void setFootballPlayerStatus(boolean footballPlayerStatus) {
+        this.footballPlayerStatus = footballPlayerStatus;
     }
 }

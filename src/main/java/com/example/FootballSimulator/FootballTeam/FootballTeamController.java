@@ -5,62 +5,49 @@ import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayerReposi
 import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeam;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayerRepository;
+import com.example.FootballSimulator.League.League;
+import com.example.FootballSimulator.TransferSumCalculator;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/football-team")
 public class FootballTeamController {
-    @Autowired
-    private FootballPlayerRepository footballPlayerRepository;
-
-    @Autowired
-    private BaseFootballPlayerRepository baseFootballPlayerRepository;
-    @Autowired
-    private FootballTeamRepository footballTeamRepository;
+   @Autowired
+   private FootballTeamService footballTeamService;
     @GetMapping("/add/{teamId}")
     public String addPlayersToTeam(@PathVariable("teamId") Long teamId, Model model) {
-        FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
-        model.addAttribute("footballTeam", footballTeam);
-        model.addAttribute("allBaseFootballPlayers",baseFootballPlayerRepository.findAll());
-        model.addAttribute("baseFootballPlayers",new ArrayList<BaseFootballPlayer>());
-        return "/football-team/add-players";
+        return footballTeamService.addPlayersToTeam(teamId,model);
     }
     @GetMapping("/getFootballPlayers")
     public String getAllFootballPlayers(Model model) {
-       model.addAttribute("allFootballPlayers",footballPlayerRepository.findAll());
-       return "/football-team/showFootballPlayers";
+       return footballTeamService.getAllFootballPlayers(model);
     }
     @PostMapping("/submit")
     public String addFootballPlayersToTeam(@RequestParam("teamId") Long teamId,Model model, @RequestParam("selectedFootballPlayersIds") List<Long> selectedFootballPlayerIds) {
-        Optional<FootballTeam> footballTeamOptional = footballTeamRepository.findById(teamId);
-        FootballTeam footballTeam = new FootballTeam();
-        if (footballTeamOptional.isPresent()){
-            footballTeam = footballTeamOptional.get();
-        }
-        List<BaseFootballPlayer> selectedFootballPlayers = baseFootballPlayerRepository.findAllByIdIn(selectedFootballPlayerIds);
-        for (BaseFootballPlayer selectedFootballPlayer : selectedFootballPlayers) {
-            FootballPlayer footballPlayer = new FootballPlayer();
-            footballPlayer.setFootballTeam(footballTeam);
-            footballPlayer.setBaseFootballPlayer(selectedFootballPlayer);
-            footballPlayer.setDefending(selectedFootballPlayer.getStartDefending());
-            footballPlayer.setDribble(selectedFootballPlayer.getStartDribble());
-            footballPlayer.setGoalkeeping(selectedFootballPlayer.getStartGoalkeeping());
-            footballPlayer.setPassing(selectedFootballPlayer.getStartPassing());
-            footballPlayer.setPositioning(selectedFootballPlayer.getStartPositioning());
-            footballPlayer.setScoring(selectedFootballPlayer.getStartScoring());
-            footballPlayer.setSpeed(selectedFootballPlayer.getStartSpeed());
-            footballPlayer.setStamina(selectedFootballPlayer.getStartStamina());
-            footballPlayer.setPrice(1);
-            footballPlayerRepository.save(footballPlayer);
-        }
-        return "redirect:/football-team/getFootballPlayers";
+       return footballTeamService.addFootballPlayersToTeam(teamId,model,selectedFootballPlayerIds);
+    }
+    @GetMapping("/saleFootballPlayers/{teamId}")
+    public String saleFootballPlayers(@PathVariable("teamId") Long teamId, Model model) {
+       return footballTeamService.chooseFootballPlayersForSale(teamId,model);
+
+    }
+    @GetMapping("/getFootballPlayersForSale")
+    public String getAllFootballPlayersForSale(Model model) {
+       return footballTeamService.getAllFootballPlayersForSale(model);
+    }
+
+    @PostMapping("/sale")
+    public String saleFootballPlayers(@RequestParam("teamId") Long teamId,Model model, @RequestParam("selectedFootballPlayersIds") List<Long> selectedFootballPlayerIds){
+        return footballTeamService.saleFootballPlayers(teamId,model,selectedFootballPlayerIds);
     }
 }
