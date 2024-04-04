@@ -17,18 +17,7 @@
   <tr th:each="league : ${getAllLeagues}">
     <td th:text="${league.getId()}"></td>
     <td th:text="${league.getName()}"></td>
-  </tr>
-  </tbody>
-</table>
-<table>
-  <thead>
-  <tr>
-    <th>ID</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="footballTeam : ${allFootballTeams}">
-    <td th:text="${footballTeam.getId()}"></td>
+    <td><a th:href="@{/football-team/all/{leagueId}(leagueId=${league.id})}">View teams</a></td>
   </tr>
   </tbody>
 </table>

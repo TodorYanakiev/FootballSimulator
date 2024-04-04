@@ -19,7 +19,7 @@ public class TransferSumCalculator {
             transferSum /= 10;
             transferSum *= 3;
         } else if (overall < 90) {
-            transferSum /= 2;
+            transferSum /= 1.5;
         } else {
             transferSum *= 1.5;
         }
