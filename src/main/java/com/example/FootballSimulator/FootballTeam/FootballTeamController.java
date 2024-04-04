@@ -5,6 +5,9 @@ import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayerReposi
 import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeam;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayerRepository;
+import com.example.FootballSimulator.League.League;
+import com.example.FootballSimulator.League.LeagueRepository;
+import com.example.FootballSimulator.TransferSumCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +28,27 @@ public class FootballTeamController {
     private BaseFootballPlayerRepository baseFootballPlayerRepository;
     @Autowired
     private FootballTeamRepository footballTeamRepository;
+
+    @Autowired
+    private LeagueRepository leagueRepository;
+
+    @GetMapping("/all/{leagueId}")
+    public String viewAllTeamsByLeague(@PathVariable("leagueId") Long leagueId, Model model) {
+        League league = leagueRepository.findById(leagueId).orElseThrow(() -> new IllegalArgumentException("Invalid league ID"));
+        List<FootballTeam> footballTeamList = league.getFootballTeamList();
+        model.addAttribute("league", league);
+        model.addAttribute("footballTeams", footballTeamList);
+        return "/football-team/teams-for-league";
+    }
+
+    @GetMapping("/players/{teamId}")
+    public String viewPlayersForTeam(@PathVariable("teamId") Long teamId, Model model) {
+        FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
+        model.addAttribute("allPlayers", footballTeam.getPlayerList());
+        model.addAttribute("footballTeam", footballTeam);
+        return "/football-team/all-players";
+    }
+
     @GetMapping("/add/{teamId}")
     public String addPlayersToTeam(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
@@ -58,7 +82,8 @@ public class FootballTeamController {
             footballPlayer.setScoring(selectedFootballPlayer.getStartScoring());
             footballPlayer.setSpeed(selectedFootballPlayer.getStartSpeed());
             footballPlayer.setStamina(selectedFootballPlayer.getStartStamina());
-            footballPlayer.setPrice(1);
+            TransferSumCalculator calculator = new TransferSumCalculator();
+            footballPlayer.setPrice(calculator.getTransferSumForPlayer(footballPlayer));
             footballPlayerRepository.save(footballPlayer);
         }
         return "redirect:/football-team/getFootballPlayers";

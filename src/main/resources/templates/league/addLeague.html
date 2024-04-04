@@ -17,7 +17,7 @@
         <select name="selectedFootballTeamIds" multiple>
             <option th:each="baseFootballTeam : ${allBaseFootballTeams}"
                     th:value="${baseFootballTeam.id}"
-                    th:text="${baseFootballTeam.name}">Football team name</option>
+                    th:text="${baseFootballTeam.baseTeamName}">Football team name</option>
         </select>
     </p>
     <input type="submit" value="Submit">
