@@ -6,26 +6,26 @@
 </head>
 <body>
 <h2>Add new base football team</h2>
-    <form action="#" th:action="@{/base-football-team/add}" th:object="${baseTeam}" method="post">
+    <form action="#" th:action="@{/base-football-team/add}" th:object="${baseFootballTeam}" method="post">
         <p>
             Name:
-            <input type="text" th:field="*{name}"/>
-            <span th:if="${#fields.hasErrors('name')}" th:error="*{name}"></span>
+            <input type="text" th:field="*{baseTeamName}"/>
+            <span th:if="${#fields.hasErrors('baseTeamName')}" th:errors="*{baseTeamName}"></span>
         </p>
         <p>
             Abbreviation:
             <input type="text" th:field="*{abbreviation}"/>
-            <span th:if="${#fields.hasErrors('abbreviation')}" th:error="*{abbreviation}"></span>
+            <span th:if="${#fields.hasErrors('abbreviation')}" th:errors="*{abbreviation}"></span>
         </p>
         <p>
             Stadium name:
             <input type="text" th:field="*{stadiumName}"/>
-            <span th:if="${#fields.hasErrors('stadiumName')}" th:error="*{stadiumName}"></span>
+            <span th:if="${#fields.hasErrors('stadiumName')}" th:errors="*{stadiumName}"></span>
         </p>
         <p>
             Start budged:
             <input type="number" th:field="*{startBudged}"/>
-            <span th:if="${#fields.hasErrors('startBudged')}" th:error="*{startBudged}"></span>
+            <span th:if="${#fields.hasErrors('startBudged')}" th:errors="*{startBudged}"></span>
         </p>
         <input type="submit" value="ADD"/>
     </form>

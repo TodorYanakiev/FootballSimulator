@@ -10,7 +10,12 @@
     <thead>
     <tr>
         <th>Id</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Nationality</th>
+        <th>Age</th>
         <th>Football Team</th>
+        <th>ShirtNumber</th>
         <th>Price</th>
         <th>Position</th>
         <th>Defending</th>
@@ -24,19 +29,24 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="player : ${allFootballPlayers}">
-        <td th:text="${player.getId()}"></td>
-        <td th:text="${player.getFootballTeam().getId()}"></td>
-        <td th:text="${player.getPrice()}"></td>
-        <td th:text="${player.getPositioning()}"></td>
-        <td th:text="${player.getDefending()}"></td>
-        <td th:text="${player.getSpeed()}"></td>
-        <td th:text="${player.getDribble()}"></td>
-        <td th:text="${player.getScoring}"></td>
-        <td th:text="${player.getPassing()}"></td>
-        <td th:text="${player.getStamina()}"></td>
-        <td th:text="${player.getPositioning()}"></td>
-        <td th:text="${player.getGoalkeeping()}"></td>
+    <tr th:each="footballPlayer : ${allFootballPlayers}">
+        <td th:text="${footballPlayer.getId()}"></td>
+        <td th:text="${footballPlayer.getBaseFootballPlayer().getFirstName()}"></td>
+        <td th:text="${footballPlayer.getBaseFootballPlayer().getLastName()}"></td>
+        <td th:text="${footballPlayer.getBaseFootballPlayer().getNationality()}"></td>
+        <td th:text="${footballPlayer.getBaseFootballPlayer().getAge()}"></td>
+        <td th:text="${footballPlayer.getFootballTeam().getBaseFootballTeam().getBaseTeamName()}"></td>
+        <td th:text="${footballPlayer.getBaseFootballPlayer().getShirtNumber()}"></td>
+        <td th:text="${footballPlayer.getPrice()}"></td>
+        <td th:text="${footballPlayer.getBaseFootballPlayer().getPosition()}"></td>
+        <td th:text="${footballPlayer.getDefending()}"></td>
+        <td th:text="${footballPlayer.getSpeed()}"></td>
+        <td th:text="${footballPlayer.getDribble()}"></td>
+        <td th:text="${footballPlayer.getScoring}"></td>
+        <td th:text="${footballPlayer.getPassing()}"></td>
+        <td th:text="${footballPlayer.getStamina()}"></td>
+        <td th:text="${footballPlayer.getPositioning()}"></td>
+        <td th:text="${footballPlayer.getGoalkeeping()}"></td>
     </tr>
     </tbody>
 </table>
