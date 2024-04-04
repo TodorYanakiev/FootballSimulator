@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Players</title>
+</head>
+<body>
+<h3 th:text="${footballTeam.getBaseFootballTeam().getBaseTeamName()}"> players</h3>
+<table>
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>FirstName</th>
+    <th>LastName</th>
+    <th>Nationality</th>
+    <th>Age</th>
+    <th>Price</th>
+    <th>ShirtNumber</th>
+    <th>Position</th>
+    <th>Defending</th>
+    <th>Speed</th>
+    <th>Dribble</th>
+    <th>Scoring</th>
+    <th>Passing</th>
+    <th>Stamina</th>
+    <th>Positioning</th>
+    <th>Goalkeeping</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="footballPlayer : ${allPlayers}">
+    <td th:text="${footballPlayer.getId()}"></td>
+    <td th:text="${footballPlayer.getBaseFootballPlayer().getFirstName()}"></td>
+    <td th:text="${footballPlayer.getBaseFootballPlayer().getLastName()}"></td>
+    <td th:text="${footballPlayer.getBaseFootballPlayer().getNationality()}"></td>
+    <td th:text="${footballPlayer.getBaseFootballPlayer().getAge()}"></td>
+    <td th:text="${footballPlayer.getPrice()}"></td>
+    <td th:text="${footballPlayer.getBaseFootballPlayer().getShirtNumber()}"></td>
+    <td th:text="${footballPlayer.getBaseFootballPlayer().getPosition()}"></td>
+    <td th:text="${footballPlayer.getDefending()}"></td>
+    <td th:text="${footballPlayer.getSpeed()}"></td>
+    <td th:text="${footballPlayer.getDribble()}"></td>
+    <td th:text="${footballPlayer.getScoring}"></td>
+    <td th:text="${footballPlayer.getPassing()}"></td>
+    <td th:text="${footballPlayer.getStamina()}"></td>
+    <td th:text="${footballPlayer.getPositioning()}"></td>
+    <td th:text="${footballPlayer.getGoalkeeping()}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
