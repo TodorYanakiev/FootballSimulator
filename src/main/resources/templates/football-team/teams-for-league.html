@@ -20,9 +20,9 @@
             <td th:text="${footballTeam.getId()}"></td>
             <td th:text="${footballTeam.getBaseFootballTeam().getBaseTeamName()}"></td>
             <td th:text="${footballTeam.getBudged()}"></td>
-            <td><a th:href="@{/football-team/add/{teamId}(teamId=${footballTeam.id})}">Add players</a>
-                <a th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a>
-            </td>
+            <td><a th:href="@{/football-team/add/{teamId}(teamId=${footballTeam.id})}">Add players</a></td>
+            <td><a th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a></td>
+            <td><a th:href="@{/line-up/add/{teamId}(teamId=${footballTeam.id})}">Add line-up</a></td>
         </tr>
     </tbody>
 </table>

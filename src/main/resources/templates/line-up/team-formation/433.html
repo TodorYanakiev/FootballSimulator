@@ -11,7 +11,7 @@
         <label th:text="${position}"></label> <!-- Display the position as label -->
         <select th:field="*{positionFootballPlayerMap[__${position}__]}" name="players" id="players">
             <option value="" disabled selected>Select Player</option>
-            <option th:each="player : ${allPlayers}" th:value="${player.id}" th:text="${player.FootballPlayer.name}"></option>
+            <option th:each="player : ${allPlayers}" th:value="${player.id}" th:text="${player.getBaseFootballPlayer().lastName + ' - ' + player.getBaseFootballPlayer().getPosition()}"></option>
             <!-- Loop through each player and create an option -->
         </select>
     </div>
