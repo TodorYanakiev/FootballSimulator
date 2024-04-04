@@ -8,6 +8,7 @@ import com.example.FootballSimulator.League.League;
 import com.example.FootballSimulator.TransferSumCalculator;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class FootballTeamService {
@@ -31,6 +29,11 @@ public class FootballTeamService {
     private BaseFootballPlayerRepository baseFootballPlayerRepository;
     @Autowired
     private FootballTeamRepository footballTeamRepository;
+    private final EntityManager entityManager;
+
+    public FootballTeamService(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
     public String addPlayersToTeam(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
 //        List<BaseFootballPlayer> baseFootballPlayers = (List<BaseFootballPlayer>) baseFootballPlayerRepository.findAll();
@@ -64,10 +67,37 @@ public class FootballTeamService {
         model.addAttribute("baseFootballPlayers",new ArrayList<BaseFootballPlayer>());
         return "/football-team/add-players";
     }
+    public void chooseAwayFootballPlayersForSale(@PathVariable("teamId") Long teamId) {
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(5) + 1;
+        List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllExceptTeamId(teamId);
+        List<FootballPlayer> allFootballPlayersExceptCurrentTeam = new ArrayList<>();
+        for (FootballTeam team : allTeamsExceptCurrent) {
+            allFootballPlayersExceptCurrentTeam.addAll(getPlayersByTeamId(team.getId()));
+        }
+        List<FootballPlayer> selectedFootballPlayers = getRandomFootballPlayers(allFootballPlayersExceptCurrentTeam, randomNumber);
+        for (FootballPlayer player : selectedFootballPlayers) {
+            player.setFootballPlayerStatus(true);
+            footballPlayerRepository.save(player);
+        }
+    }
+    public List<FootballPlayer> getPlayersByTeamId(Long teamId) {
+        Query query = entityManager.createQuery("SELECT p FROM FootballPlayer p WHERE p.footballTeam.id = :teamId");
+        query.setParameter("teamId", teamId);
+        return query.getResultList();
+    }
+    private List<FootballPlayer> getRandomFootballPlayers(List<FootballPlayer> players, int count) {
+        List<FootballPlayer> randomPlayers = new ArrayList<>();
+        Collections.shuffle(players);
+        for (int i = 0; i < count && i < players.size(); i++) {
+            randomPlayers.add(players.get(i));
+        }
+        return randomPlayers;
+    }
     public String chooseFootballPlayersForSale(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
         model.addAttribute("footballTeam", footballTeam);
-        model.addAttribute("allFootballPlayersOfTheTeam",footballPlayerRepository.findAll());
+        model.addAttribute("allFootballPlayersOfTheTeam",getPlayersByTeamId(teamId));
         model.addAttribute("footballPlayersForSale",new ArrayList<FootballPlayer>());
         return "/football-team/sale-players";
     }
@@ -82,6 +112,7 @@ public class FootballTeamService {
             selectedFootballPlayer.get(i).setFootballPlayerStatus(true);
             footballPlayerRepository.save(selectedFootballPlayer.get(i));
         }
+        chooseAwayFootballPlayersForSale(teamId);
         return "redirect:/football-team/getFootballPlayersForSale";
     }
     public static List<FootballPlayer> findPlayersByStatus(List<FootballPlayer> players) {
