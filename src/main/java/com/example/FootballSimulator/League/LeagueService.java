@@ -1,9 +1,13 @@
 package com.example.FootballSimulator.League;
 
+import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayer;
+import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayerRepository;
 import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeam;
 import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeamRepository;
 import com.example.FootballSimulator.FootballMatch.FootballMatch;
 import com.example.FootballSimulator.FootballMatch.FootballMatchRepository;
+import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
+import com.example.FootballSimulator.FootballPlayer.FootballPlayerRepository;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.FootballTeam.FootballTeamRepository;
 import com.example.FootballSimulator.GameWeek.GameWeek;
@@ -28,12 +32,16 @@ public class LeagueService {
     private BaseFootballTeamRepository baseFootballTeamRepository;
     @Autowired
     private FootballTeamRepository footballTeamRepository;
+    @Autowired
+    private FootballPlayerRepository footballPlayerRepository;
 
     @Autowired
     private GameWeekRepository gameWeekRepository;
 
     @Autowired
     private FootballMatchRepository footballMatchRepository;
+    @Autowired
+    private BaseFootballPlayerRepository baseFootballPlayerRepository;
 
     public String addLeague(Model model){
         model.addAttribute("league",new League());
