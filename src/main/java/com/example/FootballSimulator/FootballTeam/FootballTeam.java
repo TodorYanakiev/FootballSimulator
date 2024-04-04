@@ -3,6 +3,7 @@ package com.example.FootballSimulator.FootballTeam;
 import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeam;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import com.example.FootballSimulator.League.League;
+import com.example.FootballSimulator.LineUp.LineUp;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -22,6 +23,10 @@ public class FootballTeam {
     @ManyToOne
     @JoinColumn(name="league_id")
     private League league;
+
+    @OneToOne
+    @JoinColumn(name = "line_up_id")
+    private LineUp lineUp;
 
     private Integer budged;
 
@@ -63,5 +68,13 @@ public class FootballTeam {
 
     public void setBudged(Integer budged) {
         this.budged = budged;
+    }
+
+    public LineUp getLineUp() {
+        return lineUp;
+    }
+
+    public void setLineUp(LineUp lineUp) {
+        this.lineUp = lineUp;
     }
 }
