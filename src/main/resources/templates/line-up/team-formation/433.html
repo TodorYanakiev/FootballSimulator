@@ -7,6 +7,8 @@
 <body>
 <h2>Add players to line up:</h2>
 <form action="#" th:action="@{/line-up/add}" th:object="${lineUp}" method="post">
+    <input type="hidden" th:field="*{footballTeam}" th:value="${lineUp.footballTeam.id}"/>
+    <input type="hidden" th:field="*{footballFormation}" th:value="${lineUp.footballFormation.name}"/>
     <div th:each="position : ${lineUp.positionFootballPlayerMap.keySet()}">
         <label th:text="${position}"></label> <!-- Display the position as label -->
         <select th:field="*{positionFootballPlayerMap[__${position}__]}" name="players" id="players">

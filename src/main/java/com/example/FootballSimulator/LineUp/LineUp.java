@@ -23,9 +23,13 @@ public class LineUp {
     private TeamFormation footballFormation;
 
     @ElementCollection
-    @CollectionTable(name = "lineup_positions", joinColumns = @JoinColumn(name = "lineup_id"))
+    @CollectionTable(name = "lineup_position_player_mapping",
+            joinColumns = @JoinColumn(name = "line_up_id"))
     @MapKeyEnumerated(EnumType.STRING)
-    @Column(name = "football_player_id")
+    @JoinTable(name = "lineup_position_player",
+            joinColumns = @JoinColumn(name = "line_up_id"),
+            inverseJoinColumns = @JoinColumn(name = "football_player_id"))
+    @MapKeyColumn(name = "position")
     private Map<Position, FootballPlayer> positionFootballPlayerMap;
 
     public Long getId() {

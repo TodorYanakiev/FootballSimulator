@@ -43,6 +43,8 @@ public class LineUpController {
         lineUp.setPositionFootballPlayerMap(lineUpService.getPositionFootballPlayerByFormation(teamFormation));
         model.addAttribute("allPlayers", footballTeam.getPlayerList());
         if (teamFormation.equals(TeamFormation.FOUR_THREE_THREE)) {
+//            lineUp.setFootballTeam(footballTeam);
+//            lineUp.setFootballFormation(TeamFormation.FOUR_THREE_THREE);
             return "/line-up/team-formation/433";
         } else {
             return "/line-up/team-formation/442";
