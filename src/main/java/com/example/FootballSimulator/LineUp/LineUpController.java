@@ -20,7 +20,7 @@ public class LineUpController {
 
     private FootballTeamRepository footballTeamRepository;
 
-    public LineUpController(LineUpService lineUpService,LineUpRepository lineUpRepository , FootballTeamRepository footballTeamRepository) {
+    public LineUpController(LineUpService lineUpService, LineUpRepository lineUpRepository, FootballTeamRepository footballTeamRepository) {
         this.lineUpService = lineUpService;
         this.lineUpRepository = lineUpRepository;
         this.footballTeamRepository = footballTeamRepository;
@@ -29,6 +29,10 @@ public class LineUpController {
     @GetMapping("/add/{teamId}")
     public String addLineUpFormation(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
+        if (footballTeam.getLineUp() != null) {
+            model.addAttribute("lineUp", footballTeam.getLineUp());
+            return "/line-up/view";
+        }
         LineUp lineUp = new LineUp();
         lineUp.setFootballTeam(footballTeam);
         model.addAttribute("lineUp", lineUp);
@@ -43,8 +47,6 @@ public class LineUpController {
         lineUp.setPositionFootballPlayerMap(lineUpService.getPositionFootballPlayerByFormation(teamFormation));
         model.addAttribute("allPlayers", footballTeam.getPlayerList());
         if (teamFormation.equals(TeamFormation.FOUR_THREE_THREE)) {
-//            lineUp.setFootballTeam(footballTeam);
-//            lineUp.setFootballFormation(TeamFormation.FOUR_THREE_THREE);
             return "/line-up/team-formation/433";
         } else {
             return "/line-up/team-formation/442";
@@ -54,6 +56,10 @@ public class LineUpController {
     @PostMapping("/add")
     public String submitLineUp(LineUp lineUp, Model model) {
         lineUpRepository.save(lineUp);
-        return "redirect:/line-up/select";
+        FootballTeam footballTeam = lineUp.getFootballTeam();
+        footballTeam.setLineUp(lineUp);
+        footballTeamRepository.save(footballTeam);
+        model.addAttribute(lineUp);
+        return "/line-up/view";
     }
 }

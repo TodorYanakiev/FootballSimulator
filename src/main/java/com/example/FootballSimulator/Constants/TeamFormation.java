@@ -1,14 +1,14 @@
 package com.example.FootballSimulator.Constants;
 
 public enum TeamFormation {
-    FOUR_FOUR_TWO ("442"),
-    FOUR_TWO_FOUR ("424"),
-    FOUR_THREE_THREE ("433"),
-    THREE_THREE_FOUR ("334"),
-    THREE_FOUR_THREE ("343"),
-    THREE_FIVE_TWO ("352"),
-    FIVE_FOUR_ONE ("541"),
-    FIVE_THREE_TWO ("532");
+    FOUR_FOUR_TWO ("4-4-2"),
+    FOUR_TWO_FOUR ("4-2-4"),
+    FOUR_THREE_THREE ("4-3-3"),
+    THREE_THREE_FOUR ("3-3-4"),
+    THREE_FOUR_THREE ("3-4-3"),
+    THREE_FIVE_TWO ("3-5-2"),
+    FIVE_FOUR_ONE ("5-4-1"),
+    FIVE_THREE_TWO ("5-3-2");
 
     String label;
 

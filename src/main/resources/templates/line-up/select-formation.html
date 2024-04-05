@@ -13,7 +13,7 @@
 <p>
     Select formation:
     <select th:field="*{footballFormation}">
-        <option th:each="teamFormation : ${teamFormations}" th:text="${teamFormation}" th:value="${teamFormation.name}"></option>
+        <option th:each="teamFormation : ${teamFormations}" th:text="${teamFormation.getLabel()}" th:value="${teamFormation.name}"></option>
     </select>
     <input type="submit" value="Add players"/>
 </p>
