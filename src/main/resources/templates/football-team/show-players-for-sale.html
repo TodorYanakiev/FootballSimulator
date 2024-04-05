@@ -17,6 +17,8 @@
   <tbody>
   <tr th:each="player : ${allFootballPlayers}">
     <td th:text="${player.getId()}"></td>
+    <td th:text="${player.baseFootballPlayer.firstName}"></td>
+    <td th:text="${player.baseFootballPlayer.lastName}"></td>
   </tr>
   </tbody>
 </table>

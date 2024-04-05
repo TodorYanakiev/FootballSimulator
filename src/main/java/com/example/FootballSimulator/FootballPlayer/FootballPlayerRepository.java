@@ -13,4 +13,6 @@ public interface FootballPlayerRepository extends CrudRepository<FootballPlayer,
     List<FootballPlayer> findByFootballTeam_League(League league);
     List<FootballPlayer> findAllByIdIn(List<Long> ids);
     //List<FootballPlayer> findByTeamId(Long teamId);
+    @Query("SELECT p FROM FootballPlayer p WHERE p.footballTeam.id = :teamId")
+    List<FootballPlayer> getPlayersByTeamId(Long teamId);
 }
