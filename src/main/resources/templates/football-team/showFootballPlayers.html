@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>All players</title>
@@ -42,7 +41,7 @@
         <td th:text="${footballPlayer.getDefending()}"></td>
         <td th:text="${footballPlayer.getSpeed()}"></td>
         <td th:text="${footballPlayer.getDribble()}"></td>
-        <td th:text="${footballPlayer.getScoring}"></td>
+        <td th:text="${footballPlayer.getScoring()}"></td>
         <td th:text="${footballPlayer.getPassing()}"></td>
         <td th:text="${footballPlayer.getStamina()}"></td>
         <td th:text="${footballPlayer.getPositioning()}"></td>

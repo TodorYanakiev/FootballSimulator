@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>All players for sale</title>
+</head>
+<body>
+<h2>All players for sale</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="player : ${allFootballPlayers}">
+    <td th:text="${player.getId()}"></td>
+    <td th:text="${player.baseFootballPlayer.firstName}"></td>
+    <td th:text="${player.baseFootballPlayer.lastName}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
