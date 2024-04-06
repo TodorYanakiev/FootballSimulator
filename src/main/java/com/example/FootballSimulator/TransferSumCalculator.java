@@ -19,9 +19,9 @@ public class TransferSumCalculator {
             transferSum /= 10;
             transferSum *= 3;
         } else if (overall < 90) {
-            transferSum /= 1.5;
+            transferSum /= 1.3;
         } else {
-            transferSum *= 1.5;
+            transferSum *= 1.3;
         }
         Random rand = new Random();
         int plusOrMinus = rand.nextInt();
@@ -44,29 +44,21 @@ public class TransferSumCalculator {
             overall = (byte) (0.2 * player.getSpeed() + 0.1 * player.getStamina() + 0.15 * player.getDribble() +
                     0.05 * player.getScoring() + 0.2 * player.getDefending() + 0.1 * player.getPositioning()
                     + 0.2 * player.getPassing());
-        } else if (position.equals(Position.CB)) {
+        } else if (position.equals(Position.CB) || position.equals(Position.LCB) || position.equals(Position.RCB)) {
             overall = (byte) (0.05 * player.getSpeed() + 0.1 * player.getStamina() + 0.05 * player.getScoring() +
                     0.4 * player.getDefending() + 0.25 * player.getPositioning() + 0.15 * player.getPassing());
         } else if (position.equals(Position.LM) || position.equals(Position.RM)) {
             overall = (byte) (0.15 * player.getSpeed() + 0.15 * player.getStamina() + 0.15 * player.getDribble() +
                     0.1 * player.getScoring() + 0.05 * player.getDefending() + 0.15 * player.getPositioning()
                     + 0.25 * player.getPassing());
-        } else if (position.equals(Position.CDM)) {
-            overall = (byte) (0.05 * player.getSpeed() + 0.15 * player.getStamina() + 0.05 * player.getDribble() +
-                    0.05 * player.getScoring() + 0.2 * player.getDefending() + 0.25 * player.getPositioning()
-                    + 0.25 * player.getPassing());
-        } else if (position.equals(Position.CM)) {
+        } else if (position.equals(Position.CM) || position.equals(Position.LCM) || position.equals(Position.RCM)) {
             overall = (byte) (0.05 * player.getSpeed() + 0.1 * player.getStamina() + 0.1 * player.getDribble() +
                     0.1 * player.getScoring() + 0.1 * player.getDefending() + 0.25 * player.getPositioning()
                     + 0.3 * player.getPassing());
-        } else if (position.equals(Position.CAM)) {
-            overall = (byte) (0.1 * player.getSpeed() + 0.1 * player.getStamina() + 0.15 * player.getDribble() +
-                    0.15 * player.getScoring() + 0.25 * player.getPositioning()
-                    + 0.25 * player.getPassing());
         } else if (position.equals(Position.LF) || position.equals(Position.RF)) {
             overall = (byte) (0.25 * player.getSpeed() + 0.15 * player.getStamina() + 0.2 * player.getDribble() +
                     0.1 * player.getScoring() + 0.1 * player.getPositioning() + 0.2 * player.getPassing());
-        } else if (position.equals(Position.CF)) {
+        } else if (position.equals(Position.CF) || position.equals(Position.LCF) || position.equals(Position.RCF)) {
             overall = (byte) (0.1 * player.getSpeed() + 0.1 * player.getStamina() + 0.15 * player.getDribble() +
                     0.35 * player.getScoring() + 0.2 * player.getPositioning() + 0.1 * player.getPassing());
         }

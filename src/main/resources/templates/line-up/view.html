@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2 th:text="${lineUp.footballTeam.baseFootballTeam.baseTeamName} + ' line-up:'"></h2>
+<h4 th:text="'Formation:' + ${lineUp.footballFormation.getLabel()}"></h4>
+<h4>Players with their positions:</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Position</th>
+      <th>Player</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr th:each="instance : ${lineUp.positionFootballPlayerMap}">
+    <td th:text="${instance.key}"></td>
+    <td th:text="${instance.value.baseFootballPlayer.firstName} + ${instance.value.baseFootballPlayer.lastName}
+    + ' (preferred position: ' + ${instance.value.baseFootballPlayer.position} + ')'"></td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

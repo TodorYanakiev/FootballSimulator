@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Formation</title>
+</head>
+<body>
+<h2 th:text="'Line-up for ' + ${lineUp.footballTeam.baseFootballTeam.baseTeamName}"></h2>
+<h3>Select Formation</h3>
+<form action="#" th:action="@{/line-up/add-players}" th:object="${lineUp}" method="get">
+    <input type="hidden" name="lineUpId" th:value="${lineUp.id}">
+    <input type="hidden" th:field="*{footballTeam}" th:value="${lineUp.footballTeam.id}"/>
+<p>
+    Select formation:
+    <select th:field="*{footballFormation}">
+        <option th:each="teamFormation : ${teamFormations}" th:text="${teamFormation.getLabel()}" th:value="${teamFormation.name}"></option>
+    </select>
+    <input type="submit" value="Add players"/>
+</p>
+</form>
+</body>
+</html>
