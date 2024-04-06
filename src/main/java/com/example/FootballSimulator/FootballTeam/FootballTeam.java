@@ -18,14 +18,13 @@ public class FootballTeam {
     @ManyToOne
     private BaseFootballTeam baseFootballTeam;
 
-    @OneToMany(mappedBy = "footballTeam")
+    @OneToMany(mappedBy = "footballTeam", fetch = FetchType.EAGER)
     private List<FootballPlayer> playerList;
     @ManyToOne
     @JoinColumn(name="league_id")
     private League league;
 
-    @OneToOne
-    @JoinColumn(name = "line_up_id")
+    @OneToOne(mappedBy = "footballTeam")
     private LineUp lineUp;
 
     private Integer budged;

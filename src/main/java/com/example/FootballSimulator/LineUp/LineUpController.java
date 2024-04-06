@@ -1,6 +1,8 @@
 package com.example.FootballSimulator.LineUp;
 
+import com.example.FootballSimulator.Constants.Position;
 import com.example.FootballSimulator.Constants.TeamFormation;
+import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.FootballTeam.FootballTeamRepository;
 import jakarta.validation.Valid;
@@ -11,8 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Map;
+
 @Controller
 @RequestMapping("/line-up")
+
 public class LineUpController {
     private LineUpService lineUpService;
 
@@ -47,19 +52,34 @@ public class LineUpController {
         lineUp.setPositionFootballPlayerMap(lineUpService.getPositionFootballPlayerByFormation(teamFormation));
         model.addAttribute("allPlayers", footballTeam.getPlayerList());
         if (teamFormation.equals(TeamFormation.FOUR_THREE_THREE)) {
-            return "/line-up/team-formation/433";
+            return "/line-up/team-formation/4-3-3";
         } else {
-            return "/line-up/team-formation/442";
+            return "/line-up/team-formation/4-4-2";
         }
     }
 
-    @PostMapping("/add")
+    @PostMapping("/submit")
     public String submitLineUp(LineUp lineUp, Model model) {
-        lineUpRepository.save(lineUp);
-        FootballTeam footballTeam = lineUp.getFootballTeam();
-        footballTeam.setLineUp(lineUp);
-        footballTeamRepository.save(footballTeam);
-        model.addAttribute(lineUp);
-        return "/line-up/view";
+        try {
+            for (FootballPlayer footballPlayer : lineUp.getPositionFootballPlayerMap().values()) {
+                if (footballPlayer == null) {
+                    model.addAttribute("message", "Every position must have different player!");
+                    model.addAttribute("lineUp", lineUp);
+                    model.addAttribute("allPlayers", lineUp.getFootballTeam().getPlayerList());
+                    return "/line-up/team-formation/" + lineUp.getFootballFormation().getLabel();
+                }
+            }
+            lineUpRepository.save(lineUp);
+            FootballTeam footballTeam = lineUp.getFootballTeam();
+            footballTeam.setLineUp(lineUp);
+            footballTeamRepository.save(footballTeam);
+            model.addAttribute(lineUp);
+            return "/line-up/view";
+        } catch (Exception e) {
+            model.addAttribute("message", "Every position must have different player!");
+            model.addAttribute("lineUp", lineUp);
+            model.addAttribute("allPlayers", lineUp.getFootballTeam().getPlayerList());
+            return "/line-up/team-formation/" + lineUp.getFootballFormation().getLabel();
+        }
     }
 }

@@ -6,15 +6,15 @@
 </head>
 <body>
 <h2>Add players to line up:</h2>
-<form action="#" th:action="@{/line-up/add}" th:object="${lineUp}" method="post">
+<h3 th:text="${message!=null}?${message}"></h3>
+<form action="#" th:action="@{/line-up/submit}" th:object="${lineUp}" method="post">
     <input type="hidden" th:field="*{footballTeam}" th:value="${lineUp.footballTeam.id}"/>
     <input type="hidden" th:field="*{footballFormation}" th:value="${lineUp.footballFormation.name}"/>
     <div th:each="position : ${lineUp.positionFootballPlayerMap.keySet()}">
-        <label th:text="${position}"></label> <!-- Display the position as label -->
+        <label th:text="${position}"></label>
         <select th:field="*{positionFootballPlayerMap[__${position}__]}" name="players" id="players">
             <option value="" disabled selected>Select Player</option>
             <option th:each="player : ${allPlayers}" th:value="${player.id}" th:text="${player.getBaseFootballPlayer().lastName + ' - ' + player.getBaseFootballPlayer().getPosition()}"></option>
-            <!-- Loop through each player and create an option -->
         </select>
     </div>
     <p><input type="submit" value="Save line-up"/></p>
