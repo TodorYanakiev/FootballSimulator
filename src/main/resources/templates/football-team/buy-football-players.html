@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Buy</title>
+</head>
+<body>
+<h2>Buy football players</h2>
+<form action="#" th:action="@{/football-team/buy}" th:object="${footballTeam}" method="post">
+  <input type="hidden" name="teamId" th:value="${footballTeam.id}">
+  <p>
+    Football Players:
+    <select name="selectedFootballPlayersIds" multiple>
+      <option th:each="footballPlayer : ${footballPlayersForSale}"
+              th:value="${footballPlayer.id}"
+              th:text="${footballPlayer.baseFootballPlayer.firstName}">Football player name</option>
+    </select>
+  </p>
+  <input type="submit" value="Buy">
+</form>
+</body>
+</html>
