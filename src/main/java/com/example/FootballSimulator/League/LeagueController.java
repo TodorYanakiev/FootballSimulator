@@ -30,4 +30,14 @@ public class LeagueController {
     public String submitLeague(@Valid League league, BindingResult bindingResult, Model model, @RequestParam("selectedFootballTeamIds") List<Long> selectedFootballTeamIds){
         return leagueService.submitLeague(league,bindingResult,model,selectedFootballTeamIds);
     }
+
+    @GetMapping("/start/{leagueId}")
+    public String startLeague(@PathVariable Long leagueId) {
+        return leagueService.startLeague(leagueId);
+    }
+
+    @GetMapping("/select")
+    public String selectLeague(Model model) {
+        return leagueService.selectLeague(model);
+    }
 }

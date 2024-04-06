@@ -30,7 +30,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/league/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/league/**").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

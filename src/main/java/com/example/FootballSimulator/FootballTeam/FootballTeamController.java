@@ -89,4 +89,9 @@ public class FootballTeamController {
     public String buyFootballPlayer(@RequestParam("teamId") Long teamId,Model model,@RequestParam("selectedFootballPlayersIds") List<Long> selectedFootballPlayerIds){
        return footballTeamService.buyFootballPlayer(teamId,model,selectedFootballPlayerIds);
     }
+
+    @GetMapping("/select-team/{teamId}")
+    public String selectTeam(@PathVariable("teamId") Long teamId, Model model) {
+        return footballTeamService.selectTeam(teamId, model);
+    }
 }

@@ -1,6 +1,6 @@
 package com.example.FootballSimulator.FootballMatch;
 
-import com.example.FootballSimulator.Constants.MatchStatus;
+import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.GameWeek.GameWeek;
 import jakarta.persistence.*;
@@ -30,7 +30,7 @@ public class FootballMatch {
 
 
     @Enumerated(EnumType.STRING)
-    private MatchStatus matchStatus;
+    private Status matchStatus;
 
     public Long getId() {
         return id;
@@ -80,11 +80,11 @@ public class FootballMatch {
         this.gameWeek = gameWeek;
     }
 
-    public MatchStatus getMatchStatus() {
+    public Status getMatchStatus() {
         return matchStatus;
     }
 
-    public void setMatchStatus(MatchStatus matchStatus) {
+    public void setMatchStatus(Status matchStatus) {
         this.matchStatus = matchStatus;
     }
 }
