@@ -7,6 +7,9 @@
 <body>
 <h2>Buy football players</h2>
 <form action="#" th:action="@{/football-team/buy}" th:object="${footballTeam}" method="post">
+  <div th:if="${theBudgetIsNotEnough}" class="error-message">
+    <p th:text="${theBudgetIsNotEnough}"></p>
+  </div>
   <input type="hidden" name="teamId" th:value="${footballTeam.id}">
   <p>
     Football Players:

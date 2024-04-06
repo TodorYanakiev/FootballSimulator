@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface FootballPlayerRepository extends CrudRepository<FootballPlayer, Long> {
-    @Query("SELECT fp FROM FootballPlayer fp WHERE fp.footballTeam.league = :league")
-    List<FootballPlayer> findByFootballTeam_League(League league);
+    @Query("SELECT fp FROM FootballPlayer fp WHERE fp.footballTeam.league.id = :leagueId")
+    List<FootballPlayer> findByFootballTeam_LeagueId(Long leagueId);
     List<FootballPlayer> findAllByIdIn(List<Long> ids);
     //List<FootballPlayer> findByTeamId(Long teamId);
     @Query("SELECT p FROM FootballPlayer p WHERE p.footballTeam.id = :teamId")

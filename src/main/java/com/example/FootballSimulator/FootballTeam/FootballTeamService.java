@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.net.ssl.HandshakeCompletedEvent;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FootballTeamService {
@@ -33,37 +34,27 @@ public class FootballTeamService {
     private FootballTeamRepository footballTeamRepository;
     public String addPlayersToTeam(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
-        List<BaseFootballPlayer> baseFootballPlayers = (List<BaseFootballPlayer>) baseFootballPlayerRepository.findAll();
-        List<FootballPlayer> footballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
-        for (int i = 0; i < baseFootballPlayers.size(); i++) {
-            for (int j = 0; j < footballPlayers.size(); j++) {
-                if (baseFootballPlayers.get(i).getId().equals(footballPlayers.get(j).getBaseFootballPlayer().getId())){
-               baseFootballPlayers.remove(baseFootballPlayers.get(i));
-              }
-            }
-        }
-//        FootballTeam footballTeam = footballTeamRepository.findById(teamId)
-//        .orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
-//        List<BaseFootballPlayer> baseFootballPlayers = (List<BaseFootballPlayer>) baseFootballPlayerRepository.findAll();
-//        League league = footballTeam.getLeague();
-//        List<FootballPlayer> footballPlayers = footballPlayerRepository.findByFootballTeam_League(league);;
-//// Create an iterator for baseFootballPlayers to safely remove elements while iterating
-//        Iterator<BaseFootballPlayer> iterator = baseFootballPlayers.iterator();
-//        while (iterator.hasNext()) {
-//            BaseFootballPlayer baseFootballPlayer = iterator.next();
-//            for (FootballPlayer footballPlayer : footballPlayers) {
-//                if (baseFootballPlayer.getId().equals(footballPlayer.getBaseFootballPlayer().getId())) {
-//                   iterator.remove(); // Remove the base football player
-//                    break; // Exit the inner loop as the player is found
-//                }
-//            }
-//        }
         model.addAttribute("footballTeam", footballTeam);
-        model.addAttribute("allBaseFootballPlayers",baseFootballPlayerRepository.findAll());
+        model.addAttribute("allBaseFootballPlayers",removeSelectedPlayersFromBaseFPList(teamId));
         model.addAttribute("baseFootballPlayers",new ArrayList<BaseFootballPlayer>());
         return "/football-team/add-players";
     }
-    public void chooseAwayFootballPlayersForSale(@PathVariable("teamId") Long teamId) {
+    public List<BaseFootballPlayer> removeSelectedPlayersFromBaseFPList(@PathVariable("teamId") Long teamId){
+        List<BaseFootballPlayer> baseFootballPlayers = (List<BaseFootballPlayer>) baseFootballPlayerRepository.findAll();
+        Optional<FootballTeam> footballTeam = footballTeamRepository.findById(teamId);
+        League league = new League();
+        if (footballTeam.isPresent()){
+            league = footballTeam.get().getLeague();
+        }
+        List<FootballPlayer> footballPlayers = footballPlayerRepository.findByFootballTeam_LeagueId(league.getId());
+        Set<Long> footballPlayerIds = footballPlayers.stream()
+                .map(fp -> fp.getBaseFootballPlayer().getId())
+                .collect(Collectors.toSet());
+        baseFootballPlayers.removeIf(player -> footballPlayerIds.contains(player.getId()));
+        return baseFootballPlayers;
+    }
+
+    public void chooseAwayFootballPlayersForSale(@RequestParam("teamId") Long teamId) {
         Random rand = new Random();
         int randomNumber = rand.nextInt(5) + 1;
         List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllExceptTeamId(teamId);
@@ -77,17 +68,18 @@ public class FootballTeamService {
             footballPlayerRepository.save(player);
         }
     }
-    public void buyFootballPlayerForAwayTeam(@PathVariable("teamId") Long teamId){
+    public void buyFootballPlayerForAwayTeam(@RequestParam("teamId") Long teamId){
         List<FootballPlayer> footballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
         List<FootballPlayer> footballPlayersForSale = findPlayersByStatus(footballPlayers);
         List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllExceptTeamId(teamId);
         List<FootballTeam> randomTeams = getRandomFootballTeam(allTeamsExceptCurrent,footballPlayersForSale.size());
         for (int i = 0; i < footballPlayersForSale.size(); i++) {
+            randomTeams.get(i).setBudged(randomTeams.get(i).getBudged() - footballPlayersForSale.get(i).getPrice());
+            footballPlayersForSale.get(i).getFootballTeam().setBudged(footballPlayersForSale.get(i).getFootballTeam().getBudged() + footballPlayersForSale.get(i).getPrice());
             footballPlayersForSale.get(i).setFootballTeam(randomTeams.get(i));
             footballPlayersForSale.get(i).setFootballPlayerStatus(false);
             footballPlayerRepository.save(footballPlayersForSale.get(i));
         }
-
     }
     private List<FootballPlayer> getRandomFootballPlayers(List<FootballPlayer> players, int count) {
         List<FootballPlayer> randomPlayers = new ArrayList<>();
@@ -160,8 +152,15 @@ public class FootballTeamService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
         List<FootballPlayer> boughtFootballPlayers = footballPlayerRepository.findAllByIdIn(selectedFootballPlayerIds);
         for (FootballPlayer player : boughtFootballPlayers) {
-            player.setFootballTeam(footballTeam);
-            player.setFootballPlayerStatus(false);
+            if (footballTeam.getBudged() > player.getPrice()){
+                footballTeam.setBudged(footballTeam.getBudged() - player.getPrice());
+                player.getFootballTeam().setBudged(player.getFootballTeam().getBudged() + player.getPrice());
+                player.setFootballTeam(footballTeam);
+                player.setFootballPlayerStatus(false);
+            }
+            else{
+                model.addAttribute("theBudgetIsNotEnough","The budget is not enough!");
+            }
         }
         footballPlayerRepository.saveAll(boughtFootballPlayers);
         buyFootballPlayerForAwayTeam(teamId);
@@ -198,11 +197,4 @@ public class FootballTeamService {
         }
         return "redirect:/football-team/getFootballPlayers?teamId=" + teamId;
     }
-
-//    public List<FootballPlayer> findByLeagueId(League league) {
-//        String jpql = "SELECT fp FROM FootballPlayer fp WHERE fp.footballTeam.league = :league";
-//        TypedQuery<FootballPlayer> query = entityManager.createQuery(jpql, FootballPlayer.class);
-//        query.setParameter("league", league);
-//        return query.getResultList();
-//    }
 }
