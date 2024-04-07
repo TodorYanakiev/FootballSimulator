@@ -38,6 +38,7 @@ public class FootballTeamService {
     public String addPlayersToTeam(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
         if (!footballTeam.getLeague().getLeagueStatus().equals(Status.NOT_STARTED)) {
+            model.addAttribute("message", "The league is already started. You can not add players!");
             return "redirect:/football-team/all/" + footballTeam.getLeague().getId();
         }
         List<BaseFootballPlayer> baseFootballPlayers = (List<BaseFootballPlayer>) baseFootballPlayerRepository.findAll();

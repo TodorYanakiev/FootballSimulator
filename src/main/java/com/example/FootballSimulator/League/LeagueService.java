@@ -109,31 +109,34 @@ public class LeagueService {
         Optional<League> optionalLeague = leagueRepository.findById(leagueId);
         if (optionalLeague.isPresent()) {
             League league = optionalLeague.get();
-            if (checkIfLeagueIsAbleToStart(league)) {
+            if (getCheckMessageIfLeagueIsAbleToStart(league) == null) {
                 league.setLeagueStatus(Status.STARTED);
                 leagueRepository.save(league);
-            } else model.addAttribute("message", "League is already started!");
+            } else {
+                model.addAttribute("message", getCheckMessageIfLeagueIsAbleToStart(league));
+            }
         }
-        return "redirect:/league/get";
+        model.addAttribute("getAllLeagues", leagueRepository.findAll());
+        return "/league/getLeagues";
     }
 
-    private boolean checkIfLeagueIsAbleToStart(League league) {
+    private String getCheckMessageIfLeagueIsAbleToStart(League league) {
         if (league.getLeagueStatus() != Status.NOT_STARTED) {
-            return false;
+            return "The league has already started or has ended!";
         }
         List<FootballTeam> teamList = league.getFootballTeamList();
         if (teamList.size() < 6) {
-            return false;
+            return "The league must have at least 6 teams!";
         }
         for (FootballTeam footballTeam : teamList) {
             if (footballTeam.getPlayerList().size() < 16) {
-                return false;
+                return "Every team must have at least 16 players!";
             }
             if (footballTeam.getLineUp() == null) {
-                return false;
+                return "Every team must have line-up!";
             }
         }
-        return true;
+        return null;
     }
 
     public String selectLeague(Model model) {
