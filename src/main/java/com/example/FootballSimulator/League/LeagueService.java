@@ -135,6 +135,7 @@ public class LeagueService {
             standing.setPoints((byte) 0);
             standing.setScoredGoals((short)0);
             standing.setConcededGoals((short)0);
+            standing.setPlayedMatches((byte)0);
             standingRepository.save(standing);
             footballTeam.setStanding(standing);
             footballTeamRepository.save(footballTeam);

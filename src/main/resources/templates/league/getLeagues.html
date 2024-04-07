@@ -22,6 +22,9 @@
     <td th:text="${league.getLeagueStatus()}"></td>
     <td><a th:href="@{/football-team/all/{leagueId}(leagueId=${league.id})}">View teams</a></td>
     <td><a th:href="@{/game-week/all/{leagueId}(leagueId=${league.id})}">Game weeks</a></td>
+    <div sec:authorize="hasRole('ROLE_USER')">
+      <td><a th:href="@{/standings/view/{leagueId}(leagueId=${league.id})}">View standings</a></td>
+    </div>
     <div sec:authorize="hasRole('ROLE_ADMIN')">
       <td><a th:href="@{/league/start/{leagueId}(leagueId=${league.id})}">Start League</a></td>
     </div>

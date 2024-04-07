@@ -29,6 +29,9 @@ public class Standing {
     @Min(0)
     private Short concededGoals;
 
+    @Min(0)
+    private Byte playedMatches;
+
     public Long getId() {
         return id;
     }
@@ -75,5 +78,13 @@ public class Standing {
 
     public void setConcededGoals(Short concededGoals) {
         this.concededGoals = concededGoals;
+    }
+
+    public Byte getPlayedMatches() {
+        return playedMatches;
+    }
+
+    public void setPlayedMatches(Byte playedMatches) {
+        this.playedMatches = playedMatches;
     }
 }
