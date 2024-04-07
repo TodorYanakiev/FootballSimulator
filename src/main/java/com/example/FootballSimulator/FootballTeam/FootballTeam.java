@@ -4,6 +4,7 @@ import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeam;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import com.example.FootballSimulator.League.League;
 import com.example.FootballSimulator.LineUp.LineUp;
+import com.example.FootballSimulator.User.User;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -28,6 +29,9 @@ public class FootballTeam {
     private LineUp lineUp;
 
     private Integer budged;
+
+    @OneToOne(mappedBy = "footballTeam")
+    private User user;
 
     public Long getId() {
         return id;
@@ -75,5 +79,13 @@ public class FootballTeam {
 
     public void setLineUp(LineUp lineUp) {
         this.lineUp = lineUp;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

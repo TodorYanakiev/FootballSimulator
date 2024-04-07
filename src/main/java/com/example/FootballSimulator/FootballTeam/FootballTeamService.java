@@ -2,25 +2,23 @@ package com.example.FootballSimulator.FootballTeam;
 
 import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayer;
 import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayerRepository;
+import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayerRepository;
 import com.example.FootballSimulator.League.League;
+import com.example.FootballSimulator.League.LeagueRepository;
 import com.example.FootballSimulator.TransferSumCalculator;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
-import jakarta.servlet.http.HttpSession;
+import com.example.FootballSimulator.User.User;
+import com.example.FootballSimulator.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.net.ssl.HandshakeCompletedEvent;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FootballTeamService {
@@ -31,15 +29,24 @@ public class FootballTeamService {
     private BaseFootballPlayerRepository baseFootballPlayerRepository;
     @Autowired
     private FootballTeamRepository footballTeamRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private LeagueRepository leagueRepository;
+
     public String addPlayersToTeam(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
+        if (!footballTeam.getLeague().getLeagueStatus().equals(Status.NOT_STARTED)) {
+            return "redirect:/football-team/all/" + footballTeam.getLeague().getId();
+        }
         List<BaseFootballPlayer> baseFootballPlayers = (List<BaseFootballPlayer>) baseFootballPlayerRepository.findAll();
         List<FootballPlayer> footballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
         for (int i = 0; i < baseFootballPlayers.size(); i++) {
             for (int j = 0; j < footballPlayers.size(); j++) {
-                if (baseFootballPlayers.get(i).getId().equals(footballPlayers.get(j).getBaseFootballPlayer().getId())){
-               baseFootballPlayers.remove(baseFootballPlayers.get(i));
-              }
+                if (baseFootballPlayers.get(i).getId().equals(footballPlayers.get(j).getBaseFootballPlayer().getId())) {
+                    baseFootballPlayers.remove(baseFootballPlayers.get(i));
+                }
             }
         }
 //        FootballTeam footballTeam = footballTeamRepository.findById(teamId)
@@ -59,10 +66,11 @@ public class FootballTeamService {
 //            }
 //        }
         model.addAttribute("footballTeam", footballTeam);
-        model.addAttribute("allBaseFootballPlayers",baseFootballPlayerRepository.findAll());
-        model.addAttribute("baseFootballPlayers",new ArrayList<BaseFootballPlayer>());
+        model.addAttribute("allBaseFootballPlayers", baseFootballPlayerRepository.findAll());
+        model.addAttribute("baseFootballPlayers", new ArrayList<BaseFootballPlayer>());
         return "/football-team/add-players";
     }
+
     public void chooseAwayFootballPlayersForSale(@PathVariable("teamId") Long teamId) {
         Random rand = new Random();
         int randomNumber = rand.nextInt(5) + 1;
@@ -77,11 +85,12 @@ public class FootballTeamService {
             footballPlayerRepository.save(player);
         }
     }
-    public void buyFootballPlayerForAwayTeam(@PathVariable("teamId") Long teamId){
+
+    public void buyFootballPlayerForAwayTeam(@PathVariable("teamId") Long teamId) {
         List<FootballPlayer> footballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
         List<FootballPlayer> footballPlayersForSale = findPlayersByStatus(footballPlayers);
         List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllExceptTeamId(teamId);
-        List<FootballTeam> randomTeams = getRandomFootballTeam(allTeamsExceptCurrent,footballPlayersForSale.size());
+        List<FootballTeam> randomTeams = getRandomFootballTeam(allTeamsExceptCurrent, footballPlayersForSale.size());
         for (int i = 0; i < footballPlayersForSale.size(); i++) {
             footballPlayersForSale.get(i).setFootballTeam(randomTeams.get(i));
             footballPlayersForSale.get(i).setFootballPlayerStatus(false);
@@ -89,6 +98,7 @@ public class FootballTeamService {
         }
 
     }
+
     private List<FootballPlayer> getRandomFootballPlayers(List<FootballPlayer> players, int count) {
         List<FootballPlayer> randomPlayers = new ArrayList<>();
         Collections.shuffle(players);
@@ -97,6 +107,7 @@ public class FootballTeamService {
         }
         return randomPlayers;
     }
+
     private List<FootballTeam> getRandomFootballTeam(List<FootballTeam> teams, int count) {
         List<FootballTeam> randomTeams = new ArrayList<>();
         Collections.shuffle(teams);
@@ -105,19 +116,22 @@ public class FootballTeamService {
         }
         return randomTeams;
     }
+
     public String chooseFootballPlayersForSale(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
         model.addAttribute("footballTeam", footballTeam);
-        model.addAttribute("allFootballPlayersOfTheTeam",footballPlayerRepository.getPlayersByTeamId(teamId));
-        model.addAttribute("footballPlayersForSale",new ArrayList<FootballPlayer>());
+        model.addAttribute("allFootballPlayersOfTheTeam", footballPlayerRepository.getPlayersByTeamId(teamId));
+        model.addAttribute("footballPlayersForSale", new ArrayList<FootballPlayer>());
         return "/football-team/sale-players";
     }
-    public String getAllFootballPlayersForSale(@RequestParam("teamId") Long teamId,Model model) {
+
+    public String getAllFootballPlayersForSale(@RequestParam("teamId") Long teamId, Model model) {
         List<FootballPlayer> footballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
-        model.addAttribute("allFootballPlayers",findPlayersByStatus(footballPlayers));
+        model.addAttribute("allFootballPlayers", findPlayersByStatus(footballPlayers));
         return "/football-team/show-players-for-sale";
     }
-    public String saleFootballPlayers(@RequestParam("teamId") Long teamId,Model model, @RequestParam("selectedFootballPlayersIds") List<Long> selectedFootballPlayerIds){
+
+    public String saleFootballPlayers(@RequestParam("teamId") Long teamId, Model model, @RequestParam("selectedFootballPlayersIds") List<Long> selectedFootballPlayerIds) {
         List<FootballPlayer> selectedFootballPlayer = footballPlayerRepository.findAllByIdIn(selectedFootballPlayerIds);
         for (int i = 0; i < selectedFootballPlayer.size(); i++) {
             selectedFootballPlayer.get(i).setFootballPlayerStatus(true);
@@ -126,6 +140,7 @@ public class FootballTeamService {
         chooseAwayFootballPlayersForSale(teamId);
         return "redirect:/football-team/getFootballPlayersForSale?teamId=" + teamId;
     }
+
     public static List<FootballPlayer> findPlayersByStatus(List<FootballPlayer> players) {
         List<FootballPlayer> foundPlayers = new ArrayList<>();
         for (FootballPlayer player : players) {
@@ -136,7 +151,7 @@ public class FootballTeamService {
         return foundPlayers;
     }
 
-    public String buyFootballPlayersForHomeTeam(@PathVariable("teamId") Long teamId,Model model){
+    public String buyFootballPlayersForHomeTeam(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
         List<FootballPlayer> footballPlayersForSale = footballPlayerRepository.findForSalePlayersExceptTeamId(teamId);
@@ -146,7 +161,7 @@ public class FootballTeamService {
         return "/football-team/buy-football-players";
     }
 
-    public String showBoughtPlayers(@RequestParam("teamId") Long teamId,Model model){
+    public String showBoughtPlayers(@RequestParam("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
         List<FootballPlayer> boughtFootballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
@@ -155,7 +170,7 @@ public class FootballTeamService {
         return "/football-team/show-bought-players";
     }
 
-    public String buyFootballPlayer(@RequestParam("teamId") Long teamId,Model model,@RequestParam("selectedFootballPlayersIds") List<Long> selectedFootballPlayerIds){
+    public String buyFootballPlayer(@RequestParam("teamId") Long teamId, Model model, @RequestParam("selectedFootballPlayersIds") List<Long> selectedFootballPlayerIds) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
         List<FootballPlayer> boughtFootballPlayers = footballPlayerRepository.findAllByIdIn(selectedFootballPlayerIds);
@@ -167,14 +182,16 @@ public class FootballTeamService {
         buyFootballPlayerForAwayTeam(teamId);
         return "redirect:/football-team/show-bought-players?teamId=" + teamId;
     }
-    public String getAllFootballPlayers(@RequestParam("teamId") Long teamId,Model model) {
-        model.addAttribute("allFootballPlayers",footballPlayerRepository.getPlayersByTeamId(teamId));
+
+    public String getAllFootballPlayers(@RequestParam("teamId") Long teamId, Model model) {
+        model.addAttribute("allFootballPlayers", footballPlayerRepository.getPlayersByTeamId(teamId));
         return "/football-team/showFootballPlayers";
     }
+
     public String addFootballPlayersToTeam(@RequestParam("teamId") Long teamId, Model model, @RequestParam("selectedFootballPlayersIds") List<Long> selectedFootballPlayerIds) {
         Optional<FootballTeam> footballTeamOptional = footballTeamRepository.findById(teamId);
         FootballTeam footballTeam = new FootballTeam();
-        if (footballTeamOptional.isPresent()){
+        if (footballTeamOptional.isPresent()) {
             footballTeam = footballTeamOptional.get();
         }
         TransferSumCalculator transferSumCalculator = new TransferSumCalculator();
@@ -199,10 +216,77 @@ public class FootballTeamService {
         return "redirect:/football-team/getFootballPlayers?teamId=" + teamId;
     }
 
-//    public List<FootballPlayer> findByLeagueId(League league) {
+    //    public List<FootballPlayer> findByLeagueId(League league) {
 //        String jpql = "SELECT fp FROM FootballPlayer fp WHERE fp.footballTeam.league = :league";
 //        TypedQuery<FootballPlayer> query = entityManager.createQuery(jpql, FootballPlayer.class);
 //        query.setParameter("league", league);
 //        return query.getResultList();
 //    }
+
+    public String viewTeam(Long teamId, Model model) {
+        Optional<FootballTeam> optionalFootballTeam = footballTeamRepository.findById(teamId);
+        if (optionalFootballTeam.isPresent()) {
+            model.addAttribute("footballTeam", optionalFootballTeam.get());
+            return "/football-team/view";
+        } else return "/home";
+    }
+
+    public String selectTeam(Long teamId, Model model) {
+        Optional<FootballTeam> optionalFootballTeam = footballTeamRepository.findById(teamId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.getUserByUsername(authentication.getName());
+        if (user.getFootballTeam() != null) {
+            model.addAttribute("message", "You can not manage more than 1 team!");
+            model.addAttribute("footballTeam", user.getFootballTeam());
+            return "/football-team/view";
+        }
+        if (optionalFootballTeam.isPresent()) {
+            FootballTeam footballTeam = optionalFootballTeam.get();
+            if (footballTeam.getUser() != null) {
+                model.addAttribute("message", "This team is already selected!");
+                return "redirect:/football-team/all/" + footballTeam.getLeague().getId();
+            }
+            user.setFootballTeam(footballTeam);
+            userRepository.save(user);
+            footballTeam.setUser(user);
+            footballTeamRepository.save(footballTeam);
+            model.addAttribute("footballTeam", footballTeam);
+        } else {
+            return "redirect:/";
+        }
+        return "/football-team/view";
+    }
+
+    public String viewAllTeamsByLeague(Long leagueId, Model model) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        User user = userRepository.getUserByUsername(authentication.getName());
+        Optional<League> optionalLeague = leagueRepository.findById(leagueId);
+        if (optionalLeague.isEmpty()) return "redirect:/league/get";
+        League league = optionalLeague.get();
+        List<FootballTeam> footballTeamList = league.getFootballTeamList();
+//        if (user.getRole().equals(Role.ROLE_USER)) {
+//            List<FootballTeam> availableTeams = footballTeamList.stream()
+//                    .filter(footballTeam -> footballTeam.getUser() == null).collect(Collectors.toList());
+//            model.addAttribute("league", league);
+//            model.addAttribute("footballTeams", availableTeams);
+//        } else{
+//            model.addAttribute("league", league);
+//            model.addAttribute("footballTeams", footballTeamList);
+//        }
+        model.addAttribute("league", league);
+        model.addAttribute("footballTeams", footballTeamList);
+        return "/football-team/teams-for-league";
+    }
+
+    public String viewAllAvailableTeamsByLeague(Long leagueId, Model model) {
+        Optional<League> optionalLeague = leagueRepository.findById(leagueId);
+        if (optionalLeague.isEmpty()) return "redirect:/league/get";
+        League league = optionalLeague.get();
+        List<FootballTeam> footballTeamList = league.getFootballTeamList();
+        List<FootballTeam> availableTeams = footballTeamList.stream()
+                .filter(footballTeam -> footballTeam.getUser() == null).collect(Collectors.toList());
+        model.addAttribute("league", league);
+        model.addAttribute("footballTeams", availableTeams);
+        return "/football-team/available-teams-for-league";
+    }
 }

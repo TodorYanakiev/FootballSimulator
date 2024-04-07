@@ -1,11 +1,13 @@
 package com.example.FootballSimulator.League;
 
+import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayerController;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.GameWeek.GameWeek;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Stack;
 
 @Entity
 public class League {
@@ -19,6 +21,9 @@ public class League {
 
     @OneToMany(mappedBy = "league")
     private List<GameWeek> gameWeekList;
+
+    @Enumerated(EnumType.STRING)
+    private Status leagueStatus;
 
     public Long getId() {
         return id;
@@ -50,5 +55,13 @@ public class League {
 
     public void setGameWeekList(List<GameWeek> gameWeekList) {
         this.gameWeekList = gameWeekList;
+    }
+
+    public Status getLeagueStatus() {
+        return leagueStatus;
+    }
+
+    public void setLeagueStatus(Status leagueStatus) {
+        this.leagueStatus = leagueStatus;
     }
 }

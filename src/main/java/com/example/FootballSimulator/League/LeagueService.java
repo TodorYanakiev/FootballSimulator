@@ -4,6 +4,8 @@ import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayer;
 import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayerRepository;
 import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeam;
 import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeamRepository;
+import com.example.FootballSimulator.Constants.Role;
+import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballMatch.FootballMatch;
 import com.example.FootballSimulator.FootballMatch.FootballMatchRepository;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
@@ -13,8 +15,12 @@ import com.example.FootballSimulator.FootballTeam.FootballTeamRepository;
 import com.example.FootballSimulator.GameWeek.GameWeek;
 import com.example.FootballSimulator.GameWeek.GameWeekManager;
 import com.example.FootballSimulator.GameWeek.GameWeekRepository;
+import com.example.FootballSimulator.User.User;
+import com.example.FootballSimulator.User.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LeagueService {
@@ -42,20 +50,32 @@ public class LeagueService {
     private FootballMatchRepository footballMatchRepository;
     @Autowired
     private BaseFootballPlayerRepository baseFootballPlayerRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public String addLeague(Model model){
-        model.addAttribute("league",new League());
-        model.addAttribute("allBaseFootballTeams",baseFootballTeamRepository.findAll());
-        model.addAttribute("baseFootballTeams",new ArrayList<BaseFootballTeam>());
+    public String addLeague(Model model) {
+        model.addAttribute("league", new League());
+        model.addAttribute("allBaseFootballTeams", baseFootballTeamRepository.findAll());
+        model.addAttribute("baseFootballTeams", new ArrayList<BaseFootballTeam>());
         return "/league/addLeague";
     }
-    public String getLeague(Model model){
-        model.addAttribute("getAllLeagues",leagueRepository.findAll());
+
+    public String getLeague(Model model) {
+        List<League> leagueList = (List<League>) leagueRepository.findAll();
+        List<League> startedLeagues = leagueList.stream().filter(league -> league.getLeagueStatus().equals(Status.STARTED)).collect(Collectors.toList());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.getUserByUsername(authentication.getName());
+        if (user.getRole().equals(Role.ROLE_USER)) {
+            model.addAttribute("getAllLeagues", startedLeagues);
+        } else {
+            model.addAttribute("getAllLeagues", leagueList);
+        }
         return "/league/getLeagues";
     }
-    public String submitLeague(@Valid League league, BindingResult bindingResult, Model model,@RequestParam("selectedFootballTeamIds") List<Long> selectedFootballTeamIds){
-        if (bindingResult.hasErrors()){
-            model.addAttribute("allBaseFootballTeams",baseFootballTeamRepository.findAll());
+
+    public String submitLeague(@Valid League league, BindingResult bindingResult, Model model, @RequestParam("selectedFootballTeamIds") List<Long> selectedFootballTeamIds) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("allBaseFootballTeams", baseFootballTeamRepository.findAll());
             return "/league/addLeague";
         }
         List<BaseFootballTeam> selectedFootballTeams = baseFootballTeamRepository.findAllByIdIn(selectedFootballTeamIds);
@@ -70,6 +90,7 @@ public class LeagueService {
             footballTeamRepository.save(footballTeam);
         }
         league.setFootballTeamList(footballTeamList);
+        league.setLeagueStatus(Status.NOT_STARTED);
         GameWeekManager gameWeekManager = new GameWeekManager();
         List<GameWeek> gameWeekList = gameWeekManager.generateGameWeeks(league);
         int size = gameWeekList.size();
@@ -82,5 +103,48 @@ public class LeagueService {
             }
         }
         return "redirect:/league/get";
+    }
+
+    public String startLeague(Long leagueId, Model model) {
+        Optional<League> optionalLeague = leagueRepository.findById(leagueId);
+        if (optionalLeague.isPresent()) {
+            League league = optionalLeague.get();
+            if (checkIfLeagueIsAbleToStart(league)) {
+                league.setLeagueStatus(Status.STARTED);
+                leagueRepository.save(league);
+            } else model.addAttribute("message", "League is already started!");
+        }
+        return "redirect:/league/get";
+    }
+
+    private boolean checkIfLeagueIsAbleToStart(League league) {
+        if (league.getLeagueStatus() != Status.NOT_STARTED) {
+            return false;
+        }
+        List<FootballTeam> teamList = league.getFootballTeamList();
+        if (teamList.size() < 6) {
+            return false;
+        }
+        for (FootballTeam footballTeam : teamList) {
+            if (footballTeam.getPlayerList().size() < 16) {
+                return false;
+            }
+            if (footballTeam.getLineUp() == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public String selectLeague(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.getUserByUsername(authentication.getName());
+        if (user.getFootballTeam() != null) {
+            model.addAttribute("footballTeam", user.getFootballTeam());
+            return "redirect:/football-team/view/" + user.getFootballTeam().getId();
+        }
+        List<League> leagueList = leagueRepository.findAllByLeagueStatus(Status.STARTED);
+        model.addAttribute("leagues", leagueList);
+        return "/league/select";
     }
 }
