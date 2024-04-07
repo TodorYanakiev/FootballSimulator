@@ -4,6 +4,7 @@ import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayer;
 import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayerRepository;
 import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeam;
 import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeamRepository;
+import com.example.FootballSimulator.Constants.Role;
 import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballMatch.FootballMatch;
 import com.example.FootballSimulator.FootballMatch.FootballMatchRepository;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LeagueService {
@@ -59,7 +61,15 @@ public class LeagueService {
     }
 
     public String getLeague(Model model) {
-        model.addAttribute("getAllLeagues", leagueRepository.findAll());
+        List<League> leagueList = (List<League>) leagueRepository.findAll();
+        List<League> startedLeagues = leagueList.stream().filter(league -> league.getLeagueStatus().equals(Status.STARTED)).collect(Collectors.toList());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.getUserByUsername(authentication.getName());
+        if (user.getRole().equals(Role.ROLE_USER)) {
+            model.addAttribute("getAllLeagues", startedLeagues);
+        } else {
+            model.addAttribute("getAllLeagues", leagueList);
+        }
         return "/league/getLeagues";
     }
 
@@ -95,14 +105,14 @@ public class LeagueService {
         return "redirect:/league/get";
     }
 
-    public String startLeague(Long leagueId) {
+    public String startLeague(Long leagueId, Model model) {
         Optional<League> optionalLeague = leagueRepository.findById(leagueId);
         if (optionalLeague.isPresent()) {
             League league = optionalLeague.get();
             if (checkIfLeagueIsAbleToStart(league)) {
                 league.setLeagueStatus(Status.STARTED);
                 leagueRepository.save(league);
-            }
+            } else model.addAttribute("message", "League is already started!");
         }
         return "redirect:/league/get";
     }
@@ -131,7 +141,7 @@ public class LeagueService {
         User user = userRepository.getUserByUsername(authentication.getName());
         if (user.getFootballTeam() != null) {
             model.addAttribute("footballTeam", user.getFootballTeam());
-            return "/football-team/view";
+            return "redirect:/football-team/view/" + user.getFootballTeam().getId();
         }
         List<League> leagueList = leagueRepository.findAllByLeagueStatus(Status.STARTED);
         model.addAttribute("leagues", leagueList);

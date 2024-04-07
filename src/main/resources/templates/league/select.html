@@ -16,7 +16,7 @@
     <tbody>
       <tr th:each="league : ${leagues}">
         <td th:text="${league.name}"></td>
-        <td><a th:href="@{/football-team/all/{leagueId}(leagueId=${league.id})}">View and select team</a></td>
+        <td><a th:href="@{/football-team/all-available/{leagueId}(leagueId=${league.id})}">View and select team</a></td>
       </tr>
     </tbody>
   </table>

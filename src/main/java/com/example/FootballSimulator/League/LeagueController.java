@@ -32,8 +32,8 @@ public class LeagueController {
     }
 
     @GetMapping("/start/{leagueId}")
-    public String startLeague(@PathVariable Long leagueId) {
-        return leagueService.startLeague(leagueId);
+    public String startLeague(@PathVariable Long leagueId, Model model) {
+        return leagueService.startLeague(leagueId, model);
     }
 
     @GetMapping("/select")

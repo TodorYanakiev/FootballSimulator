@@ -34,7 +34,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/base**", "/league/add", "/league/submit", "/league/start/**",
                                 "/football-team/add/**", "/football-team/submit").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/league/get", "/football-team/all/**", "/football-team/players/**",
-                                "/game-week/all/**", "/football-team/players/**", "/football-team/getFootballPlayers**").authenticated()
+                                "/game-week/all/**", "/football-team/players/**", "/football-team/getFootballPlayers**",
+                                "/football-team/view/**").authenticated()
                         .anyRequest().authenticated()
                 )//transfer requests?
                 .formLogin((form) -> form
