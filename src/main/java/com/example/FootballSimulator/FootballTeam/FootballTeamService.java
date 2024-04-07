@@ -2,10 +2,12 @@ package com.example.FootballSimulator.FootballTeam;
 
 import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayer;
 import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayerRepository;
+import com.example.FootballSimulator.Constants.Role;
 import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayerRepository;
 import com.example.FootballSimulator.League.League;
+import com.example.FootballSimulator.League.LeagueRepository;
 import com.example.FootballSimulator.TransferSumCalculator;
 import com.example.FootballSimulator.User.User;
 import com.example.FootballSimulator.User.UserRepository;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.net.ssl.HandshakeCompletedEvent;
 import java.net.Authenticator;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FootballTeamService {
@@ -39,6 +42,9 @@ public class FootballTeamService {
     private FootballTeamRepository footballTeamRepository;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private LeagueRepository leagueRepository;
 
     public String addPlayersToTeam(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
@@ -231,10 +237,17 @@ public class FootballTeamService {
         Optional<FootballTeam> optionalFootballTeam = footballTeamRepository.findById(teamId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.getUserByUsername(authentication.getName());
-        if (user.getFootballTeam() != null) return "redirect:/";
+        if (user.getFootballTeam() != null) {
+            model.addAttribute("message", "You can not manage more than 1 team!");
+            model.addAttribute("footballTeam", user.getFootballTeam());
+            return "/football-team/view";
+        }
         if (optionalFootballTeam.isPresent()) {
             FootballTeam footballTeam = optionalFootballTeam.get();
-
+            if (footballTeam.getUser() != null) {
+                model.addAttribute("message", "This team is already selected!");
+                return "redirect:/football-team/all/" + footballTeam.getLeague().getId();
+            }
             user.setFootballTeam(footballTeam);
             userRepository.save(user);
             footballTeam.setUser(user);
@@ -244,5 +257,24 @@ public class FootballTeamService {
             return "redirect:/";
         }
         return "/football-team/view";
+    }
+
+    public String viewAllTeamsByLeague(Long leagueId, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.getUserByUsername(authentication.getName());
+        Optional<League> optionalLeague = leagueRepository.findById(leagueId);
+        if (optionalLeague.isEmpty()) return "redirect:/league/get";
+        League league = optionalLeague.get();
+        List<FootballTeam> footballTeamList = league.getFootballTeamList();
+        if (user.getRole().equals(Role.ROLE_USER)) {
+            List<FootballTeam> availableTeams = footballTeamList.stream()
+                    .filter(footballTeam -> footballTeam.getUser() == null).collect(Collectors.toList());
+            model.addAttribute("league", league);
+            model.addAttribute("footballTeams", availableTeams);
+        } else{
+            model.addAttribute("league", league);
+            model.addAttribute("footballTeams", footballTeamList);
+        }
+        return "/football-team/teams-for-league";
     }
 }

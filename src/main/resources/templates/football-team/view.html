@@ -5,6 +5,7 @@
     <title th:text="${footballTeam.baseFootballTeam.baseTeamName}"></title>
 </head>
 <body>
+<h3 th:text="${message!=null}?${message}"></h3>
   <p th:text="'Manager: ' + ${footballTeam.user.username}"></p>
   <p th:text="'Team id: ' + ${footballTeam.id}"></p>
   <p th:text="'Name: ' + ${footballTeam.baseFootballTeam.baseTeamName}"></p>

@@ -8,7 +8,10 @@ import com.example.FootballSimulator.FootballPlayer.FootballPlayerRepository;
 import com.example.FootballSimulator.League.League;
 import com.example.FootballSimulator.League.LeagueRepository;
 import com.example.FootballSimulator.TransferSumCalculator;
+import com.example.FootballSimulator.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,11 +39,7 @@ public class FootballTeamController {
 
     @GetMapping("/all/{leagueId}")
     public String viewAllTeamsByLeague(@PathVariable("leagueId") Long leagueId, Model model) {
-        League league = leagueRepository.findById(leagueId).orElseThrow(() -> new IllegalArgumentException("Invalid league ID"));
-        List<FootballTeam> footballTeamList = league.getFootballTeamList();
-        model.addAttribute("league", league);
-        model.addAttribute("footballTeams", footballTeamList);
-        return "/football-team/teams-for-league";
+        return footballTeamService.viewAllTeamsByLeague(leagueId, model);
     }
 
     @GetMapping("/players/{teamId}")

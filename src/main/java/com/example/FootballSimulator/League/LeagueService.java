@@ -14,8 +14,12 @@ import com.example.FootballSimulator.FootballTeam.FootballTeamRepository;
 import com.example.FootballSimulator.GameWeek.GameWeek;
 import com.example.FootballSimulator.GameWeek.GameWeekManager;
 import com.example.FootballSimulator.GameWeek.GameWeekRepository;
+import com.example.FootballSimulator.User.User;
+import com.example.FootballSimulator.User.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,6 +48,8 @@ public class LeagueService {
     private FootballMatchRepository footballMatchRepository;
     @Autowired
     private BaseFootballPlayerRepository baseFootballPlayerRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public String addLeague(Model model) {
         model.addAttribute("league", new League());
@@ -121,6 +127,12 @@ public class LeagueService {
     }
 
     public String selectLeague(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.getUserByUsername(authentication.getName());
+        if (user.getFootballTeam() != null) {
+            model.addAttribute("footballTeam", user.getFootballTeam());
+            return "/football-team/view";
+        }
         List<League> leagueList = leagueRepository.findAllByLeagueStatus(Status.STARTED);
         model.addAttribute("leagues", leagueList);
         return "/league/select";

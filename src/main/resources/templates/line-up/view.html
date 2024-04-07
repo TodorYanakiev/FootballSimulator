@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<h3 th:text="${message!=null}?${message}"></h3>
 <h2 th:text="${lineUp.footballTeam.baseFootballTeam.baseTeamName} + ' line-up:'"></h2>
 <h4 th:text="'Formation:' + ${lineUp.footballFormation.getLabel()}"></h4>
 <h4>Players with their positions:</h4>
