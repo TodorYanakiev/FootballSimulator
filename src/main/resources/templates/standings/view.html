@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${standings[0].league.name} + ' standings'"></title>
+</head>
+<body>
+<h2 th:text="${standings[0].league.name}"></h2>
+<table>
+  <thead>
+    <tr>
+      <th>Position</th>
+      <th>Team</th>
+      <th>Played matches</th>
+      <th>Scored goals</th>
+      <th>Conceded goals</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="standing, index : ${standings}">
+      <td th:text="${index.index + 1}"></td>
+      <td th:text="${standing.footballTeam.baseFootballTeam.baseTeamName}"></td>
+      <td th:text="${standing.playedMatches}"></td>
+      <td th:text="${standing.scoredGoals}"></td>
+      <td th:text="${standing.concededGoals}"></td>
+      <td th:text="${standing.points}"></td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

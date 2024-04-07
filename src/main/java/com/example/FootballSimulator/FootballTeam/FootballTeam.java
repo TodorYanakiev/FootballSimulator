@@ -4,6 +4,7 @@ import com.example.FootballSimulator.BaseFootballTeam.BaseFootballTeam;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import com.example.FootballSimulator.League.League;
 import com.example.FootballSimulator.LineUp.LineUp;
+import com.example.FootballSimulator.Standings.Standing;
 import com.example.FootballSimulator.User.User;
 import jakarta.persistence.*;
 
@@ -32,6 +33,9 @@ public class FootballTeam {
 
     @OneToOne(mappedBy = "footballTeam")
     private User user;
+
+    @OneToOne(mappedBy = "footballTeam")
+    private Standing standing;
 
     public Long getId() {
         return id;
@@ -87,5 +91,13 @@ public class FootballTeam {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Standing getStanding() {
+        return standing;
+    }
+
+    public void setStanding(Standing standing) {
+        this.standing = standing;
     }
 }

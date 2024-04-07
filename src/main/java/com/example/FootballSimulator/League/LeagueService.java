@@ -15,6 +15,8 @@ import com.example.FootballSimulator.FootballTeam.FootballTeamRepository;
 import com.example.FootballSimulator.GameWeek.GameWeek;
 import com.example.FootballSimulator.GameWeek.GameWeekManager;
 import com.example.FootballSimulator.GameWeek.GameWeekRepository;
+import com.example.FootballSimulator.Standings.Standing;
+import com.example.FootballSimulator.Standings.StandingRepository;
 import com.example.FootballSimulator.User.User;
 import com.example.FootballSimulator.User.UserRepository;
 import jakarta.validation.Valid;
@@ -52,6 +54,8 @@ public class LeagueService {
     private BaseFootballPlayerRepository baseFootballPlayerRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private StandingRepository standingRepository;
 
     public String addLeague(Model model) {
         model.addAttribute("league", new League());
@@ -112,12 +116,33 @@ public class LeagueService {
             if (getCheckMessageIfLeagueIsAbleToStart(league) == null) {
                 league.setLeagueStatus(Status.STARTED);
                 leagueRepository.save(league);
+                addStandings(league);
             } else {
                 model.addAttribute("message", getCheckMessageIfLeagueIsAbleToStart(league));
             }
         }
         model.addAttribute("getAllLeagues", leagueRepository.findAll());
         return "/league/getLeagues";
+    }
+
+    private void addStandings(League league) {
+        List<FootballTeam> footballTeamList = league.getFootballTeamList();
+        List<Standing> standings = new ArrayList<>();
+        for (FootballTeam footballTeam : footballTeamList) {
+            Standing standing = new Standing();
+            standing.setFootballTeam(footballTeam);
+            standing.setLeague(league);
+            standing.setPoints((byte) 0);
+            standing.setScoredGoals((short)0);
+            standing.setConcededGoals((short)0);
+            standing.setPlayedMatches((byte)0);
+            standingRepository.save(standing);
+            footballTeam.setStanding(standing);
+            footballTeamRepository.save(footballTeam);
+            standings.add(standing);
+        }
+        league.setStandings(standings);
+        leagueRepository.save(league);
     }
 
     private String getCheckMessageIfLeagueIsAbleToStart(League league) {

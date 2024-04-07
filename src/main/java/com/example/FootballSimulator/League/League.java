@@ -4,6 +4,7 @@ import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayerController;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.GameWeek.GameWeek;
+import com.example.FootballSimulator.Standings.Standing;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public class League {
 
     @Enumerated(EnumType.STRING)
     private Status leagueStatus;
+
+    @OneToMany(mappedBy = "league")
+    private List<Standing> standings;
 
     public Long getId() {
         return id;
@@ -63,5 +67,13 @@ public class League {
 
     public void setLeagueStatus(Status leagueStatus) {
         this.leagueStatus = leagueStatus;
+    }
+
+    public List<Standing> getStandings() {
+        return standings;
+    }
+
+    public void setStandings(List<Standing> standings) {
+        this.standings = standings;
     }
 }
