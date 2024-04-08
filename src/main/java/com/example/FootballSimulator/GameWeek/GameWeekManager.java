@@ -58,6 +58,10 @@ public class GameWeekManager {
         footballMatch.setMatchStatus(Status.NOT_STARTED);
         footballMatch.setHomeTeamScore((byte) 0);
         footballMatch.setAwayTeamScore((byte) 0);
+        footballMatch.setAwayAttacks((byte)0);
+        footballMatch.setAwayShots((byte)0);
+        footballMatch.setHomeShots((byte)0);
+        footballMatch.setHomeAttacks((byte)0);
         return footballMatch;
     }
 

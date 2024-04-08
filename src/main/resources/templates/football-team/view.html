@@ -10,6 +10,8 @@
   <p th:text="'Team id: ' + ${footballTeam.id}"></p>
   <p th:text="'Name: ' + ${footballTeam.baseFootballTeam.baseTeamName}"></p>
   <p th:text="'League: ' + ${footballTeam.league.name}"></p>
-<!--  players-->
+<a th:href="@{/line-up/update/{lineUpId}(lineUpId=${footballTeam.lineUp.id})}">Edit line-up</a>
+<a th:href="@{/line-up/add/{teamId}(teamId=${footballTeam.id})}">View line-up</a>
+<!--<a th:href="@{/league/start/{leagueId}(leagueId=${league.id})}">Start League</a></td>-->
 </body>
 </html>

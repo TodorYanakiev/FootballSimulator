@@ -7,9 +7,12 @@ import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.FootballTeam.FootballTeamRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class LineUpService {
@@ -99,5 +102,17 @@ public class LineUpService {
             positionFootballPlayerMap.put(Position.LCF, new FootballPlayer());
         }
         return positionFootballPlayerMap;
+    }
+
+    public String updateLineUp(Long lineUpId, Model model) {
+        Optional<LineUp> optionalLineUp = lineUpRepository.findById(lineUpId);
+        if (optionalLineUp.isPresent()) {
+            LineUp lineUp = optionalLineUp.get();
+            model.addAttribute("lineUp", lineUp);
+            model.addAttribute("teamFormations", TeamFormation.values());
+            return "/line-up/select-formation";
+        } else {
+            return "/home";
+        }
     }
 }

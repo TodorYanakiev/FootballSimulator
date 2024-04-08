@@ -1,8 +1,10 @@
 package com.example.FootballSimulator.LineUp;
 
 import com.example.FootballSimulator.FootballTeam.FootballTeamRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,5 +39,10 @@ public class LineUpController {
     @PostMapping("/submit")
     public String submitLineUp(LineUp lineUp, Model model) {
         return lineUpService.submitLineUp(lineUp, model);
+    }
+
+    @GetMapping("/update/{lineUpId}")
+    public String updateLineUp(@PathVariable("lineUpId") Long lineUpId, Model model) {
+        return lineUpService.updateLineUp(lineUpId, model);
     }
 }
