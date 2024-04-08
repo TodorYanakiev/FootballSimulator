@@ -69,10 +69,26 @@ public class FootballTeamService {
         model.addAttribute("footballTeam", footballTeam);
         model.addAttribute("allBaseFootballPlayers", baseFootballPlayerRepository.findAll());
         model.addAttribute("baseFootballPlayers", new ArrayList<BaseFootballPlayer>());
+        model.addAttribute("allBaseFootballPlayers",removeSelectedPlayersFromBaseFPList(teamId));
+        model.addAttribute("baseFootballPlayers",new ArrayList<BaseFootballPlayer>());
         return "/football-team/add-players";
     }
+    public List<BaseFootballPlayer> removeSelectedPlayersFromBaseFPList(@PathVariable("teamId") Long teamId){
+        List<BaseFootballPlayer> baseFootballPlayers = (List<BaseFootballPlayer>) baseFootballPlayerRepository.findAll();
+        Optional<FootballTeam> footballTeam = footballTeamRepository.findById(teamId);
+        League league = new League();
+        if (footballTeam.isPresent()){
+            league = footballTeam.get().getLeague();
+        }
+        List<FootballPlayer> footballPlayers = footballPlayerRepository.findByFootballTeam_LeagueId(league.getId());
+        Set<Long> footballPlayerIds = footballPlayers.stream()
+                .map(fp -> fp.getBaseFootballPlayer().getId())
+                .collect(Collectors.toSet());
+        baseFootballPlayers.removeIf(player -> footballPlayerIds.contains(player.getId()));
+        return baseFootballPlayers;
+    }
 
-    public void chooseAwayFootballPlayersForSale(@PathVariable("teamId") Long teamId) {
+    public void chooseAwayFootballPlayersForSale(@RequestParam("teamId") Long teamId) {
         Random rand = new Random();
         int randomNumber = rand.nextInt(5) + 1;
         List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllExceptTeamId(teamId);
@@ -86,13 +102,14 @@ public class FootballTeamService {
             footballPlayerRepository.save(player);
         }
     }
-
-    public void buyFootballPlayerForAwayTeam(@PathVariable("teamId") Long teamId) {
+    public void buyFootballPlayerForAwayTeam(@RequestParam("teamId") Long teamId){
         List<FootballPlayer> footballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
         List<FootballPlayer> footballPlayersForSale = findPlayersByStatus(footballPlayers);
         List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllExceptTeamId(teamId);
         List<FootballTeam> randomTeams = getRandomFootballTeam(allTeamsExceptCurrent, footballPlayersForSale.size());
         for (int i = 0; i < footballPlayersForSale.size(); i++) {
+            randomTeams.get(i).setBudged(randomTeams.get(i).getBudged() - footballPlayersForSale.get(i).getPrice());
+            footballPlayersForSale.get(i).getFootballTeam().setBudged(footballPlayersForSale.get(i).getFootballTeam().getBudged() + footballPlayersForSale.get(i).getPrice());
             footballPlayersForSale.get(i).setFootballTeam(randomTeams.get(i));
             footballPlayersForSale.get(i).setFootballPlayerStatus(false);
             footballPlayerRepository.save(footballPlayersForSale.get(i));
@@ -176,8 +193,15 @@ public class FootballTeamService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
         List<FootballPlayer> boughtFootballPlayers = footballPlayerRepository.findAllByIdIn(selectedFootballPlayerIds);
         for (FootballPlayer player : boughtFootballPlayers) {
-            player.setFootballTeam(footballTeam);
-            player.setFootballPlayerStatus(false);
+            if (footballTeam.getBudged() > player.getPrice()){
+                footballTeam.setBudged(footballTeam.getBudged() - player.getPrice());
+                player.getFootballTeam().setBudged(player.getFootballTeam().getBudged() + player.getPrice());
+                player.setFootballTeam(footballTeam);
+                player.setFootballPlayerStatus(false);
+            }
+            else{
+                model.addAttribute("theBudgetIsNotEnough","The budget is not enough!");
+            }
         }
         footballPlayerRepository.saveAll(boughtFootballPlayers);
         buyFootballPlayerForAwayTeam(teamId);
