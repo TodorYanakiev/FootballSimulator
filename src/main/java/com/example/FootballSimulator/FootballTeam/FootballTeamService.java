@@ -50,25 +50,7 @@ public class FootballTeamService {
                 }
             }
         }
-//        FootballTeam footballTeam = footballTeamRepository.findById(teamId)
-//        .orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
-//        List<BaseFootballPlayer> baseFootballPlayers = (List<BaseFootballPlayer>) baseFootballPlayerRepository.findAll();
-//        League league = footballTeam.getLeague();
-//        List<FootballPlayer> footballPlayers = footballPlayerRepository.findByFootballTeam_League(league);;
-//// Create an iterator for baseFootballPlayers to safely remove elements while iterating
-//        Iterator<BaseFootballPlayer> iterator = baseFootballPlayers.iterator();
-//        while (iterator.hasNext()) {
-//            BaseFootballPlayer baseFootballPlayer = iterator.next();
-//            for (FootballPlayer footballPlayer : footballPlayers) {
-//                if (baseFootballPlayer.getId().equals(footballPlayer.getBaseFootballPlayer().getId())) {
-//                   iterator.remove(); // Remove the base football player
-//                    break; // Exit the inner loop as the player is found
-//                }
-//            }
-//        }
         model.addAttribute("footballTeam", footballTeam);
-        model.addAttribute("allBaseFootballPlayers", baseFootballPlayerRepository.findAll());
-        model.addAttribute("baseFootballPlayers", new ArrayList<BaseFootballPlayer>());
         model.addAttribute("allBaseFootballPlayers",removeSelectedPlayersFromBaseFPList(teamId));
         model.addAttribute("baseFootballPlayers",new ArrayList<BaseFootballPlayer>());
         return "/football-team/add-players";
@@ -241,13 +223,6 @@ public class FootballTeamService {
         return "redirect:/football-team/getFootballPlayers?teamId=" + teamId;
     }
 
-    //    public List<FootballPlayer> findByLeagueId(League league) {
-//        String jpql = "SELECT fp FROM FootballPlayer fp WHERE fp.footballTeam.league = :league";
-//        TypedQuery<FootballPlayer> query = entityManager.createQuery(jpql, FootballPlayer.class);
-//        query.setParameter("league", league);
-//        return query.getResultList();
-//    }
-
     public String viewTeam(Long teamId, Model model) {
         Optional<FootballTeam> optionalFootballTeam = footballTeamRepository.findById(teamId);
         if (optionalFootballTeam.isPresent()) {
@@ -283,21 +258,10 @@ public class FootballTeamService {
     }
 
     public String viewAllTeamsByLeague(Long leagueId, Model model) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User user = userRepository.getUserByUsername(authentication.getName());
         Optional<League> optionalLeague = leagueRepository.findById(leagueId);
         if (optionalLeague.isEmpty()) return "redirect:/league/get";
         League league = optionalLeague.get();
         List<FootballTeam> footballTeamList = league.getFootballTeamList();
-//        if (user.getRole().equals(Role.ROLE_USER)) {
-//            List<FootballTeam> availableTeams = footballTeamList.stream()
-//                    .filter(footballTeam -> footballTeam.getUser() == null).collect(Collectors.toList());
-//            model.addAttribute("league", league);
-//            model.addAttribute("footballTeams", availableTeams);
-//        } else{
-//            model.addAttribute("league", league);
-//            model.addAttribute("footballTeams", footballTeamList);
-//        }
         model.addAttribute("league", league);
         model.addAttribute("footballTeams", footballTeamList);
         return "/football-team/teams-for-league";

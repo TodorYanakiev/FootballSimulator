@@ -24,6 +24,14 @@ public class FootballMatch {
 
     private Byte awayTeamScore;
 
+    private Byte homeAttacks;
+
+    private Byte awayAttacks;
+
+    private Byte homeShots;
+
+    private Byte awayShots;
+
     @ManyToOne
     @JoinColumn(name = "game_week_id")
     private GameWeek gameWeek;
@@ -86,5 +94,37 @@ public class FootballMatch {
 
     public void setMatchStatus(Status matchStatus) {
         this.matchStatus = matchStatus;
+    }
+
+    public Byte getHomeAttacks() {
+        return homeAttacks;
+    }
+
+    public void setHomeAttacks(Byte homeAttacks) {
+        this.homeAttacks = homeAttacks;
+    }
+
+    public Byte getAwayAttacks() {
+        return awayAttacks;
+    }
+
+    public void setAwayAttacks(Byte awayAttacks) {
+        this.awayAttacks = awayAttacks;
+    }
+
+    public Byte getHomeShots() {
+        return homeShots;
+    }
+
+    public void setHomeShots(Byte homeShots) {
+        this.homeShots = homeShots;
+    }
+
+    public Byte getAwayShots() {
+        return awayShots;
+    }
+
+    public void setAwayShots(Byte awayShots) {
+        this.awayShots = awayShots;
     }
 }
