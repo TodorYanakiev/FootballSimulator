@@ -5,6 +5,7 @@
     <title>Home</title>
 </head>
 <body>
+<h3 th:text="${message != null} ? ${message} : ''"></h3>
 <div sec:authorize="hasRole('ROLE_USER')"> |
     <a th:href="@{/league/select}">Select/View my team</a> |
 </div>
