@@ -2,14 +2,16 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${footballTeam.baseFootballTeam.baseTeamName}"></title>
+    <title th:text="${footballTeam != null} ? ${footballTeam.baseFootballTeam.baseTeamName} : ''"></title>
 </head>
 <body>
-<h3 th:text="${message!=null}?${message}"></h3>
-  <p th:text="'Manager: ' + ${footballTeam.user.username}"></p>
-  <p th:text="'Team id: ' + ${footballTeam.id}"></p>
-  <p th:text="'Name: ' + ${footballTeam.baseFootballTeam.baseTeamName}"></p>
-  <p th:text="'League: ' + ${footballTeam.league.name}"></p>
+<h3 th:text="${message != null} ? ${message} : ''"></h3>
+<p th:text="'Manager: ' + (${footballTeam != null && footballTeam.user != null} ? ${footballTeam.user.username} : '')"></p>
+<p th:text="'Team id: ' + (${footballTeam != null} ? ${footballTeam.id} : '')"></p>
+<p th:text="'Name: ' + (${footballTeam != null && footballTeam.baseFootballTeam != null && footballTeam.baseFootballTeam.baseTeamName != null} ? ${footballTeam.baseFootballTeam.baseTeamName} : '')"></p>
+<p th:text="'League: ' + (${footballTeam != null && footballTeam.league != null && footballTeam.league.name != null} ? ${footballTeam.league.name} : '')"></p>
+<a th:href="@{/line-up/delete/{lineUpId}(lineUpId=${footballTeam != null && footballTeam.lineUp != null} ? ${footballTeam.lineUp.id} : '-1')}">Delete line-up</a>
+<a th:href="@{/line-up/add/{teamId}(teamId=${footballTeam != null} ? ${footballTeam.id} : '')}">Add/View line-up</a>
 <!--  players-->
 </body>
 </html>

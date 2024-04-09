@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class LineUpService {
@@ -99,5 +101,31 @@ public class LineUpService {
             positionFootballPlayerMap.put(Position.LCF, new FootballPlayer());
         }
         return positionFootballPlayerMap;
+    }
+
+    public String deleteLineUp(Long lineUpId, Model model) {
+        Optional<LineUp> optionalLineUp = lineUpRepository.findById(lineUpId);
+        if (optionalLineUp.isPresent()) {
+            LineUp lineUp = optionalLineUp.get();
+            Long id = lineUp.getFootballTeam().getId();
+            lineUpRepository.delete(lineUp);
+            model.addAttribute("message", "Line-up deleted.");
+            model.addAttribute("footballTeam", lineUp.getFootballTeam());
+            return "/football-team/view";
+            //return "redirect:/line-up/add/" + optionalFootballTeam.get().getId();
+        } else {
+            model.addAttribute("message", "There is no line-up to delete.");
+            return "/home";
+        }
+    }
+
+    public String viewLineUp(Long teamId, Model model) {
+        Optional<FootballTeam> optionalFootballTeam = footballTeamRepository.findById(teamId);
+        if (optionalFootballTeam.isPresent()) {
+            LineUp lineUp = optionalFootballTeam.get().getLineUp();
+            model.addAttribute("lineUp", lineUp);
+            return "/line-up/view";
+        }
+        return "/home";
     }
 }
