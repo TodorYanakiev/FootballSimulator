@@ -1,6 +1,7 @@
 package com.example.FootballSimulator.LineUp;
 
 import com.example.FootballSimulator.FootballTeam.FootballTeamRepository;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,5 +38,15 @@ public class LineUpController {
     @PostMapping("/submit")
     public String submitLineUp(LineUp lineUp, Model model) {
         return lineUpService.submitLineUp(lineUp, model);
+    }
+
+    @GetMapping("/delete/{lineUpId}")
+    public String deleteLineUp(@PathVariable("lineUpId") Long lineUpId, Model model) {
+        return lineUpService.deleteLineUp(lineUpId, model);
+    }
+
+    @GetMapping("/view/{teamId}")
+    public String viewLineUp(@PathVariable("teamId") Long teamId, Model model) {
+        return lineUpService.viewLineUp(teamId, model);
     }
 }
