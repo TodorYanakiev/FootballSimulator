@@ -149,10 +149,10 @@ public class FootballMatchService {
 //                }
 //                footballMatch.setAwayAttacks((byte)(footballMatch.getAwayAttacks() + 1));
 //            }
-            if (homeMidfieldPower> awayMidfieldPower) {
-                if (homeMidfieldPower * 1.3 > awayDefensePower) {
-                    if (homeAttackPower * 1.3 > awayDefensePower) {
-                        if (homeAttackPower / 2 > awayGoalkeeperPower) {
+            if (homeMidfieldPower / homeMidfieldLine.size() > awayMidfieldPower / awayMidfieldLine.size()) {
+                if (homeMidfieldPower / homeMidfieldLine.size() > awayDefensePower / awayDefenseLine.size()) {
+                    if (homeAttackPower / homeAttackLine.size() > awayDefensePower / awayDefenseLine.size()) {
+                        if (homeAttackPower / homeAttackLine.size() > awayGoalkeeperPower) {
                             footballMatch.setHomeTeamScore((byte) (footballMatch.getHomeTeamScore() + 1));
                             //TODO make logic for scorers
                         }
@@ -162,10 +162,10 @@ public class FootballMatchService {
                 }
                 footballMatch.setHomeAttacks((byte)(footballMatch.getHomeAttacks() + 1));
             }
-            if (awayMidfieldPower > homeMidfieldPower) {
-                if (awayMidfieldPower > homeDefensePower) {
-                    if (awayAttackPower > homeDefensePower) {
-                        if (awayAttackPower / 1.5 > homeGoalkeeperPower) {
+            if (awayMidfieldPower / awayDefenseLine.size() > homeMidfieldPower / homeMidfieldLine.size()) {
+                if (awayMidfieldPower / awayMidfieldLine.size() > homeDefensePower / homeDefenseLine.size()) {
+                    if (awayAttackPower / awayAttackLine.size() > homeDefensePower / homeDefenseLine.size()) {
+                        if (awayAttackPower / awayAttackLine.size() > homeGoalkeeperPower) {
                             footballMatch.setAwayTeamScore((byte)(footballMatch.getAwayTeamScore() + 1));
                         }
                         footballMatch.setAwayShots((byte)(footballMatch.getAwayShots() + 1));
