@@ -18,9 +18,12 @@ public class GameWeekController {
 
     private LeagueRepository leagueRepository;
 
-    public GameWeekController(GameWeekRepository gameWeekRepository, LeagueRepository leagueRepository) {
+    private GameWeekService gameWeekService;
+
+    public GameWeekController(GameWeekRepository gameWeekRepository, LeagueRepository leagueRepository, GameWeekService gameWeekService) {
         this.gameWeekRepository = gameWeekRepository;
         this.leagueRepository = leagueRepository;
+        this.gameWeekService = gameWeekService;
     }
 
     @GetMapping("/all/{leagueId}")
@@ -32,5 +35,10 @@ public class GameWeekController {
         } else {
             return "redirect:/league/get";
         }
+    }
+
+    @GetMapping("/simulate-week")
+    public String simulateGameWeek(Model model) {
+        return gameWeekService.simulateGameWeek(model);
     }
 }
