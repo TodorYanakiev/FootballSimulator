@@ -12,7 +12,7 @@
 <p th:text="'League: ' + (${footballTeam != null && footballTeam.league != null && footballTeam.league.name != null} ? ${footballTeam.league.name} : '')"></p>
 <a th:href="@{/line-up/delete/{lineUpId}(lineUpId=${footballTeam != null && footballTeam.lineUp != null} ? ${footballTeam.lineUp.id} : '-1')}">Delete line-up</a>
 <a th:href="@{/line-up/add/{teamId}(teamId=${footballTeam != null} ? ${footballTeam.id} : '')}">Add/View line-up</a>
-<а th:href="@{/game-week/simulate-week}">Play next match</а>
+<a th:href="@{/game-week/simulate-week}">Play next match</a>
 <!--  players-->
 </body>
 </html>

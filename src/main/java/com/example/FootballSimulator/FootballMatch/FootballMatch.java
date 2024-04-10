@@ -28,6 +28,10 @@ public class FootballMatch {
 
     private Byte awayAttacks;
 
+    private Byte dangerHomeAttacks;
+
+    private Byte dangerAwayAttacks;
+
     private Byte homeShots;
 
     private Byte awayShots;
@@ -126,5 +130,21 @@ public class FootballMatch {
 
     public void setAwayShots(Byte awayShots) {
         this.awayShots = awayShots;
+    }
+
+    public Byte getDangerHomeAttacks() {
+        return dangerHomeAttacks;
+    }
+
+    public void setDangerHomeAttacks(Byte dangerHomeAttacks) {
+        this.dangerHomeAttacks = dangerHomeAttacks;
+    }
+
+    public Byte getDangerAwayAttacks() {
+        return dangerAwayAttacks;
+    }
+
+    public void setDangerAwayAttacks(Byte dangerAwayAttacks) {
+        this.dangerAwayAttacks = dangerAwayAttacks;
     }
 }

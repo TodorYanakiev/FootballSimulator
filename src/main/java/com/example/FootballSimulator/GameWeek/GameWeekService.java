@@ -51,10 +51,13 @@ public class GameWeekService {
         }
         FootballMatch userMatch = getUserMatch(gameWeekToBePlayed, usersFootballTeam);
         List<FootballMatch> footballMatchesExceptUsers = gameWeekToBePlayed.getMatchList();
-        footballMatchesExceptUsers.remove(userMatch);
+        //footballMatchesExceptUsers.remove(userMatch);
         footballMatchService.simulateNonUserMatches(footballMatchesExceptUsers);
+        gameWeekToBePlayed.setGameWeekStatus(Status.FINISHED);
+        gameWeekRepository.save(gameWeekToBePlayed);
         //TODO non user match
-        return "/home";
+        model.addAttribute("league", gameWeekToBePlayed.getLeague());
+        return "/game-week/all-for-league";
     }
 
     private GameWeek getGameWeekToBePlayed(FootballTeam footballTeam) {
