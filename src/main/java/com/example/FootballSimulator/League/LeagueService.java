@@ -78,6 +78,11 @@ public class LeagueService {
     }
 
     public String submitLeague(@Valid League league, BindingResult bindingResult, Model model, @RequestParam("selectedFootballTeamIds") List<Long> selectedFootballTeamIds) {
+        if (selectedFootballTeamIds == null) {
+            model.addAttribute("message","There must be at least 6 teams!");
+            model.addAttribute("allBaseFootballTeams", baseFootballTeamRepository.findAll());
+            return "/league/addLeague";
+        }
         List<BaseFootballTeam> selectedFootballTeams = baseFootballTeamRepository.findAllByIdIn(selectedFootballTeamIds);
         if (bindingResult.hasErrors() || selectedFootballTeams.size() % 2 == 1) {
             model.addAttribute("message","There must be an even number of teams!");
@@ -152,10 +157,9 @@ public class LeagueService {
             return "The league has already started or has ended!";
         }
         List<FootballTeam> teamList = league.getFootballTeamList();
-        /*
         if (teamList.size() < 6) {
             return "The league must have at least 6 teams!";
-        }*/
+        }
         for (FootballTeam footballTeam : teamList) {
             if (footballTeam.getPlayerList().size() < 16) {
                 return "Every team must have at least 16 players!";

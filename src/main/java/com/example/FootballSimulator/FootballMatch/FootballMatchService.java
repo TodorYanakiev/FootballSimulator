@@ -55,7 +55,7 @@ public class FootballMatchService {
         for (FootballMatch footballMatch : matchList) {
             footballMatch.setMatchStatus(Status.STARTED);
             for (int i = 0; i < 6; i++) {
-                simulate15Minutes(footballMatch);
+                simulate15Minutes(footballMatch); //
             }
             updateMatchAftermath(footballMatch);
             saveMatchResults(footballMatch);
@@ -71,6 +71,9 @@ public class FootballMatchService {
             return "/home";
         }
         FootballMatch footballMatch = optionalFootballMatch.get();
+        if(!checkIfMatchIsValid(footballMatch)) {
+            model.addAttribute("message", "Error, the line-up must be fulfil.");
+        }
         if (!footballMatch.getMatchStatus().equals(Status.STARTED)) {
             model.addAttribute("message", "Error, the match is finished");
             return "/home";
@@ -85,7 +88,7 @@ public class FootballMatchService {
             footballMatchRepository.save(footballMatch);
             return "redirect:/game-week/all/" + footballMatch.getGameWeek().getLeague().getId();
         }
-        simulate15Minutes(footballMatch);
+        simulate15Minutes(footballMatch); //
         saveMatchResults(footballMatch);
         matchPart++;
         model.addAttribute("footballMatch", footballMatch);
@@ -124,8 +127,8 @@ public class FootballMatchService {
         FootballTeam awayTeam = footballMatch.getAwayTeam();
         LineUp homeLineUp = homeTeam.getLineUp();
         LineUp awayLineUp = awayTeam.getLineUp();
-        Map<Position, FootballPlayer> homeAttackLine = getAttackLine(homeLineUp);
-        Map<Position, FootballPlayer> awayAttackLine = getAttackLine(awayLineUp);
+        Map<Position, FootballPlayer> homeAttackLine = getAttackLine(homeLineUp); //
+        Map<Position, FootballPlayer> awayAttackLine = getAttackLine(awayLineUp);//
         Map<Position, FootballPlayer> homeMidfieldLine = getMidfieldLine(homeLineUp);
         Map<Position, FootballPlayer> awayMidfieldLine = getMidfieldLine(awayLineUp);
         Map<Position, FootballPlayer> homeDefenseLine = getDefenseLine(homeLineUp);
@@ -290,5 +293,12 @@ public class FootballMatchService {
         if (prefPosition.equals(position)) return random.nextDouble(1.01, 1.06);
         if (preferredLine.equals(line)) return 1;
         return random.nextDouble(0.95, 1.00);
+    }
+
+    public static boolean checkIfMatchIsValid(FootballMatch footballMatch) {
+        if (footballMatch == null || footballMatch.getAwayTeam() == null || footballMatch.getHomeTeam() == null ||
+                footballMatch.getGameWeek() == null || footballMatch.getAwayTeam().getLineUp() == null ||
+                footballMatch.getHomeTeam().getLineUp() == null) return false;
+        return true;
     }
 }

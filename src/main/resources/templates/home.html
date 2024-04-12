@@ -6,18 +6,19 @@
 </head>
 <body>
 <h3 th:text="${message != null} ? ${message} : ''"></h3>
-<div sec:authorize="hasRole('ROLE_USER')"> |
-    <a th:href="@{/league/select}">Select/View my team</a> |
-</div>
-<div sec:authorize="hasRole('ROLE_ADMIN')"> |
-    <a th:href="@{/base-football-player/add}">Add new base football player</a> |
-    <a th:href="@{/base-football-player/all}">All base football players</a> |
-    <a th:href="@{/base-football-team/add}">Add new base football team</a> |
-    <a th:href="@{/base-football-team/all}">All base football teams</a> |
-    <a th:href="@{/league/add}">Add new league</a> |
-</div>
-<div  sec:authorize="isAuthenticated()"> |
-    <a th:href="@{/league/get}">View all leagues</a> |
-</div>
+<!--<div sec:authorize="hasRole('ROLE_USER')"> |-->
+<!--    <a th:href="@{/league/select}">Select/View my team</a> |-->
+<!--</div>-->
+<!--<div sec:authorize="hasRole('ROLE_ADMIN')"> |-->
+<!--    <a th:href="@{/base-football-player/add}">Add new base football player</a> |-->
+<!--    <a th:href="@{/base-football-player/all}">All base football players</a> |-->
+<!--    <a th:href="@{/base-football-team/add}">Add new base football team</a> |-->
+<!--    <a th:href="@{/base-football-team/all}">All base football teams</a> |-->
+<!--    <a th:href="@{/league/add}">Add new league</a> |-->
+<!--</div>-->
+<!--<div  sec:authorize="isAuthenticated()"> |-->
+<!--    <a th:href="@{/league/get}">View all leagues</a> |-->
+<!--</div>-->
+<footer th:insert="fragments/footer.html ::footer"></footer>
 </body>
 </html>

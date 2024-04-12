@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Min;
 @Entity
 public class Standing {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
 

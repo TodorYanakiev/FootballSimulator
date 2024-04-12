@@ -54,8 +54,16 @@ public class GameWeekService {
         Optional<GameWeek> optionalGameWeek = gameWeekRepository.findById(gameWeekId);
         if (optionalGameWeek.isPresent()) {
             GameWeek gameWeekToBePlayed = optionalGameWeek.get();
+            if (!checkIfGameWeekIsValid(gameWeekToBePlayed)) {
+                model.addAttribute("message", "Invalid game week! All the line-ups must be fulfil!");
+                return "/home";
+            }
             FootballTeam usersFootballTeam = getUsersFootballTeam();
             FootballMatch userMatch = getUserMatch(gameWeekToBePlayed, usersFootballTeam);
+            if (!FootballMatchService.checkIfMatchIsValid(userMatch)) {
+                model.addAttribute("message", "Invalid match! The line-ups must be fulfil!");
+                return "/home";
+            }
             List<FootballMatch> footballMatchesExceptUsers = gameWeekToBePlayed.getMatchList();
             footballMatchesExceptUsers.remove(userMatch);
 
@@ -133,5 +141,15 @@ public class GameWeekService {
             }
         }
         return null;
+    }
+
+    public boolean checkIfGameWeekIsValid(GameWeek gameWeek) {
+        if (gameWeek == null || gameWeek.getLeague() == null || gameWeek.getMatchList() == null) return false;
+        List<FootballMatch> footballMatchList = gameWeek.getMatchList();
+        if (footballMatchList == null) return false;
+        for (FootballMatch match : footballMatchList) {
+            FootballMatchService.checkIfMatchIsValid(match);
+        }
+        return true;
     }
 }
