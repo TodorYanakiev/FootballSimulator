@@ -1,27 +1,61 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Add League</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>Add league</h2>-->
+<!--<form action="#" th:action="@{/league/submit}" th:object="${league}" method="post">-->
+<!--  <p>-->
+<!--    Name:-->
+<!--    <input type="text" th:field="*{name}"/>-->
+<!--    <span th:if="${#fields.hasErrors('name')}" th:error="*{name}"></span>-->
+<!--  </p>-->
+<!--    <p>-->
+<!--        Football Teams:-->
+<!--        <select name="selectedFootballTeamIds" multiple>-->
+<!--            <option th:each="baseFootballTeam : ${allBaseFootballTeams}"-->
+<!--                    th:value="${baseFootballTeam.id}"-->
+<!--                    th:text="${baseFootballTeam.baseTeamName}">Football team name</option>-->
+<!--        </select>-->
+<!--    </p>-->
+<!--    <input type="submit" value="Submit">-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Add League</title>
+    <!-- Включване на Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h2>Add league</h2>
-<h3 th:text="${message!=null}?${message}"></h3>
-<form action="#" th:action="@{/league/submit}" th:object="${league}" method="post">
-  <p>
-    Name:
-    <input type="text" th:field="*{name}"/>
-    <span th:if="${#fields.hasErrors('name')}" th:error="*{name}"></span>
-  </p>
-    <p>
-        Football Teams:
-        <select name="selectedFootballTeamIds" multiple>
-            <option th:each="baseFootballTeam : ${allBaseFootballTeams}"
-                    th:value="${baseFootballTeam.id}"
-                    th:text="${baseFootballTeam.baseTeamName}">Football team name</option>
-        </select>
-    </p>
-    <input type="submit" value="Submit">
-</form>
+<div class="container">
+    <h2>Add league</h2>
+  <h3 th:text="${message!=null}?${message}"></h3>
+    <form action="#" th:action="@{/league/submit}" th:object="${league}" method="post">
+        <div class="form-group">
+            <label for="leagueName">Name:</label>
+            <input type="text" class="form-control" id="leagueName" th:field="*{name}"/>
+            <span th:if="${#fields.hasErrors('name')}" th:error="*{name}" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="selectedFootballTeamIds">Football Teams:</label>
+            <select id="selectedFootballTeamIds" name="selectedFootballTeamIds" class="form-control" multiple>
+                <option th:each="baseFootballTeam : ${allBaseFootballTeams}"
+                        th:value="${baseFootballTeam.id}"
+                        th:text="${baseFootballTeam.baseTeamName}">Football team name</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<!-- Включване на Bootstrap JS и jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
