@@ -9,7 +9,6 @@ public enum TeamFormation {
     THREE_FIVE_TWO ("3-5-2"),
     FIVE_FOUR_ONE ("5-4-1"),
     FIVE_THREE_TWO ("5-3-2");
-
     String label;
 
     TeamFormation(String label) {
