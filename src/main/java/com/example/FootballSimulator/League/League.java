@@ -6,6 +6,7 @@ import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.GameWeek.GameWeek;
 import com.example.FootballSimulator.Standings.Standing;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
@@ -17,8 +18,14 @@ public class League {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @NotEmpty
+    @Size(min = 3)
     private String name;
+
+
     @OneToMany(mappedBy = "league")
+    @Size(min = 6)
     private List<FootballTeam> footballTeamList;
 
     @OneToMany(mappedBy = "league")
