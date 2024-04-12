@@ -37,8 +37,17 @@ public class GameWeekController {
         }
     }
 
+    //    @GetMapping("/simulate-week")
+//    public String simulateGameWeek(Model model) {
+//        return gameWeekService.simulateGameWeek(model);
+//    }
     @GetMapping("/simulate-week")
-    public String simulateGameWeek(Model model) {
-        return gameWeekService.simulateGameWeek(model);
+    public String getGameWeek(Model model) {
+        return gameWeekService.getGameWeekToBePlayed(model);
+    }
+
+    @GetMapping("/simulate-week/{gameWeekId}")
+    public String simulateGameWeek(@PathVariable("gameWeekId") Long gameWeekId,  Model model) {
+        return gameWeekService.simulateGameWeek(gameWeekId, model);
     }
 }

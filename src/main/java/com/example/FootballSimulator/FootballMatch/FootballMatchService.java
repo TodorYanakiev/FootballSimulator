@@ -46,6 +46,10 @@ public class FootballMatchService {
         }
     }
 
+//    public String simulateUserMatch(FootballMatch footballMatch) {
+//
+//    }
+
     private void simulate15Minutes(FootballMatch footballMatch) {
         FootballTeam homeTeam = footballMatch.getHomeTeam();
         FootballTeam awayTeam = footballMatch.getAwayTeam();
