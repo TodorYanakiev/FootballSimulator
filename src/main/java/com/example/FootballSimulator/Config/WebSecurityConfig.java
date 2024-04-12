@@ -38,7 +38,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                                 "/game-week/all/**", "/football-team/players/**", "/football-team/getFootballPlayers**",
                                 "/football-team/view/**").authenticated()
                         .anyRequest().authenticated()
-                )//transfer requests?
+                )
                 .formLogin((form) -> form
                         .loginPage("/auth/login")
                         .usernameParameter("usernameOrEmail")
