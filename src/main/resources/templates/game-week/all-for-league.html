@@ -20,7 +20,7 @@
          <tbody>
          <tr th:each="footballMatch : ${gameWeek.matchList}">
            <td th:text="${footballMatch.getHomeTeam().getBaseFootballTeam().getBaseTeamName()} + ' : ' + ${footballMatch.getAwayTeam().getBaseFootballTeam().getBaseTeamName()}"></td>
-           <td>Details:</td>
+           <td><a th:href="@{/football-match/view/{matchId}(matchId=${footballMatch.id})}">Details</a></td>
          </tr>
          </tbody>
        </table>

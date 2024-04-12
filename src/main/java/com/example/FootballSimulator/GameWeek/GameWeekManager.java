@@ -29,6 +29,7 @@ public class GameWeekManager {
             footballMatchList.add(footballMatch);
         }
         gameWeek.setMatchList(footballMatchList);
+        gameWeek.setGameWeekStatus(Status.NOT_STARTED);
         return gameWeek;
     }
 
@@ -58,6 +59,12 @@ public class GameWeekManager {
         footballMatch.setMatchStatus(Status.NOT_STARTED);
         footballMatch.setHomeTeamScore((byte) 0);
         footballMatch.setAwayTeamScore((byte) 0);
+        footballMatch.setAwayAttacks((byte)0);
+        footballMatch.setAwayShots((byte)0);
+        footballMatch.setHomeShots((byte)0);
+        footballMatch.setHomeAttacks((byte)0);
+        footballMatch.setDangerAwayAttacks((byte)0);
+        footballMatch.setDangerHomeAttacks((byte)0);
         return footballMatch;
     }
 
@@ -80,4 +87,6 @@ public class GameWeekManager {
         }
         return shuffledGameWeekList;
     }
+
+
 }

@@ -295,21 +295,10 @@ public List<FootballPlayer> findAvailablePlayersByTeamId(Long teamId) {
     }
 
     public String viewAllTeamsByLeague(Long leagueId, Model model) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User user = userRepository.getUserByUsername(authentication.getName());
         Optional<League> optionalLeague = leagueRepository.findById(leagueId);
         if (optionalLeague.isEmpty()) return "redirect:/league/get";
         League league = optionalLeague.get();
         List<FootballTeam> footballTeamList = league.getFootballTeamList();
-//        if (user.getRole().equals(Role.ROLE_USER)) {
-//            List<FootballTeam> availableTeams = footballTeamList.stream()
-//                    .filter(footballTeam -> footballTeam.getUser() == null).collect(Collectors.toList());
-//            model.addAttribute("league", league);
-//            model.addAttribute("footballTeams", availableTeams);
-//        } else{
-//            model.addAttribute("league", league);
-//            model.addAttribute("footballTeams", footballTeamList);
-//        }
         model.addAttribute("league", league);
         model.addAttribute("footballTeams", footballTeamList);
         return "/football-team/teams-for-league";

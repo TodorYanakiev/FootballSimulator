@@ -152,9 +152,10 @@ public class LeagueService {
             return "The league has already started or has ended!";
         }
         List<FootballTeam> teamList = league.getFootballTeamList();
+        /*
         if (teamList.size() < 6) {
             return "The league must have at least 6 teams!";
-        }
+        }*/
         for (FootballTeam footballTeam : teamList) {
             if (footballTeam.getPlayerList().size() < 16) {
                 return "Every team must have at least 16 players!";
