@@ -63,7 +63,8 @@ public class GameWeekService {
     private GameWeek getGameWeekToBePlayed(FootballTeam footballTeam) {
         League league = footballTeam.getLeague();
         List<GameWeek> gameWeekList = league.getGameWeekList();
-        List<GameWeek> sortedGameWeekList = gameWeekList.stream().sorted(Comparator.comparing(GameWeek::getWeekNumber)).collect(Collectors.toList());
+        List<GameWeek> sortedGameWeekList = gameWeekList.stream().sorted(Comparator.comparing(GameWeek::getWeekNumber))
+                .collect(Collectors.toList());
         for (GameWeek gameWeek : sortedGameWeekList) {
             if (gameWeek.getGameWeekStatus().equals(Status.NOT_STARTED)) {
                 return gameWeek;
