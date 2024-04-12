@@ -7,7 +7,7 @@ import jakarta.validation.constraints.*;
 @Entity
 public class BaseFootballPlayer {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

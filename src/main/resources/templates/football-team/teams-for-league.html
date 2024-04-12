@@ -1,29 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title th:text="${league.getName()}"></title>
 </head>
 <body>
+<h3 th:text="${message!=null}?${message}"></h3>
 <h3 th:text="${league.getName()}"> teams:</h3>
 <table>
     <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Budged</th>
-            <th>Options</th>
-        </tr>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Budged</th>
+        <th>Options</th>
+    </tr>
     </thead>
     <tbody>
-        <tr th:each="footballTeam : ${footballTeams}">
-            <td th:text="${footballTeam.getId()}"></td>
-            <td th:text="${footballTeam.getBaseFootballTeam().getBaseTeamName()}"></td>
-            <td th:text="${footballTeam.getBudged()}"></td>
-            <td><a th:href="@{/football-team/add/{teamId}(teamId=${footballTeam.id})}">Add players</a>
-                <a th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a>
-            </td>
-        </tr>
+    <tr th:each="footballTeam : ${footballTeams}">
+        <td th:text="${footballTeam.getId()}"></td>
+        <td th:text="${footballTeam.getBaseFootballTeam().getBaseTeamName()}"></td>
+        <td th:text="${footballTeam.getBudged()}"></td>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <td><a th:href="@{/football-team/add/{teamId}(teamId=${footballTeam.id})}">Add players</a></td>
+            <td><a th:href="@{/line-up/add/{teamId}(teamId=${footballTeam.id})}">Add/View line-up</a></td>
+            <td><a th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a></td>
+        </div>
+        <div sec:authorize="hasRole('ROLE_USER')">
+            <td><a th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a></td>
+        </div>
+    </tr>
     </tbody>
 </table>
 </body>

@@ -1,5 +1,6 @@
 package com.example.FootballSimulator.GameWeek;
 
+import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballMatch.FootballMatch;
 import com.example.FootballSimulator.League.League;
 import jakarta.persistence.*;
@@ -9,7 +10,7 @@ import java.util.List;
 @Entity
 public class GameWeek {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -21,6 +22,9 @@ public class GameWeek {
     @ManyToOne
     @JoinColumn(name = "league_id")
     private League league;
+
+    @Enumerated(EnumType.STRING)
+    private Status gameWeekStatus;
 
     public Long getId() {
         return id;
@@ -52,5 +56,13 @@ public class GameWeek {
 
     public void setLeague(League league) {
         this.league = league;
+    }
+
+    public Status getGameWeekStatus() {
+        return gameWeekStatus;
+    }
+
+    public void setGameWeekStatus(Status gameWeekStatus) {
+        this.gameWeekStatus = gameWeekStatus;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.FootballSimulator.GameWeek;
 
-import com.example.FootballSimulator.Constants.MatchStatus;
+import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballMatch.FootballMatch;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.League.League;
@@ -29,6 +29,7 @@ public class GameWeekManager {
             footballMatchList.add(footballMatch);
         }
         gameWeek.setMatchList(footballMatchList);
+        gameWeek.setGameWeekStatus(Status.NOT_STARTED);
         return gameWeek;
     }
 
@@ -55,9 +56,15 @@ public class GameWeekManager {
         footballMatch.setGameWeek(gameWeek);
         footballMatch.setHomeTeam(footballTeamList.get(homeIndex));
         footballMatch.setAwayTeam(footballTeamList.get(awayIndex));
-        footballMatch.setMatchStatus(MatchStatus.NOT_STARTED);
+        footballMatch.setMatchStatus(Status.NOT_STARTED);
         footballMatch.setHomeTeamScore((byte) 0);
         footballMatch.setAwayTeamScore((byte) 0);
+        footballMatch.setAwayAttacks((byte)0);
+        footballMatch.setAwayShots((byte)0);
+        footballMatch.setHomeShots((byte)0);
+        footballMatch.setHomeAttacks((byte)0);
+        footballMatch.setDangerAwayAttacks((byte)0);
+        footballMatch.setDangerHomeAttacks((byte)0);
         return footballMatch;
     }
 
@@ -80,4 +87,6 @@ public class GameWeekManager {
         }
         return shuffledGameWeekList;
     }
+
+
 }

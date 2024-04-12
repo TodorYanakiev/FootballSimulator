@@ -1,32 +1,13 @@
 package com.example.FootballSimulator.FootballPlayer;
 
 import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayer;
-import com.example.FootballSimulator.FootballTeam.FootballTeam;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
-@Entity
-public class FootballPlayer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
-
+public class FootballPlayerSimulationDTO {
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "base_player_id")
     private BaseFootballPlayer baseFootballPlayer;
-
-    @ManyToOne
-    @JoinColumn(name = "football_team_id")
-    private FootballTeam footballTeam;
-
-    @NotNull
-    @Min(0)
-    private Integer price;
 
     @NotNull
     @Min(1)
@@ -67,16 +48,6 @@ public class FootballPlayer {
     @Min(1)
     @Max(99)
     private Byte goalkeeping;
-    @NotNull
-    private boolean footballPlayerStatus;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public BaseFootballPlayer getBaseFootballPlayer() {
         return baseFootballPlayer;
@@ -84,14 +55,6 @@ public class FootballPlayer {
 
     public void setBaseFootballPlayer(BaseFootballPlayer baseFootballPlayer) {
         this.baseFootballPlayer = baseFootballPlayer;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
     }
 
     public Byte getDefending() {
@@ -156,21 +119,5 @@ public class FootballPlayer {
 
     public void setGoalkeeping(Byte goalkeeping) {
         this.goalkeeping = goalkeeping;
-    }
-
-    public FootballTeam getFootballTeam() {
-        return footballTeam;
-    }
-
-    public void setFootballTeam(FootballTeam footballTeam) {
-        this.footballTeam = footballTeam;
-    }
-
-    public boolean isFootballPlayerStatus() {
-        return footballPlayerStatus;
-    }
-
-    public void setFootballPlayerStatus(boolean footballPlayerStatus) {
-        this.footballPlayerStatus = footballPlayerStatus;
     }
 }

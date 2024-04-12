@@ -1,7 +1,7 @@
 package com.example.FootballSimulator.Constants;
 
-public enum MatchStatus {
+public enum Status {
     NOT_STARTED,
     STARTED,
-    FINISHED
+    FINISHED;
 }

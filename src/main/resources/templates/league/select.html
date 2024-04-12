@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Select team</title>
+</head>
+<body>
+<h3 th:text="${message!=null}?${message}"></h3>
+<h2>Select team:</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>League name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="league : ${leagues}">
+        <td th:text="${league.name}"></td>
+        <td><a th:href="@{/football-team/all-available/{leagueId}(leagueId=${league.id})}">View and select team</a></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

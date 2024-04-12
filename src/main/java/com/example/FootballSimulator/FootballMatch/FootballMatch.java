@@ -1,6 +1,6 @@
 package com.example.FootballSimulator.FootballMatch;
 
-import com.example.FootballSimulator.Constants.MatchStatus;
+import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.GameWeek.GameWeek;
 import jakarta.persistence.*;
@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 @Entity
 public class FootballMatch {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -24,13 +24,25 @@ public class FootballMatch {
 
     private Byte awayTeamScore;
 
+    private Byte homeAttacks;
+
+    private Byte awayAttacks;
+
+    private Byte dangerHomeAttacks;
+
+    private Byte dangerAwayAttacks;
+
+    private Byte homeShots;
+
+    private Byte awayShots;
+
     @ManyToOne
     @JoinColumn(name = "game_week_id")
     private GameWeek gameWeek;
 
 
     @Enumerated(EnumType.STRING)
-    private MatchStatus matchStatus;
+    private Status matchStatus;
 
     public Long getId() {
         return id;
@@ -80,11 +92,59 @@ public class FootballMatch {
         this.gameWeek = gameWeek;
     }
 
-    public MatchStatus getMatchStatus() {
+    public Status getMatchStatus() {
         return matchStatus;
     }
 
-    public void setMatchStatus(MatchStatus matchStatus) {
+    public void setMatchStatus(Status matchStatus) {
         this.matchStatus = matchStatus;
+    }
+
+    public Byte getHomeAttacks() {
+        return homeAttacks;
+    }
+
+    public void setHomeAttacks(Byte homeAttacks) {
+        this.homeAttacks = homeAttacks;
+    }
+
+    public Byte getAwayAttacks() {
+        return awayAttacks;
+    }
+
+    public void setAwayAttacks(Byte awayAttacks) {
+        this.awayAttacks = awayAttacks;
+    }
+
+    public Byte getHomeShots() {
+        return homeShots;
+    }
+
+    public void setHomeShots(Byte homeShots) {
+        this.homeShots = homeShots;
+    }
+
+    public Byte getAwayShots() {
+        return awayShots;
+    }
+
+    public void setAwayShots(Byte awayShots) {
+        this.awayShots = awayShots;
+    }
+
+    public Byte getDangerHomeAttacks() {
+        return dangerHomeAttacks;
+    }
+
+    public void setDangerHomeAttacks(Byte dangerHomeAttacks) {
+        this.dangerHomeAttacks = dangerHomeAttacks;
+    }
+
+    public Byte getDangerAwayAttacks() {
+        return dangerAwayAttacks;
+    }
+
+    public void setDangerAwayAttacks(Byte dangerAwayAttacks) {
+        this.dangerAwayAttacks = dangerAwayAttacks;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.FootballSimulator.User;
 
 import com.example.FootballSimulator.Constants.Role;
+import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -28,6 +29,9 @@ public class User {
     private boolean enabled;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToOne
+    private FootballTeam footballTeam;
 
     public Long getId() {
         return id;
@@ -91,5 +95,13 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public FootballTeam getFootballTeam() {
+        return footballTeam;
+    }
+
+    public void setFootballTeam(FootballTeam footballTeam) {
+        this.footballTeam = footballTeam;
     }
 }
