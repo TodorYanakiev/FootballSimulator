@@ -2,6 +2,7 @@ package com.example.FootballSimulator.FootballTeam;
 
 import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayer;
 import com.example.FootballSimulator.BaseFootballPlayer.BaseFootballPlayerRepository;
+import com.example.FootballSimulator.Constants.Position;
 import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayerRepository;
@@ -75,13 +76,21 @@ public class FootballTeamService {
     public void chooseAwayFootballPlayersForSale(@RequestParam("teamId") Long teamId) {
         Random rand = new Random();
         int randomNumber = rand.nextInt(1, 4);
-        List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllExceptTeamId(teamId);
+
+        Optional<FootballTeam> footballTeam = footballTeamRepository.findById(teamId);
+        League league = new League();
+        if (footballTeam.isPresent()) {
+            league = footballTeam.get().getLeague();
+        }
+        List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllInSameLeagueExceptTeam(league, teamId);
         List<FootballPlayer> allFootballPlayersExceptCurrentTeam = new ArrayList<>();
         for (FootballTeam team : allTeamsExceptCurrent) {
             allFootballPlayersExceptCurrentTeam.addAll(footballPlayerRepository.getPlayersByTeamId(team.getId()));
         }
         List<FootballPlayer> selectedFootballPlayers = getRandomFootballPlayers(allFootballPlayersExceptCurrentTeam, randomNumber);
         for (FootballPlayer player : selectedFootballPlayers) {
+            Map<Position, FootballPlayer> positionFootballPlayerMap = player.getFootballTeam().getLineUp().getPositionFootballPlayerMap();
+            if (positionFootballPlayerMap.containsValue(player)) break;
             if (player.getFootballTeam().getPlayerList().size() > 11) {
                 player.setFootballPlayerStatus(true);
                 footballPlayerRepository.save(player);
@@ -93,7 +102,12 @@ public class FootballTeamService {
         Random random = new Random();
         List<FootballPlayer> footballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
         List<FootballPlayer> footballPlayersForSale = findPlayersByStatus(footballPlayers);
-        List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllExceptTeamId(teamId);
+        Optional<FootballTeam> footballTeam = footballTeamRepository.findById(teamId);
+        League league = new League();
+        if (footballTeam.isPresent()) {
+            league = footballTeam.get().getLeague();
+        }
+        List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllInSameLeagueExceptTeam(league, teamId);
         List<FootballTeam> randomTeams = getRandomFootballTeam(allTeamsExceptCurrent, footballPlayersForSale.size());
         for (int i = 0; i < footballPlayersForSale.size(); i++) {
             int rand = random.nextInt(0, randomTeams.size());
@@ -188,7 +202,7 @@ public class FootballTeamService {
     public String buyFootballPlayersForHomeTeam(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
-        List<FootballPlayer> footballPlayersForSale = footballPlayerRepository.findForSalePlayersExceptTeamId(teamId);
+        List<FootballPlayer> footballPlayersForSale = footballPlayerRepository.findForSalePlayersInLeagueExceptTeamId(teamId);
         model.addAttribute("footballTeam", footballTeam);
         model.addAttribute("footballPlayersForSale", footballPlayersForSale);
         model.addAttribute("buyFootballPlayers", new ArrayList<FootballPlayer>());
@@ -214,7 +228,9 @@ public class FootballTeamService {
                 player.setFootballTeam(footballTeam);
                 player.setFootballPlayerStatus(false);
             } else {
-                List<FootballPlayer> footballPlayersForSale = footballPlayerRepository.findForSalePlayersExceptTeamId(teamId);
+
+                List<FootballPlayer> footballPlayersForSale = footballPlayerRepository.findForSalePlayersInLeagueExceptTeamId(teamId);
+
                 model.addAttribute("footballTeam", footballTeam);
                 model.addAttribute("footballPlayersForSale", footballPlayersForSale);
                 model.addAttribute("buyFootballPlayers", new ArrayList<FootballPlayer>());

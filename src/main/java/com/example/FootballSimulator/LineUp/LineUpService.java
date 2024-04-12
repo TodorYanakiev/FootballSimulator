@@ -44,8 +44,12 @@ public class LineUpService {
         model.addAttribute("allPlayers", footballTeam.getPlayerList());
         if (teamFormation.equals(TeamFormation.FOUR_THREE_THREE)) {
             return "/line-up/team-formation/4-3-3";
-        } else {
+        } else if(teamFormation.equals(TeamFormation.FOUR_FOUR_TWO)){
             return "/line-up/team-formation/4-4-2";
+        } else if(teamFormation.equals(TeamFormation.FOUR_TWO_FOUR)){
+            return "/line-up/team-formation/4-2-4";
+        } else {
+            return "/line-up/team-formation/3-3-4";
         }
     }
 
@@ -99,6 +103,30 @@ public class LineUpService {
             positionFootballPlayerMap.put(Position.LM, new FootballPlayer());
             positionFootballPlayerMap.put(Position.RCF, new FootballPlayer());
             positionFootballPlayerMap.put(Position.LCF, new FootballPlayer());
+        } else if(teamFormation.equals(TeamFormation.FOUR_TWO_FOUR)){
+            positionFootballPlayerMap.put(Position.GK, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.RB, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.RCB, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.LCB, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.LB, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.RCM, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.LCM, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.RF, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.RCF, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.LCF, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.LF, new FootballPlayer());
+        } else if(teamFormation.equals(TeamFormation.THREE_THREE_FOUR)) {
+            positionFootballPlayerMap.put(Position.GK, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.RCB, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.CB, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.LCB, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.RCM, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.CM, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.LCM, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.RF, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.RCF, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.LCF, new FootballPlayer());
+            positionFootballPlayerMap.put(Position.LF, new FootballPlayer());
         }
         return positionFootballPlayerMap;
     }
