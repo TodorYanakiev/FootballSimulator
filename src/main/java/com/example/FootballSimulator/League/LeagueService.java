@@ -78,11 +78,13 @@ public class LeagueService {
     }
 
     public String submitLeague(@Valid League league, BindingResult bindingResult, Model model, @RequestParam("selectedFootballTeamIds") List<Long> selectedFootballTeamIds) {
-        if (bindingResult.hasErrors()) {
+        List<BaseFootballTeam> selectedFootballTeams = baseFootballTeamRepository.findAllByIdIn(selectedFootballTeamIds);
+        if (bindingResult.hasErrors() || selectedFootballTeams.size() % 2 == 1) {
+            model.addAttribute("message","There must be an even number of teams!");
             model.addAttribute("allBaseFootballTeams", baseFootballTeamRepository.findAll());
             return "/league/addLeague";
         }
-        List<BaseFootballTeam> selectedFootballTeams = baseFootballTeamRepository.findAllByIdIn(selectedFootballTeamIds);
+
         leagueRepository.save(league);
         List<FootballTeam> footballTeamList = new ArrayList<>();
         for (int i = 0; i < selectedFootballTeams.size(); i++) {
