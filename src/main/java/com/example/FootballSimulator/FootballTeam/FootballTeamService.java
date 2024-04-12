@@ -76,6 +76,7 @@ public class FootballTeamService {
     public void chooseAwayFootballPlayersForSale(@RequestParam("teamId") Long teamId) {
         Random rand = new Random();
         int randomNumber = rand.nextInt(1, 4);
+
         Optional<FootballTeam> footballTeam = footballTeamRepository.findById(teamId);
         League league = new League();
         if (footballTeam.isPresent()) {
@@ -227,7 +228,9 @@ public class FootballTeamService {
                 player.setFootballTeam(footballTeam);
                 player.setFootballPlayerStatus(false);
             } else {
+
                 List<FootballPlayer> footballPlayersForSale = footballPlayerRepository.findForSalePlayersInLeagueExceptTeamId(teamId);
+
                 model.addAttribute("footballTeam", footballTeam);
                 model.addAttribute("footballPlayersForSale", footballPlayersForSale);
                 model.addAttribute("buyFootballPlayers", new ArrayList<FootballPlayer>());

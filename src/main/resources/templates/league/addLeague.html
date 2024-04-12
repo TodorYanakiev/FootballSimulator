@@ -6,6 +6,7 @@
 </head>
 <body>
 <h2>Add league</h2>
+<h3 th:text="${message!=null}?${message}"></h3>
 <form action="#" th:action="@{/league/submit}" th:object="${league}" method="post">
   <p>
     Name:
