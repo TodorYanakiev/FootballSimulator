@@ -5,10 +5,16 @@ import com.example.FootballSimulator.Constants.Position;
 import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
+import com.example.FootballSimulator.FootballTeam.FootballTeamRepository;
+import com.example.FootballSimulator.GameWeek.GameWeekRepository;
 import com.example.FootballSimulator.LineUp.LineUp;
 import com.example.FootballSimulator.Standings.Standing;
 import com.example.FootballSimulator.Standings.StandingRepository;
 import com.example.FootballSimulator.TransferSumCalculator;
+import com.example.FootballSimulator.User.User;
+import com.example.FootballSimulator.User.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -20,9 +26,19 @@ public class FootballMatchService {
 
     private StandingRepository standingsRepository;
 
-    public FootballMatchService(FootballMatchRepository footballMatchRepository, StandingRepository standingsRepository) {
+    private UserRepository userRepository;
+
+    private FootballTeamRepository footballTeamRepository;
+
+    private GameWeekRepository gameWeekRepository;
+
+    public FootballMatchService(FootballMatchRepository footballMatchRepository, StandingRepository standingsRepository,
+                                UserRepository userRepository, FootballTeamRepository footballTeamRepository, GameWeekRepository gameWeekRepository) {
         this.footballMatchRepository = footballMatchRepository;
         this.standingsRepository = standingsRepository;
+        this.userRepository = userRepository;
+        this.footballTeamRepository = footballTeamRepository;
+        this.gameWeekRepository = gameWeekRepository;
     }
 
     public String viewMatch(Long matchId, Model model) {
@@ -41,14 +57,67 @@ public class FootballMatchService {
             for (int i = 0; i < 6; i++) {
                 simulate15Minutes(footballMatch);
             }
-            updateStandings(footballMatch);
+            updateMatchAftermath(footballMatch);
             saveMatchResults(footballMatch);
+            footballMatch.setMatchStatus(Status.FINISHED);
+            footballMatchRepository.save(footballMatch);
         }
     }
 
-//    public String simulateUserMatch(FootballMatch footballMatch) {
-//
-//    }
+    public String simulateUserMatch(Long matchId, byte matchPart, Model model) {
+        Optional<FootballMatch> optionalFootballMatch = footballMatchRepository.findById(matchId);
+        if (optionalFootballMatch.isEmpty()) {
+            model.addAttribute("message", "Error finding the match");
+            return "/home";
+        }
+        FootballMatch footballMatch = optionalFootballMatch.get();
+        if (!footballMatch.getMatchStatus().equals(Status.STARTED)) {
+            model.addAttribute("message", "Error, the match is finished");
+            return "/home";
+        }
+        if (matchPart < 0 || matchPart > 5){
+            model.addAttribute("message", "Error, invalid match part.");
+            return "/home";
+        }
+        if (matchPart == 5) {
+            updateMatchAftermath(footballMatch);
+            footballMatch.setMatchStatus(Status.FINISHED);
+            footballMatchRepository.save(footballMatch);
+            return "redirect:/game-week/all/" + footballMatch.getGameWeek().getLeague().getId();
+        }
+        simulate15Minutes(footballMatch);
+        saveMatchResults(footballMatch);
+        matchPart++;
+        model.addAttribute("footballMatch", footballMatch);
+        model.addAttribute("matchPart", matchPart);
+        model.addAttribute("subs", getSubInPlayers());
+        model.addAttribute("players", getSubOutPlayers());
+        return "/football-match/play";
+    }
+
+    private List<FootballPlayer> getSubInPlayers() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.getUserByUsername(authentication.getName());
+        FootballTeam usersFootballTeam = user.getFootballTeam();
+        List<FootballPlayer> subs = usersFootballTeam.getPlayerList();
+        Map<Position, FootballPlayer> positionFootballPlayerMap = usersFootballTeam.getLineUp().getPositionFootballPlayerMap();
+        for(Map.Entry<Position, FootballPlayer> entry: positionFootballPlayerMap.entrySet()) {
+            subs.remove(entry.getValue());
+        }
+        return subs;
+    }
+
+    private List<FootballPlayer> getSubOutPlayers() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.getUserByUsername(authentication.getName());
+        FootballTeam usersFootballTeam = user.getFootballTeam();
+        Map<Position, FootballPlayer> positionFootballPlayerMap = usersFootballTeam.getLineUp().getPositionFootballPlayerMap();
+        List<FootballPlayer> subs = new ArrayList<>();
+        for(Map.Entry<Position, FootballPlayer> entry : positionFootballPlayerMap.entrySet()) {
+            subs.add(entry.getValue());
+        }
+        return subs;
+    }
 
     private void simulate15Minutes(FootballMatch footballMatch) {
         FootballTeam homeTeam = footballMatch.getHomeTeam();
@@ -117,16 +186,24 @@ public class FootballMatchService {
         return power;
     }
 
-    private void updateStandings(FootballMatch footballMatch) {
+    private void updateMatchAftermath(FootballMatch footballMatch) {
         Standing homeStanding = footballMatch.getHomeTeam().getStanding();
         Standing awayStanding = footballMatch.getAwayTeam().getStanding();
+        FootballTeam homeTeam = footballMatch.getHomeTeam();
+        FootballTeam awayTeam = footballMatch.getAwayTeam();
         if (footballMatch.getHomeTeamScore().equals(footballMatch.getAwayTeamScore())) {
             homeStanding.setPoints((byte) (homeStanding.getPoints() + 1));
             awayStanding.setPoints((byte) (awayStanding.getPoints() + 1));
+            homeTeam.setBudged(homeTeam.getBudged() + 5000000);
+            awayTeam.setBudged(awayTeam.getBudged() + 5000000);
         } else if (footballMatch.getHomeTeamScore() > footballMatch.getAwayTeamScore()) {
             homeStanding.setPoints((byte) (homeStanding.getPoints() + 3));
+            homeTeam.setBudged(homeTeam.getBudged() + 10000000);
+            awayTeam.setBudged(awayTeam.getBudged() + 2500000);
         } else {
             awayStanding.setPoints((byte) (awayStanding.getPoints() + 3));
+            homeTeam.setBudged(homeTeam.getBudged() + 2500000);
+            awayTeam.setBudged(awayTeam.getBudged() + 10000000);
         }
         homeStanding.setPlayedMatches((byte) (homeStanding.getPlayedMatches() + 1));
         homeStanding.setScoredGoals((short) (homeStanding.getScoredGoals() + footballMatch.getHomeTeamScore()));
@@ -134,10 +211,13 @@ public class FootballMatchService {
         awayStanding.setPlayedMatches((byte) (awayStanding.getPlayedMatches() + 1));
         awayStanding.setScoredGoals((short) (awayStanding.getScoredGoals() + footballMatch.getAwayTeamScore()));
         awayStanding.setConcededGoals((short) (awayStanding.getConcededGoals() + footballMatch.getHomeTeamScore()));
+        standingsRepository.save(homeStanding);
+        standingsRepository.save(awayStanding);
+        footballTeamRepository.save(homeTeam);
+        footballTeamRepository.save(awayTeam);
     }
 
     private void saveMatchResults(FootballMatch footballMatch) {
-        footballMatch.setMatchStatus(Status.FINISHED);
         footballMatchRepository.save(footballMatch);
         standingsRepository.save(footballMatch.getHomeTeam().getStanding());
         standingsRepository.save(footballMatch.getAwayTeam().getStanding());

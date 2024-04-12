@@ -1,20 +1,27 @@
 package com.example.FootballSimulator.GameWeek;
 
+import com.example.FootballSimulator.Constants.Position;
 import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballMatch.FootballMatch;
 import com.example.FootballSimulator.FootballMatch.FootballMatchRepository;
 import com.example.FootballSimulator.FootballMatch.FootballMatchService;
+import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
+import com.example.FootballSimulator.FootballPlayer.FootballPlayerRepository;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.League.League;
+import com.example.FootballSimulator.LineUp.LineUp;
+import com.example.FootballSimulator.LineUp.LineUpRepository;
 import com.example.FootballSimulator.User.User;
 import com.example.FootballSimulator.User.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -28,12 +35,19 @@ public class GameWeekService {
 
     private FootballMatchService footballMatchService;
 
+    private FootballPlayerRepository footballPlayerRepository;
+    private final LineUpRepository lineUpRepository;
+
     public GameWeekService(GameWeekRepository gameWeekRepository, FootballMatchRepository footballMatchRepository,
-                           UserRepository userRepository, FootballMatchService footballMatchService) {
+                           UserRepository userRepository, FootballMatchService footballMatchService,
+                           FootballPlayerRepository footballPlayerRepository,
+                           LineUpRepository lineUpRepository) {
         this.gameWeekRepository = gameWeekRepository;
         this.footballMatchRepository = footballMatchRepository;
         this.userRepository = userRepository;
         this.footballMatchService = footballMatchService;
+        this.footballPlayerRepository = footballPlayerRepository;
+        this.lineUpRepository = lineUpRepository;
     }
 
     public String simulateGameWeek(Long gameWeekId, Model model) {
@@ -48,22 +62,49 @@ public class GameWeekService {
             footballMatchService.simulateNonUserMatches(footballMatchesExceptUsers);
             gameWeekToBePlayed.setGameWeekStatus(Status.FINISHED);
             gameWeekRepository.save(gameWeekToBePlayed);
-            //TODO non user match
-            return footballMatchService.simulateUserMatch(userMatch);
-//            model.addAttribute("league", gameWeekToBePlayed.getLeague());
-//            return "/game-week/all-for-league";
+            if (userMatch == null) {
+                model.addAttribute("message", "Error, no user match found.");
+                return "/home";
+            }
+            userMatch.setMatchStatus(Status.STARTED);
+            footballMatchRepository.save(userMatch);
+            return footballMatchService.simulateUserMatch(userMatch.getId(), (byte) 0, model);//
         } else {
             model.addAttribute("message", "No such game week");
             return "/home";
         }
     }
 
+    public String continueMatch(Long matchId, byte matchPart, Long subIn, Long subOut, Model model) {
+        Optional<FootballMatch> optionalFootballMatch = footballMatchRepository.findById(matchId);
+        Optional<FootballPlayer> optionalFootballPlayerIn = footballPlayerRepository.findById(subIn);
+        Optional<FootballPlayer> optionalFootballPlayerOut = footballPlayerRepository.findById(subOut);
+        if (optionalFootballMatch.isEmpty()) {
+            model.addAttribute("message", "Error, invalid ids");
+            return "/home";
+        }
+        if (optionalFootballPlayerIn.isPresent() && optionalFootballPlayerOut.isPresent()) {
+            if (subIn != -1 && subOut != -1) {
+                FootballPlayer playerIn = optionalFootballPlayerIn.get();
+                FootballPlayer playerOut = optionalFootballPlayerOut.get();
+                LineUp lineUp = getUsersFootballTeam().getLineUp();
+                Map<Position, FootballPlayer> positionFootballPlayerMap = lineUp.getPositionFootballPlayerMap();
+                for (Map.Entry<Position, FootballPlayer> entry : positionFootballPlayerMap.entrySet()) {
+                    if (entry.getValue().getId() == playerOut.getId()) {
+                        positionFootballPlayerMap.replace(entry.getKey(), entry.getValue(), playerIn);
+                    }
+                }
+                lineUp.setPositionFootballPlayerMap(positionFootballPlayerMap);
+                lineUpRepository.save(lineUp);
+            }
+        }
+        return footballMatchService.simulateUserMatch(matchId, matchPart, model);
+    }
 
-    private FootballTeam getUsersFootballTeam() {
+    public FootballTeam getUsersFootballTeam() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.getUserByUsername(authentication.getName());
-        FootballTeam usersFootballTeam = user.getFootballTeam();
-        return usersFootballTeam;
+        return user.getFootballTeam();
     }
 
     public String getGameWeekToBePlayed(Model model) {

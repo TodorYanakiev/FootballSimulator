@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,5 +50,11 @@ public class GameWeekController {
     @GetMapping("/simulate-week/{gameWeekId}")
     public String simulateGameWeek(@PathVariable("gameWeekId") Long gameWeekId,  Model model) {
         return gameWeekService.simulateGameWeek(gameWeekId, model);
+    }
+
+    @GetMapping("/simulate-user-match")
+    public String simulateGameWeek(@RequestParam Long matchId, @RequestParam byte matchPart, @RequestParam Long subIn,
+                                   @RequestParam Long subOut, Model model) {
+        return gameWeekService.continueMatch(matchId, matchPart, subIn, subOut, model);
     }
 }
