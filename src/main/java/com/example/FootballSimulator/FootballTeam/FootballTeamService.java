@@ -50,25 +50,7 @@ public class FootballTeamService {
                 }
             }
         }
-//        FootballTeam footballTeam = footballTeamRepository.findById(teamId)
-//        .orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
-//        List<BaseFootballPlayer> baseFootballPlayers = (List<BaseFootballPlayer>) baseFootballPlayerRepository.findAll();
-//        League league = footballTeam.getLeague();
-//        List<FootballPlayer> footballPlayers = footballPlayerRepository.findByFootballTeam_League(league);;
-//// Create an iterator for baseFootballPlayers to safely remove elements while iterating
-//        Iterator<BaseFootballPlayer> iterator = baseFootballPlayers.iterator();
-//        while (iterator.hasNext()) {
-//            BaseFootballPlayer baseFootballPlayer = iterator.next();
-//            for (FootballPlayer footballPlayer : footballPlayers) {
-//                if (baseFootballPlayer.getId().equals(footballPlayer.getBaseFootballPlayer().getId())) {
-//                   iterator.remove(); // Remove the base football player
-//                    break; // Exit the inner loop as the player is found
-//                }
-//            }
-//        }
         model.addAttribute("footballTeam", footballTeam);
-        model.addAttribute("allBaseFootballPlayers", baseFootballPlayerRepository.findAll());
-        model.addAttribute("baseFootballPlayers", new ArrayList<BaseFootballPlayer>());
         model.addAttribute("allBaseFootballPlayers",removeSelectedPlayersFromBaseFPList(teamId));
         model.addAttribute("baseFootballPlayers",new ArrayList<BaseFootballPlayer>());
         return "/football-team/add-players";
@@ -90,7 +72,7 @@ public class FootballTeamService {
 
     public void chooseAwayFootballPlayersForSale(@RequestParam("teamId") Long teamId) {
         Random rand = new Random();
-        int randomNumber = rand.nextInt(5) + 1;
+        int randomNumber = rand.nextInt(1,4);
         List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllExceptTeamId(teamId);
         List<FootballPlayer> allFootballPlayersExceptCurrentTeam = new ArrayList<>();
         for (FootballTeam team : allTeamsExceptCurrent) {
@@ -98,21 +80,30 @@ public class FootballTeamService {
         }
         List<FootballPlayer> selectedFootballPlayers = getRandomFootballPlayers(allFootballPlayersExceptCurrentTeam, randomNumber);
         for (FootballPlayer player : selectedFootballPlayers) {
-            player.setFootballPlayerStatus(true);
-            footballPlayerRepository.save(player);
+            if (player.getFootballTeam().getPlayerList().size() > 11) {
+                player.setFootballPlayerStatus(true);
+                footballPlayerRepository.save(player);
+            }
         }
     }
-    public void buyFootballPlayerForAwayTeam(@RequestParam("teamId") Long teamId){
+    public void buyFootballPlayerForAwayTeam(@RequestParam("teamId") Long teamId,Model model){
+        Random random = new Random();
         List<FootballPlayer> footballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
         List<FootballPlayer> footballPlayersForSale = findPlayersByStatus(footballPlayers);
         List<FootballTeam> allTeamsExceptCurrent = footballTeamRepository.findAllExceptTeamId(teamId);
         List<FootballTeam> randomTeams = getRandomFootballTeam(allTeamsExceptCurrent, footballPlayersForSale.size());
         for (int i = 0; i < footballPlayersForSale.size(); i++) {
-            randomTeams.get(i).setBudged(randomTeams.get(i).getBudged() - footballPlayersForSale.get(i).getPrice());
-            footballPlayersForSale.get(i).getFootballTeam().setBudged(footballPlayersForSale.get(i).getFootballTeam().getBudged() + footballPlayersForSale.get(i).getPrice());
-            footballPlayersForSale.get(i).setFootballTeam(randomTeams.get(i));
-            footballPlayersForSale.get(i).setFootballPlayerStatus(false);
-            footballPlayerRepository.save(footballPlayersForSale.get(i));
+            int rand = random.nextInt(0,randomTeams.size());
+            if (randomTeams.get(rand).getBudged() > footballPlayers.get(i).getPrice()) {
+                randomTeams.get(rand).setBudged(randomTeams.get(rand).getBudged() - footballPlayersForSale.get(i).getPrice());
+                footballPlayersForSale.get(i).getFootballTeam().setBudged(footballPlayersForSale.get(i).getFootballTeam().getBudged() + footballPlayersForSale.get(i).getPrice());
+                footballPlayersForSale.get(i).setFootballTeam(randomTeams.get(rand));
+                footballPlayersForSale.get(i).setFootballPlayerStatus(false);
+               // footballPlayerRepository.save(footballPlayersForSale.get(i));
+            }
+            else{
+                model.addAttribute("theBudgetIsNotEnough","The budget is not enough!");
+            }
         }
 
     }
@@ -138,25 +129,48 @@ public class FootballTeamService {
     public String chooseFootballPlayersForSale(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
         model.addAttribute("footballTeam", footballTeam);
-        model.addAttribute("allFootballPlayersOfTheTeam", footballPlayerRepository.getPlayersByTeamId(teamId));
+        model.addAttribute("allFootballPlayersOfTheTeam", findAvailablePlayersByTeamId(teamId));
         model.addAttribute("footballPlayersForSale", new ArrayList<FootballPlayer>());
         return "/football-team/sale-players";
     }
+public List<FootballPlayer> findAvailablePlayersByTeamId(Long teamId) {
+    List<FootballPlayer> footballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
+    List<FootballPlayer> availablePlayers = new ArrayList<>();
 
-    public String getAllFootballPlayersForSale(@RequestParam("teamId") Long teamId, Model model) {
+    for (FootballPlayer player : footballPlayers) {
+        if (!player.isFootballPlayerStatus()) {
+            availablePlayers.add(player);
+        }
+    }
+
+    return availablePlayers;
+}
+
+    public String getAllFootballPlayersForSale(@PathVariable("teamId") Long teamId, Model model) {
         List<FootballPlayer> footballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
         model.addAttribute("allFootballPlayers", findPlayersByStatus(footballPlayers));
         return "/football-team/show-players-for-sale";
     }
 
     public String saleFootballPlayers(@RequestParam("teamId") Long teamId, Model model, @RequestParam("selectedFootballPlayersIds") List<Long> selectedFootballPlayerIds) {
+        FootballTeam footballTeam = footballTeamRepository.findById(teamId).orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
+
         List<FootballPlayer> selectedFootballPlayer = footballPlayerRepository.findAllByIdIn(selectedFootballPlayerIds);
-        for (int i = 0; i < selectedFootballPlayer.size(); i++) {
-            selectedFootballPlayer.get(i).setFootballPlayerStatus(true);
-            footballPlayerRepository.save(selectedFootballPlayer.get(i));
-        }
+
+            for (int i = 0; i < selectedFootballPlayer.size(); i++) {
+                if (footballTeam.getPlayerList().size() > 11) {
+                    selectedFootballPlayer.get(i).setFootballPlayerStatus(true);
+                    footballPlayerRepository.save(selectedFootballPlayer.get(i));
+                }
+                else{
+                    model.addAttribute("message","You don't have enough players!");
+                }
+            }
+
         chooseAwayFootballPlayersForSale(teamId);
-        return "redirect:/football-team/getFootballPlayersForSale?teamId=" + teamId;
+        List<FootballPlayer> footballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
+        model.addAttribute("allFootballPlayers", findPlayersByStatus(footballPlayers));
+        return "/football-team/show-players-for-sale";
     }
 
     public static List<FootballPlayer> findPlayersByStatus(List<FootballPlayer> players) {
@@ -179,12 +193,11 @@ public class FootballTeamService {
         return "/football-team/buy-football-players";
     }
 
-    public String showBoughtPlayers(@RequestParam("teamId") Long teamId, Model model) {
+    public String showBoughtPlayers(@PathVariable("teamId") Long teamId, Model model) {
         FootballTeam footballTeam = footballTeamRepository.findById(teamId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid team ID"));
         List<FootballPlayer> boughtFootballPlayers = footballPlayerRepository.getPlayersByTeamId(teamId);
         model.addAttribute("boughtFootballPlayers", boughtFootballPlayers);
-
         return "/football-team/show-bought-players";
     }
 
@@ -200,12 +213,18 @@ public class FootballTeamService {
                 player.setFootballPlayerStatus(false);
             }
             else{
+                List<FootballPlayer> footballPlayersForSale = footballPlayerRepository.findForSalePlayersExceptTeamId(teamId);
+                model.addAttribute("footballTeam", footballTeam);
+                model.addAttribute("footballPlayersForSale", footballPlayersForSale);
+                model.addAttribute("buyFootballPlayers", new ArrayList<FootballPlayer>());
                 model.addAttribute("theBudgetIsNotEnough","The budget is not enough!");
+                return "/football-team/buy-football-players";
             }
         }
         footballPlayerRepository.saveAll(boughtFootballPlayers);
-        buyFootballPlayerForAwayTeam(teamId);
-        return "redirect:/football-team/show-bought-players?teamId=" + teamId;
+        buyFootballPlayerForAwayTeam(teamId,model);
+        model.addAttribute("boughtFootballPlayers", boughtFootballPlayers);
+        return  "redirect:/football-team/players/"+teamId;
     }
 
     public String getAllFootballPlayers(@RequestParam("teamId") Long teamId, Model model) {
@@ -240,13 +259,6 @@ public class FootballTeamService {
         }
         return "redirect:/football-team/getFootballPlayers?teamId=" + teamId;
     }
-
-    //    public List<FootballPlayer> findByLeagueId(League league) {
-//        String jpql = "SELECT fp FROM FootballPlayer fp WHERE fp.footballTeam.league = :league";
-//        TypedQuery<FootballPlayer> query = entityManager.createQuery(jpql, FootballPlayer.class);
-//        query.setParameter("league", league);
-//        return query.getResultList();
-//    }
 
     public String viewTeam(Long teamId, Model model) {
         Optional<FootballTeam> optionalFootballTeam = footballTeamRepository.findById(teamId);

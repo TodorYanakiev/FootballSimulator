@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title th:text="${footballTeam.baseFootballTeam.baseTeamName}"></title>
@@ -10,6 +10,12 @@
   <p th:text="'Team id: ' + ${footballTeam.id}"></p>
   <p th:text="'Name: ' + ${footballTeam.baseFootballTeam.baseTeamName}"></p>
   <p th:text="'League: ' + ${footballTeam.league.name}"></p>
+<div sec:authorize="hasRole('ROLE_USER')">
+    <td><a th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a></td>
+    <td><a th:href="@{/football-team/saleFootballPlayers/{teamId}(teamId=${footballTeam.id})}">Sell players</a></td>
+    <td><a th:href="@{/football-team/getFootballPlayersForSale/{teamId}(teamId=${footballTeam.id})}">See players for sale</a></td>
+    <td><a th:href="@{/football-team/buy-players-for-home-team/{teamId}(teamId=${footballTeam.id})}">Buy players</a></td>
+</div>
 <!--  players-->
 </body>
 </html>
