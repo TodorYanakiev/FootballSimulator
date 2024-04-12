@@ -56,8 +56,8 @@ public class FootballTeamController {
         return footballTeamService.chooseFootballPlayersForSale(teamId,model);
 
     }
-    @GetMapping("/getFootballPlayersForSale")
-    public String getAllFootballPlayersForSale(@RequestParam("teamId") Long teamId,Model model) {
+    @GetMapping("/getFootballPlayersForSale/{teamId}")
+    public String getAllFootballPlayersForSale(@PathVariable("teamId") Long teamId,Model model) {
         return footballTeamService.getAllFootballPlayersForSale(teamId,model);
     }
 
@@ -73,8 +73,8 @@ public class FootballTeamController {
     public String buyFootballPlayersForHomeTeam(@PathVariable("teamId") Long teamId,Model model){
        return footballTeamService.buyFootballPlayersForHomeTeam(teamId,model);
     }
-    @GetMapping("/show-bought-players")
-    public String showBoughtPlayers(@RequestParam("teamId") Long teamId,Model model){
+    @GetMapping("/show-bought-players/{teamId}")
+    public String showBoughtPlayers(@PathVariable("teamId") Long teamId,Model model){
         return footballTeamService.showBoughtPlayers(teamId,model);
     }
     @PostMapping("/buy")

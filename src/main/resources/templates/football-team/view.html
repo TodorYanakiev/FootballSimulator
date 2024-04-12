@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title th:text="${footballTeam != null} ? ${footballTeam.baseFootballTeam.baseTeamName} : ''"></title>
@@ -13,6 +13,10 @@
 <a th:href="@{/line-up/delete/{lineUpId}(lineUpId=${footballTeam != null && footballTeam.lineUp != null} ? ${footballTeam.lineUp.id} : '-1')}">Delete line-up</a>
 <a th:href="@{/line-up/add/{teamId}(teamId=${footballTeam != null} ? ${footballTeam.id} : '')}">Add/View line-up</a>
 <a th:href="@{/game-week/simulate-week}">Play next match</a>
+<a th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a>
+<a th:href="@{/football-team/saleFootballPlayers/{teamId}(teamId=${footballTeam.id})}">Sell players</a>
+<a th:href="@{/football-team/getFootballPlayersForSale/{teamId}(teamId=${footballTeam.id})}">See players for sale</a>
+<a th:href="@{/football-team/buy-players-for-home-team/{teamId}(teamId=${footballTeam.id})}">Buy players</a>
 <!--  players-->
 </body>
 </html>
