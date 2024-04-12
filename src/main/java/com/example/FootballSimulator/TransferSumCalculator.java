@@ -8,7 +8,7 @@ import java.util.Random;
 public class TransferSumCalculator {
     public Integer getTransferSumForPlayer(FootballPlayer player) {
         Double transferSum = 0.0;
-        Byte overall = calculatePlayerOverall(player);
+        Byte overall = calculatePlayerOverall(player, player.getBaseFootballPlayer().getPosition());
         transferSum = (double)1000000 * overall;
         if (overall < 60) {
             transferSum /= 100;
@@ -35,8 +35,7 @@ public class TransferSumCalculator {
         return sum;
     }
 
-    private Byte calculatePlayerOverall(FootballPlayer player) {
-        Position position = player.getBaseFootballPlayer().getPosition();
+    public Byte calculatePlayerOverall(FootballPlayer player, Position position) {
         Byte overall = 0;
         if (position.equals(Position.GK)) {
             overall = (byte) (0.9 * (player.getGoalkeeping()) + 0.05 * player.getPositioning() + 0.05 * player.getPassing());

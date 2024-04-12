@@ -6,6 +6,7 @@ import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.GameWeek.GameWeek;
 import com.example.FootballSimulator.Standings.Standing;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 import java.util.Stack;

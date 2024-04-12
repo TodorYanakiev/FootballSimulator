@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Play match</title>
+</head>
+<body>
+<h3 th:text="${footballMatch.getHomeTeam().getBaseFootballTeam().getBaseTeamName()} + ' : ' + ${footballMatch.getAwayTeam().getBaseFootballTeam().getBaseTeamName()}"></h3>
+<p th:text="'Result: ' + ${footballMatch.homeTeamScore} + '-' + ${footballMatch.awayTeamScore}"></p>
+<p th:text="'Attacks: ' + ${footballMatch.homeAttacks} + '-' + ${footballMatch.awayAttacks}"></p>
+<p th:text="'Dangerous attacks: ' + ${footballMatch.dangerHomeAttacks} + '-' + ${footballMatch.dangerAwayAttacks}"></p>
+<p th:text="'Shots: ' + ${footballMatch.homeShots} + '-' + ${footballMatch.awayShots}"></p>
+<p th:text="${footballMatch.matchStatus}"></p>
+<p th:text="'Current Minute: ' + (${matchPart} * 15)"></p>
+<form th:action="@{/game-week/simulate-user-match}" method="get">
+    <label for="subIn">Substitute In:</label>
+    <select name="subIn" id="subIn">
+        <option value="-1">None</option>
+        <option th:each="player : ${subs}" th:value="${player.id}" th:text="${player.baseFootballPlayer.firstName} + ' ' + ${player.baseFootballPlayer.lastName}"></option>
+    </select>
+    <label for="subOut">Substitute Out:</label>
+    <select name="subOut" id="subOut">
+        <option value="-1">None</option>
+        <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.baseFootballPlayer.firstName} + ' ' + ${player.baseFootballPlayer.lastName}"></option>
+    </select><br>
+    <input type="hidden" name="matchPart" th:value="${matchPart}">
+    <input type="hidden" name="matchId" th:value="${footballMatch.id}">
+    <input type="submit" value="Continue match">
+</form>
+</body>
+</html>
