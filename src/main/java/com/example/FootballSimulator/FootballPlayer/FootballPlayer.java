@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 @Entity
 public class FootballPlayer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
 

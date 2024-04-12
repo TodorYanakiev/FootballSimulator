@@ -1,20 +1,17 @@
 package com.example.FootballSimulator.League;
 
 import com.example.FootballSimulator.Constants.Status;
-import com.example.FootballSimulator.FootballPlayer.FootballPlayerController;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.GameWeek.GameWeek;
 import com.example.FootballSimulator.Standings.Standing;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 
 import java.util.List;
-import java.util.Stack;
 
 @Entity
 public class League {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;
