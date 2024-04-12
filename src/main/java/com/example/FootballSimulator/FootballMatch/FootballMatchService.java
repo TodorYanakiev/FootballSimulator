@@ -217,13 +217,13 @@ public class FootballMatchService {
         footballTeamRepository.save(awayTeam);
     }
 
-    private void saveMatchResults(FootballMatch footballMatch) {
+    public void saveMatchResults(FootballMatch footballMatch) {
         footballMatchRepository.save(footballMatch);
         standingsRepository.save(footballMatch.getHomeTeam().getStanding());
         standingsRepository.save(footballMatch.getAwayTeam().getStanding());
     }
 
-    private Map<Position, FootballPlayer> getMidfieldLine(LineUp lineUp) {
+    public Map<Position, FootballPlayer> getMidfieldLine(LineUp lineUp) {
         Map<Position, FootballPlayer> midfieldLineMap = new HashMap<>();
         Map<Position, FootballPlayer> positionFootballPlayerMap = lineUp.getPositionFootballPlayerMap();
         for (Map.Entry<Position, FootballPlayer> entry : positionFootballPlayerMap.entrySet()) {
@@ -236,7 +236,7 @@ public class FootballMatchService {
         return midfieldLineMap;
     }
 
-    private Map<Position, FootballPlayer> getAttackLine(LineUp lineUp) {
+    public Map<Position, FootballPlayer> getAttackLine(LineUp lineUp) {
         Map<Position, FootballPlayer> attackLineMap = new HashMap<>();
         Map<Position, FootballPlayer> positionFootballPlayerMap = lineUp.getPositionFootballPlayerMap();
         for (Map.Entry<Position, FootballPlayer> entry : positionFootballPlayerMap.entrySet()) {
@@ -249,7 +249,7 @@ public class FootballMatchService {
         return attackLineMap;
     }
 
-    private Map<Position, FootballPlayer> getDefenseLine(LineUp lineUp) {
+    public Map<Position, FootballPlayer> getDefenseLine(LineUp lineUp) {
         Map<Position, FootballPlayer> defenseLineMap = new HashMap<>();
         Map<Position, FootballPlayer> positionFootballPlayerMap = lineUp.getPositionFootballPlayerMap();
         for (Map.Entry<Position, FootballPlayer> entry : positionFootballPlayerMap.entrySet()) {
@@ -262,7 +262,7 @@ public class FootballMatchService {
         return defenseLineMap;
     }
 
-    private Map<Position, FootballPlayer> getGoalkeeper(LineUp lineUp) {
+    public Map<Position, FootballPlayer> getGoalkeeper(LineUp lineUp) {
         Map<Position, FootballPlayer> goalkeeperMap = new HashMap<>();
         Map<Position, FootballPlayer> positionFootballPlayerMap = lineUp.getPositionFootballPlayerMap();
         for (Map.Entry<Position, FootballPlayer> entry : positionFootballPlayerMap.entrySet()) {

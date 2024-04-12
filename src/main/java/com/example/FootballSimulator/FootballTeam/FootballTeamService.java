@@ -118,7 +118,7 @@ public class FootballTeamService {
 
     }
 
-    private List<FootballPlayer> getRandomFootballPlayers(List<FootballPlayer> players, int count) {
+    public List<FootballPlayer> getRandomFootballPlayers(List<FootballPlayer> players, int count) {
         List<FootballPlayer> randomPlayers = new ArrayList<>();
         Collections.shuffle(players);
         for (int i = 0; i < count && i < players.size(); i++) {
@@ -127,7 +127,7 @@ public class FootballTeamService {
         return randomPlayers;
     }
 
-    private List<FootballTeam> getRandomFootballTeam(List<FootballTeam> teams, int count) {
+    public List<FootballTeam> getRandomFootballTeam(List<FootballTeam> teams, int count) {
         List<FootballTeam> randomTeams = new ArrayList<>();
         Collections.shuffle(teams);
         for (int i = 0; i < count && i < teams.size(); i++) {
