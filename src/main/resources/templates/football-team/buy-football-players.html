@@ -1,26 +1,65 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Buy</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>Buy football players</h2>-->
+<!--<form action="#" th:action="@{/football-team/buy}" th:object="${footballTeam}" method="post">-->
+<!--  <div th:if="${theBudgetIsNotEnough}" class="error-message">-->
+<!--    <p th:text="${theBudgetIsNotEnough}"></p>-->
+<!--  </div>-->
+<!--  <input type="hidden" name="teamId" th:value="${footballTeam.id}">-->
+<!--  <p>-->
+<!--    Football Players:-->
+<!--    <select name="selectedFootballPlayersIds" multiple>-->
+<!--      <option th:each="footballPlayer : ${footballPlayersForSale}"-->
+<!--              th:value="${footballPlayer.id}"-->
+<!--              th:text="${footballPlayer.baseFootballPlayer.firstName}">Football player name</option>-->
+<!--    </select>-->
+<!--  </p>-->
+<!--  <input type="submit" value="Buy">-->
+<!--</form>-->
+<!--</body>-->
+<!--<footer th:insert="fragments/footer.html ::footer"></footer>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Buy</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+        .error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-<h2>Buy football players</h2>
-<form action="#" th:action="@{/football-team/buy}" th:object="${footballTeam}" method="post">
-  <div th:if="${theBudgetIsNotEnough}" class="error-message">
-    <p th:text="${theBudgetIsNotEnough}"></p>
-  </div>
-  <input type="hidden" name="teamId" th:value="${footballTeam.id}">
-  <p>
-    Football Players:
-    <select name="selectedFootballPlayersIds" multiple>
-      <option th:each="footballPlayer : ${footballPlayersForSale}"
-              th:value="${footballPlayer.id}"
-              th:text="${footballPlayer.baseFootballPlayer.firstName}">Football player name</option>
-    </select>
-  </p>
-  <input type="submit" value="Buy">
-</form>
+<div class="container mt-5">
+  <h2>Buy football players</h2>
+  <form action="#" th:action="@{/football-team/buy}" th:object="${footballTeam}" method="post">
+    <div th:if="${theBudgetIsNotEnough}" class="error-message">
+      <p th:text="${theBudgetIsNotEnough}"></p>
+    </div>
+    <input type="hidden" name="teamId" th:value="${footballTeam.id}">
+    <div class="form-group">
+      <label for="selectedFootballPlayersIds">Football Players:</label>
+      <select class="form-control" id="selectedFootballPlayersIds" name="selectedFootballPlayersIds" multiple>
+        <option th:each="footballPlayer : ${footballPlayersForSale}"
+                th:value="${footballPlayer.id}"
+                th:text="${footballPlayer.baseFootballPlayer.firstName}"></option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Buy</button>
+  </form>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 <footer th:insert="fragments/footer.html ::footer"></footer>
 </html>

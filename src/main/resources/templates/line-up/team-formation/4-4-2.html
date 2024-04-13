@@ -1,25 +1,54 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Add players</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>Add players to line up:</h2>-->
+<!--<h3 th:text="${message != null ? message : ''}"></h3>-->
+<!--<form action="#" th:action="@{/line-up/submit}" th:object="${lineUp}" method="post">-->
+<!--  <input type="hidden" th:field="*{footballTeam}" th:value="${lineUp.footballTeam != null ? lineUp.footballTeam.id : ''}"/>-->
+<!--  <input type="hidden" th:field="*{footballFormation}" th:value="${lineUp.footballFormation != null ? lineUp.footballFormation.name : ''}"/>-->
+<!--  <div th:if="${lineUp != null and lineUp.positionFootballPlayerMap != null}">-->
+<!--    <div th:each="position : ${lineUp.positionFootballPlayerMap.keySet()}">-->
+<!--      <label th:text="${position}"></label>-->
+<!--      <select th:field="*{positionFootballPlayerMap[__${position}__]}" name="players" id="players">-->
+<!--        <option value="" disabled selected>Select Player</option>-->
+<!--        <option th:each="player : ${allPlayers != null ? allPlayers : {}}" th:value="${player != null ? player.id : ''}" th:text="${player != null ? (player.getBaseFootballPlayer().lastName + ' - ' + player.getBaseFootballPlayer().getPosition()) : ''}"></option>-->
+<!--      </select>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <p><input type="submit" value="Save line-up"/></p>-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Add players</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h2>Add players to line up:</h2>
-<h3 th:text="${message != null ? message : ''}"></h3>
-<form action="#" th:action="@{/line-up/submit}" th:object="${lineUp}" method="post">
-  <input type="hidden" th:field="*{footballTeam}" th:value="${lineUp.footballTeam != null ? lineUp.footballTeam.id : ''}"/>
-  <input type="hidden" th:field="*{footballFormation}" th:value="${lineUp.footballFormation != null ? lineUp.footballFormation.name : ''}"/>
-  <div th:if="${lineUp != null and lineUp.positionFootballPlayerMap != null}">
-    <div th:each="position : ${lineUp.positionFootballPlayerMap.keySet()}">
-      <label th:text="${position}"></label>
-      <select th:field="*{positionFootballPlayerMap[__${position}__]}" name="players" id="players">
-        <option value="" disabled selected>Select Player</option>
-        <option th:each="player : ${allPlayers != null ? allPlayers : {}}" th:value="${player != null ? player.id : ''}" th:text="${player != null ? (player.getBaseFootballPlayer().lastName + ' - ' + player.getBaseFootballPlayer().getPosition()) : ''}"></option>
-      </select>
+<div class="container mt-5">
+  <h2>Add players to line up:</h2>
+  <h3 th:text="${message != null ? message : ''}"></h3>
+  <form action="#" th:action="@{/line-up/submit}" th:object="${lineUp}" method="post">
+    <input type="hidden" th:field="*{footballTeam}" th:value="${lineUp.footballTeam != null ? lineUp.footballTeam.id : ''}"/>
+    <input type="hidden" th:field="*{footballFormation}" th:value="${lineUp.footballFormation != null ? lineUp.footballFormation.name : ''}"/>
+    <div th:if="${lineUp != null and lineUp.positionFootballPlayerMap != null}">
+      <div class="form-group" th:each="position : ${lineUp.positionFootballPlayerMap.keySet()}">
+        <label th:text="${position}"></label>
+        <select class="form-control" th:field="*{positionFootballPlayerMap[__${position}__]}" name="players" id="players">
+          <option value="" disabled selected>Select Player</option>
+          <option th:each="player : ${allPlayers != null ? allPlayers : {}}" th:value="${player != null ? player.id : ''}" th:text="${player != null ? (player.getBaseFootballPlayer().lastName + ' - ' + player.getBaseFootballPlayer().getPosition()) : ''}"></option>
+        </select>
+      </div>
     </div>
-  </div>
-  <p><input type="submit" value="Save line-up"/></p>
-</form>
+    <button type="submit" class="btn btn-primary">Save line-up</button>
+  </form>
+</div>
 </body>
 </html>

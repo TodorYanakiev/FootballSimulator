@@ -1,16 +1,39 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Match</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h3 th:text="${footballMatch.getHomeTeam().getBaseFootballTeam().getBaseTeamName()} + ' : ' + ${footballMatch.getAwayTeam().getBaseFootballTeam().getBaseTeamName()}"></h3>-->
+<!--<p th:text="'Result: ' + ${footballMatch.homeTeamScore} + '-' + ${footballMatch.awayTeamScore}"></p>-->
+<!--<p th:text="'Attacks: ' + ${footballMatch.homeAttacks} + '-' + ${footballMatch.awayAttacks}"></p>-->
+<!--<p th:text="'Dangerous attacks: ' + ${footballMatch.dangerHomeAttacks} + '-' + ${footballMatch.dangerAwayAttacks}"></p>-->
+<!--<p th:text="'Shots: ' + ${footballMatch.homeShots} + '-' + ${footballMatch.awayShots}"></p>-->
+<!--<p th:text="${footballMatch.matchStatus}"></p>-->
+<!--</body>-->
+<!--<footer th:insert="fragments/footer.html ::footer"></footer>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Match</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h3 th:text="${footballMatch.getHomeTeam().getBaseFootballTeam().getBaseTeamName()} + ' : ' + ${footballMatch.getAwayTeam().getBaseFootballTeam().getBaseTeamName()}"></h3>
-<p th:text="'Result: ' + ${footballMatch.homeTeamScore} + '-' + ${footballMatch.awayTeamScore}"></p>
-<p th:text="'Attacks: ' + ${footballMatch.homeAttacks} + '-' + ${footballMatch.awayAttacks}"></p>
-<p th:text="'Dangerous attacks: ' + ${footballMatch.dangerHomeAttacks} + '-' + ${footballMatch.dangerAwayAttacks}"></p>
-<p th:text="'Shots: ' + ${footballMatch.homeShots} + '-' + ${footballMatch.awayShots}"></p>
-<p th:text="${footballMatch.matchStatus}"></p>
+<div class="container mt-5">
+    <h3 th:text="${footballMatch.getHomeTeam().getBaseFootballTeam().getBaseTeamName()} + ' : ' + ${footballMatch.getAwayTeam().getBaseFootballTeam().getBaseTeamName()}"></h3>
+    <p th:text="'Result: ' + ${footballMatch.homeTeamScore} + '-' + ${footballMatch.awayTeamScore}"></p>
+    <p th:text="'Attacks: ' + ${footballMatch.homeAttacks} + '-' + ${footballMatch.awayAttacks}"></p>
+    <p th:text="'Dangerous attacks: ' + ${footballMatch.dangerHomeAttacks} + '-' + ${footballMatch.dangerAwayAttacks}"></p>
+    <p th:text="'Shots: ' + ${footballMatch.homeShots} + '-' + ${footballMatch.awayShots}"></p>
+    <p th:text="${footballMatch.matchStatus}"></p>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 <footer th:insert="fragments/footer.html ::footer"></footer>
 </html>

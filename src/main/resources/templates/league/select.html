@@ -1,24 +1,53 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Select team</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h3 th:text="${message!=null}?${message}"></h3>-->
+<!--<h2>Select team:</h2>-->
+<!--  <table>-->
+<!--    <thead>-->
+<!--      <tr>-->
+<!--        <th>League name</th>-->
+<!--      </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--      <tr th:each="league : ${leagues}">-->
+<!--        <td th:text="${league.name}"></td>-->
+<!--        <td><a th:href="@{/football-team/all-available/{leagueId}(leagueId=${league.id})}">View and select team</a></td>-->
+<!--      </tr>-->
+<!--    </tbody>-->
+<!--  </table>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Select team</title>
+  <meta charset="UTF-8">
+  <title>Select team</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h3 th:text="${message!=null}?${message}"></h3>
-<h2>Select team:</h2>
-  <table>
+<div class="container mt-5">
+  <h3 th:text="${message!=null}?${message}"></h3>
+  <h2>Select team:</h2>
+  <table class="table">
     <thead>
-      <tr>
-        <th>League name</th>
-      </tr>
+    <tr>
+      <th>League name</th>
+      <th>Action</th>
+    </tr>
     </thead>
     <tbody>
-      <tr th:each="league : ${leagues}">
-        <td th:text="${league.name}"></td>
-        <td><a th:href="@{/football-team/all-available/{leagueId}(leagueId=${league.id})}">View and select team</a></td>
-      </tr>
+    <tr th:each="league : ${leagues}">
+      <td th:text="${league.name}"></td>
+      <td><a class="btn btn-primary" th:href="@{/football-team/all-available/{leagueId}(leagueId=${league.id})}">View and select team</a></td>
+    </tr>
     </tbody>
   </table>
+</div>
 </body>
 </html>
