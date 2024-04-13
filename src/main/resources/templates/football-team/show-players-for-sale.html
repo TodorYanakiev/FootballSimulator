@@ -1,28 +1,63 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>All players for sale</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>All players for sale</h2>-->
+<!--<h3 th:text="${message != null} ? ${message} : ''"></h3>-->
+<!--<table>-->
+<!--  <thead>-->
+<!--  <tr>-->
+<!--    <th>Id</th>-->
+<!--    <th>First Name</th>-->
+<!--    <th>Last Name</th>-->
+<!--  </tr>-->
+<!--  </thead>-->
+<!--  <tbody>-->
+<!--  <tr th:each="player : ${allFootballPlayers}">-->
+<!--    <td th:text="${player.getId()}"></td>-->
+<!--    <td th:text="${player.baseFootballPlayer.firstName}"></td>-->
+<!--    <td th:text="${player.baseFootballPlayer.lastName}"></td>-->
+<!--  </tr>-->
+<!--  </tbody>-->
+<!--</table>-->
+<!--</body>-->
+<!--<footer th:insert="fragments/footer.html ::footer"></footer>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>All players for sale</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h2>All players for sale</h2>
-<h3 th:text="${message != null} ? ${message} : ''"></h3>
-<table>
-  <thead>
-  <tr>
-    <th>Id</th>
-    <th>First Name</th>
-    <th>Last Name</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="player : ${allFootballPlayers}">
-    <td th:text="${player.getId()}"></td>
-    <td th:text="${player.baseFootballPlayer.firstName}"></td>
-    <td th:text="${player.baseFootballPlayer.lastName}"></td>
-  </tr>
-  </tbody>
-</table>
+<div class="container mt-5">
+  <h2>All players for sale</h2>
+  <h3 th:if="${message != null}" th:text="${message}"></h3>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="player : ${allFootballPlayers}">
+      <td th:text="${player.getId()}"></td>
+      <td th:text="${player.baseFootballPlayer.firstName}"></td>
+      <td th:text="${player.baseFootballPlayer.lastName}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 <footer th:insert="fragments/footer.html ::footer"></footer>
 </html>

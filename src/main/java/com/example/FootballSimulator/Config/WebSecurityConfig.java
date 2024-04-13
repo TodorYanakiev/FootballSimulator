@@ -31,7 +31,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/league/select", "/football-team/select-team/**","/football-team/saleFootballPlayers/**","/football-team/getFootballPlayersForSale"
-                                , "/football-team/buy-players-for-home-team/**","/football-team/show-bought-players").hasAuthority("ROLE_USER")
+                                , "/football-team/buy-players-for-home-team/**","/football-team/show-bought-players","/game-week/simulate**").hasAuthority("ROLE_USER")
                         .requestMatchers("/base**", "/league/add", "/league/submit", "/league/start/**",
                                 "/football-team/add/**", "/football-team/submit").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/league/get", "/football-team/all/**", "/football-team/players/**",

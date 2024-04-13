@@ -1,37 +1,83 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title th:text="${league.getName()}"></title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h3 th:text="${league.getName()}"> teams:</h3>-->
+<!--<table>-->
+<!--  <thead>-->
+<!--  <tr>-->
+<!--    <th>Id</th>-->
+<!--    <th>Name</th>-->
+<!--    <th>Budged</th>-->
+<!--    <th>Options</th>-->
+<!--  </tr>-->
+<!--  </thead>-->
+<!--  <tbody>-->
+<!--  <tr th:each="footballTeam : ${footballTeams}">-->
+<!--    <td th:text="${footballTeam.getId()}"></td>-->
+<!--    <td th:text="${footballTeam.getBaseFootballTeam().getBaseTeamName()}"></td>-->
+<!--    <td th:text="${footballTeam.getBudged()}"></td>-->
+<!--    <div sec:authorize="hasRole('ROLE_ADMIN')">-->
+<!--      <td><a th:href="@{/football-team/add/{teamId}(teamId=${footballTeam.id})}">Add players</a></td>-->
+<!--      <td><a th:href="@{/line-up/add/{teamId}(teamId=${footballTeam.id})}">Add/View line-up</a></td>-->
+<!--      <td><a th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a></td>-->
+<!--    </div>-->
+<!--    <div sec:authorize="hasRole('ROLE_USER')">-->
+<!--      <td><a th:href="@{/football-team/select-team/{teamId}(teamId=${footballTeam.id})}">Manage team</a></td>-->
+<!--      <td><a th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a></td>-->
+<!--    </div>-->
+<!--  </tr>-->
+<!--  </tbody>-->
+<!--</table>-->
+<!--</body>-->
+<!--<footer th:insert="fragments/footer.html ::footer"></footer>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title th:text="${league.getName()}"></title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h3 th:text="${league.getName()}"> teams:</h3>
-<table>
-  <thead>
-  <tr>
-    <th>Id</th>
-    <th>Name</th>
-    <th>Budged</th>
-    <th>Options</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="footballTeam : ${footballTeams}">
-    <td th:text="${footballTeam.getId()}"></td>
-    <td th:text="${footballTeam.getBaseFootballTeam().getBaseTeamName()}"></td>
-    <td th:text="${footballTeam.getBudged()}"></td>
-    <div sec:authorize="hasRole('ROLE_ADMIN')">
-      <td><a th:href="@{/football-team/add/{teamId}(teamId=${footballTeam.id})}">Add players</a></td>
-      <td><a th:href="@{/line-up/add/{teamId}(teamId=${footballTeam.id})}">Add/View line-up</a></td>
-      <td><a th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a></td>
-    </div>
-    <div sec:authorize="hasRole('ROLE_USER')">
-      <td><a th:href="@{/football-team/select-team/{teamId}(teamId=${footballTeam.id})}">Manage team</a></td>
-      <td><a th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a></td>
-    </div>
-  </tr>
-  </tbody>
-</table>
+<div class="container mt-5">
+  <h3 th:text="${league.getName()} + ' teams:'"></h3>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Budget</th>
+      <th>Options</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="footballTeam : ${footballTeams}">
+      <td th:text="${footballTeam.getId()}"></td>
+      <td th:text="${footballTeam.getBaseFootballTeam().getBaseTeamName()}"></td>
+      <td th:text="${footballTeam.getBudged()}"></td>
+      <td>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+          <a class="btn btn-primary" th:href="@{/football-team/add/{teamId}(teamId=${footballTeam.id})}">Add players</a>
+          <a class="btn btn-primary" th:href="@{/line-up/add/{teamId}(teamId=${footballTeam.id})}">Add/View line-up</a>
+          <a class="btn btn-primary" th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a>
+        </div>
+        <div sec:authorize="hasRole('ROLE_USER')">
+          <a class="btn btn-primary" th:href="@{/football-team/select-team/{teamId}(teamId=${footballTeam.id})}">Manage team</a>
+          <a class="btn btn-primary" th:href="@{/football-team/players/{teamId}(teamId=${footballTeam.id})}">See players</a>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 <footer th:insert="fragments/footer.html ::footer"></footer>
 </html>

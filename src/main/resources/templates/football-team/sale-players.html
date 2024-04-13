@@ -1,23 +1,53 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Sale</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>Sale football players</h2>-->
+<!--<form action="#" th:action="@{/football-team/sale}" th:object="${footballTeam}" method="post">-->
+<!--    <input type="hidden" name="teamId" th:value="${footballTeam.id}">-->
+<!--    <p>-->
+<!--        Football Players:-->
+<!--        <select name="selectedFootballPlayersIds" multiple>-->
+<!--            <option th:each="footballPlayerOfTheTeam : ${allFootballPlayersOfTheTeam}"-->
+<!--                    th:value="${footballPlayerOfTheTeam.id}"-->
+<!--                    th:text="${footballPlayerOfTheTeam.baseFootballPlayer.firstName}">Football player name</option>-->
+<!--        </select>-->
+<!--    </p>-->
+<!--    <input type="submit" value="Sale">-->
+<!--</form>-->
+<!--</body>-->
+<!--<footer th:insert="fragments/footer.html ::footer"></footer>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Sale</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h2>Sale football players</h2>
-<form action="#" th:action="@{/football-team/sale}" th:object="${footballTeam}" method="post">
-    <input type="hidden" name="teamId" th:value="${footballTeam.id}">
-    <p>
-        Football Players:
-        <select name="selectedFootballPlayersIds" multiple>
-            <option th:each="footballPlayerOfTheTeam : ${allFootballPlayersOfTheTeam}"
-                    th:value="${footballPlayerOfTheTeam.id}"
-                    th:text="${footballPlayerOfTheTeam.baseFootballPlayer.firstName}">Football player name</option>
-        </select>
-    </p>
-    <input type="submit" value="Sale">
-</form>
+<div class="container mt-5">
+    <h2>Sale football players</h2>
+    <form action="#" th:action="@{/football-team/sale}" th:object="${footballTeam}" method="post">
+        <input type="hidden" name="teamId" th:value="${footballTeam.id}">
+        <div class="form-group">
+            <label for="selectedFootballPlayersIds">Football Players:</label>
+            <select class="form-control" id="selectedFootballPlayersIds" name="selectedFootballPlayersIds" multiple>
+                <option th:each="footballPlayerOfTheTeam : ${allFootballPlayersOfTheTeam}"
+                        th:value="${footballPlayerOfTheTeam.id}"
+                        th:text="${footballPlayerOfTheTeam.baseFootballPlayer.firstName}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Sale</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 <footer th:insert="fragments/footer.html ::footer"></footer>
 </html>

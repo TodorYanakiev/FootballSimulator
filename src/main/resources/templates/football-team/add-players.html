@@ -1,22 +1,51 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Add</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>Add football players</h2>-->
+<!--<form action="#" th:action="@{/football-team/submit}" th:object="${footballTeam}" method="post">-->
+<!--    <input type="hidden" name="teamId" th:value="${footballTeam.id}">-->
+<!--    <p>-->
+<!--        Football Players:-->
+<!--        <select name="selectedFootballPlayersIds" multiple>-->
+<!--            <option th:each="baseFootballPlayer : ${allBaseFootballPlayers}"-->
+<!--                    th:value="${baseFootballPlayer.id}"-->
+<!--                    th:text="${baseFootballPlayer.firstName}">Football player name</option>-->
+<!--        </select>-->
+<!--    </p>-->
+<!--    <input type="submit" value="Submit">-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Add</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h2>Add football players</h2>
-<form action="#" th:action="@{/football-team/submit}" th:object="${footballTeam}" method="post">
-    <input type="hidden" name="teamId" th:value="${footballTeam.id}">
-    <p>
-        Football Players:
-        <select name="selectedFootballPlayersIds" multiple>
-            <option th:each="baseFootballPlayer : ${allBaseFootballPlayers}"
-                    th:value="${baseFootballPlayer.id}"
-                    th:text="${baseFootballPlayer.firstName}">Football player name</option>
-        </select>
-    </p>
-    <input type="submit" value="Submit">
-</form>
+<div class="container mt-5">
+    <h2>Add football players</h2>
+    <form action="#" th:action="@{/football-team/submit}" th:object="${footballTeam}" method="post">
+        <input type="hidden" name="teamId" th:value="${footballTeam.id}">
+        <div class="form-group">
+            <label for="selectedFootballPlayersIds">Football Players:</label>
+            <select id="selectedFootballPlayersIds" name="selectedFootballPlayersIds" class="form-control" multiple>
+                <option th:each="baseFootballPlayer : ${allBaseFootballPlayers}"
+                        th:value="${baseFootballPlayer.id}"
+                        th:text="${baseFootballPlayer.firstName}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

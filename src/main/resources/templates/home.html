@@ -1,24 +1,30 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Home</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h3 th:text="${message != null} ? ${message} : ''"></h3>-->
+<!--<footer th:insert="fragments/footer.html ::footer"></footer>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <h3 th:text="${message != null} ? ${message} : ''"></h3>
-<!--<div sec:authorize="hasRole('ROLE_USER')"> |-->
-<!--    <a th:href="@{/league/select}">Select/View my team</a> |-->
-<!--</div>-->
-<!--<div sec:authorize="hasRole('ROLE_ADMIN')"> |-->
-<!--    <a th:href="@{/base-football-player/add}">Add new base football player</a> |-->
-<!--    <a th:href="@{/base-football-player/all}">All base football players</a> |-->
-<!--    <a th:href="@{/base-football-team/add}">Add new base football team</a> |-->
-<!--    <a th:href="@{/base-football-team/all}">All base football teams</a> |-->
-<!--    <a th:href="@{/league/add}">Add new league</a> |-->
-<!--</div>-->
-<!--<div  sec:authorize="isAuthenticated()"> |-->
-<!--    <a th:href="@{/league/get}">View all leagues</a> |-->
-<!--</div>-->
 <footer th:insert="fragments/footer.html ::footer"></footer>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

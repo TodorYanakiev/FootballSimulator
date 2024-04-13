@@ -1,33 +1,70 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title th:text="'Game weeks ' + ${league.name}"></title>-->
+<!--</head>-->
+<!--<body>-->
+<!-- <table>-->
+<!--   <thead>-->
+<!--    <tr>-->
+<!--      <th>Game week</th>-->
+<!--      <th>Matches</th>-->
+<!--    </tr>-->
+<!--   </thead>-->
+<!--   <tbody>-->
+<!--   <tr th:each="gameWeek : ${league.gameWeekList}">-->
+<!--     <td th:text="${gameWeek.weekNumber}"></td>-->
+<!--     <td>-->
+<!--       <table>-->
+<!--         <tbody>-->
+<!--         <tr th:each="footballMatch : ${gameWeek.matchList}">-->
+<!--           <td th:text="${footballMatch.getHomeTeam().getBaseFootballTeam().getBaseTeamName()} + ' : ' + ${footballMatch.getAwayTeam().getBaseFootballTeam().getBaseTeamName()}"></td>-->
+<!--           <td><a th:href="@{/football-match/view/{matchId}(matchId=${footballMatch.id})}">Details</a></td>-->
+<!--         </tr>-->
+<!--         </tbody>-->
+<!--       </table>-->
+<!--     </td>-->
+<!--   </tr>-->
+<!--   </tbody>-->
+<!-- </table>-->
+<!--</body>-->
+<!--<footer th:insert="fragments/footer.html ::footer"></footer>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title th:text="'Game weeks ' + ${league.name}"></title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
- <table>
-   <thead>
-    <tr>
-      <th>Game week</th>
-      <th>Matches</th>
-    </tr>
-   </thead>
-   <tbody>
-   <tr th:each="gameWeek : ${league.gameWeekList}">
-     <td th:text="${gameWeek.weekNumber}"></td>
-     <td>
-       <table>
-         <tbody>
-         <tr th:each="footballMatch : ${gameWeek.matchList}">
-           <td th:text="${footballMatch.getHomeTeam().getBaseFootballTeam().getBaseTeamName()} + ' : ' + ${footballMatch.getAwayTeam().getBaseFootballTeam().getBaseTeamName()}"></td>
-           <td><a th:href="@{/football-match/view/{matchId}(matchId=${footballMatch.id})}">Details</a></td>
-         </tr>
-         </tbody>
-       </table>
-     </td>
-   </tr>
-   </tbody>
- </table>
+<div class="container mt-5">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Game week</th>
+            <th>Matches</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="gameWeek : ${league.gameWeekList}">
+            <td th:text="${gameWeek.weekNumber}"></td>
+            <td>
+                <table class="table">
+                    <tbody>
+                    <tr th:each="footballMatch : ${gameWeek.matchList}">
+                        <td th:text="${footballMatch.getHomeTeam().getBaseFootballTeam().getBaseTeamName()} + ' : ' + ${footballMatch.getAwayTeam().getBaseFootballTeam().getBaseTeamName()}"></td>
+                        <td><a class="btn btn-primary" th:href="@{/football-match/view/{matchId}(matchId=${footballMatch.id})}">Details</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 <footer th:insert="fragments/footer.html ::footer"></footer>
 </html>
