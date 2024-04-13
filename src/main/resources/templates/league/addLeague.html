@@ -44,7 +44,7 @@
         </div>
         <div class="form-group">
             <label for="selectedFootballTeamIds">Football Teams:</label>
-            <select id="selectedFootballTeamIds" name="selectedFootballTeamIds" class="form-control" multiple>
+            <select id="selectedFootballTeamIds" name="selectedFootballTeamIds" class="form-control" multiple required>//
                 <option th:each="baseFootballTeam : ${allBaseFootballTeams}"
                         th:value="${baseFootballTeam.id}"
                         th:text="${baseFootballTeam.baseTeamName}">Football team name</option>

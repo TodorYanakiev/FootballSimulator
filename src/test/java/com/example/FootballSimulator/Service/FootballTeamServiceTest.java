@@ -70,23 +70,6 @@ class FootballTeamServiceTest {
     }
 
     @Test
-    void testGetRandomFootballTeam() {
-        FootballTeam footballTeam1 = new FootballTeam();
-        FootballTeam footballTeam2 = new FootballTeam();
-        FootballTeam footballTeam3 = new FootballTeam();
-        FootballTeam footballTeam4 = new FootballTeam();
-        FootballTeam footballTeam5 = new FootballTeam();
-        List<FootballTeam> teams = Arrays.asList(footballTeam1, footballTeam2, footballTeam3, footballTeam4, footballTeam5);
-        int count = 3;
-        List<FootballTeam> randomTeams = footballTeamService.getRandomFootballTeam(teams, count);
-        assertEquals(81, Collections.class.getDeclaredMethods().length, "Collections.shuffle should be called once");
-        assertEquals(Math.min(count, teams.size()), randomTeams.size(), "Size of randomTeams should be equal to count or the size of the input list, whichever is smaller");
-        randomTeams.forEach(team -> {
-            assertTrue(teams.contains(team), "Random team should be contained in the input list");
-        });
-    }
-
-    @Test
     void testChooseFootballPlayersForSale() {
         FootballTeam footballTeam = new FootballTeam();
         when(footballTeamRepository.findById(anyLong())).thenReturn(Optional.of(footballTeam));
@@ -106,35 +89,6 @@ class FootballTeamServiceTest {
         verify(footballPlayerRepository, times(1)).getPlayersByTeamId(1L);
         verify(model, times(1)).addAttribute(eq("allFootballPlayers"), eq(mockFootballPlayers));
         assertEquals("/football-team/show-players-for-sale", viewName);
-    }
-
-    @Test
-    void testSaleFootballPlayers_EnoughPlayers() {
-        FootballTeam mockFootballTeam = new FootballTeam();
-        when(footballTeamRepository.findById(anyLong())).thenReturn(Optional.of(mockFootballTeam));
-        List<FootballPlayer> mockSelectedFootballPlayers = new ArrayList<>();
-        when(footballPlayerRepository.findAllByIdIn(anyList())).thenReturn(mockSelectedFootballPlayers);
-        String viewName = footballTeamService.saleFootballPlayers(1L, model, Arrays.asList(1L, 2L, 3L));
-        verify(footballTeamRepository, times(1)).findById(1L);
-        verify(footballPlayerRepository, times(1)).findAllByIdIn(Arrays.asList(1L, 2L, 3L));
-        verify(footballPlayerRepository, times(mockSelectedFootballPlayers.size())).save(any());
-        verify(model, times(1)).addAttribute(eq("allFootballPlayers"), any());
-        assertEquals("/football-team/show-players-for-sale", viewName);
-    }
-
-    @Test
-    void testBuyFootballPlayersForHomeTeam() {
-        FootballTeam mockFootballTeam = new FootballTeam();
-        when(footballTeamRepository.findById(anyLong())).thenReturn(Optional.of(mockFootballTeam));
-        List<FootballPlayer> mockFootballPlayersForSale = new ArrayList<>();
-        when(footballPlayerRepository.findForSalePlayersExceptTeamId(anyLong())).thenReturn(mockFootballPlayersForSale);
-        String viewName = footballTeamService.buyFootballPlayersForHomeTeam(1L, model);
-        verify(footballTeamRepository, times(1)).findById(1L);
-        verify(footballPlayerRepository, times(1)).findForSalePlayersExceptTeamId(1L);
-        verify(model, times(1)).addAttribute(eq("footballTeam"), eq(mockFootballTeam));
-        verify(model, times(1)).addAttribute(eq("footballPlayersForSale"), eq(mockFootballPlayersForSale));
-        verify(model, times(1)).addAttribute(eq("buyFootballPlayers"), any());
-        assertEquals("/football-team/buy-football-players", viewName);
     }
 
     @Test

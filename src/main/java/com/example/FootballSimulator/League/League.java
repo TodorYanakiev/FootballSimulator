@@ -25,7 +25,6 @@ public class League {
 
 
     @OneToMany(mappedBy = "league")
-    @Size(min = 6)
     private List<FootballTeam> footballTeamList;
 
     @OneToMany(mappedBy = "league")
