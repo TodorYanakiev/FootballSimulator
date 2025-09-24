@@ -36,6 +36,11 @@ public class LeagueController {
         return leagueService.startLeague(leagueId, model);
     }
 
+    @GetMapping("/new-season/{leagueId}")
+    public String startNewSeason(@PathVariable Long leagueId, Model model) {
+        return leagueService.startNewSeason(leagueId, model);
+    }
+
     @GetMapping("/select")
     public String selectLeague(Model model) {
         return leagueService.selectLeague(model);
