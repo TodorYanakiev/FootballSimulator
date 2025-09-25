@@ -70,7 +70,7 @@ public class GameWeekManager {
 
     public static List<GameWeek> shuffleGameWeekList(List<GameWeek> gameWeekList) {
         int size = gameWeekList.size();
-        List<GameWeek> shuffledGameWeekList = Arrays.asList(new GameWeek[size]);
+        List<GameWeek> shuffledGameWeekList = new ArrayList<>(Collections.nCopies(size, (GameWeek) null));
         List<GameWeek> firstHalf = gameWeekList.subList(0, size / 2);
         List<GameWeek> secondHalf = gameWeekList.subList(size / 2, size);
         for (int i = 0; i < size / 2; i++) {
