@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -183,6 +184,7 @@ public class LeagueService {
         return "/league/select";
     }
 
+    @Transactional
     public String startNewSeason(Long leagueId, Model model) {
         Optional<League> optionalLeague = leagueRepository.findById(leagueId);
         if (optionalLeague.isEmpty()) {
