@@ -6,7 +6,10 @@ import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballPlayer.FootballPlayer;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.FootballTeam.FootballTeamRepository;
+import com.example.FootballSimulator.GameWeek.GameWeek;
 import com.example.FootballSimulator.GameWeek.GameWeekRepository;
+import com.example.FootballSimulator.League.League;
+import com.example.FootballSimulator.League.LeagueRepository;
 import com.example.FootballSimulator.LineUp.LineUp;
 import com.example.FootballSimulator.Standings.Standing;
 import com.example.FootballSimulator.Standings.StandingRepository;
@@ -32,13 +35,17 @@ public class FootballMatchService {
 
     private GameWeekRepository gameWeekRepository;
 
+    private LeagueRepository leagueRepository;
+
     public FootballMatchService(FootballMatchRepository footballMatchRepository, StandingRepository standingsRepository,
-                                UserRepository userRepository, FootballTeamRepository footballTeamRepository, GameWeekRepository gameWeekRepository) {
+                                UserRepository userRepository, FootballTeamRepository footballTeamRepository, GameWeekRepository gameWeekRepository,
+                                LeagueRepository leagueRepository) {
         this.footballMatchRepository = footballMatchRepository;
         this.standingsRepository = standingsRepository;
         this.userRepository = userRepository;
         this.footballTeamRepository = footballTeamRepository;
         this.gameWeekRepository = gameWeekRepository;
+        this.leagueRepository = leagueRepository;
     }
 
     public String viewMatch(Long matchId, Model model) {
@@ -86,6 +93,7 @@ public class FootballMatchService {
             updateMatchAftermath(footballMatch);
             footballMatch.setMatchStatus(Status.FINISHED);
             footballMatchRepository.save(footballMatch);
+            updateLeagueIfSeasonFinished(footballMatch);
             return "redirect:/game-week/all/" + footballMatch.getGameWeek().getLeague().getId();
         }
         simulate15Minutes(footballMatch); //
@@ -300,5 +308,32 @@ public class FootballMatchService {
                 footballMatch.getGameWeek() == null || footballMatch.getAwayTeam().getLineUp() == null ||
                 footballMatch.getHomeTeam().getLineUp() == null) return false;
         return true;
+    }
+
+    private void updateLeagueIfSeasonFinished(FootballMatch footballMatch) {
+        League league = footballMatch.getGameWeek().getLeague();
+        if (league == null || league.getGameWeekList() == null) {
+            return;
+        }
+        boolean allFinished = true;
+        for (GameWeek gameWeek : league.getGameWeekList()) {
+            if (gameWeek.getMatchList() == null) {
+                allFinished = false;
+                break;
+            }
+            for (FootballMatch match : gameWeek.getMatchList()) {
+                if (!Status.FINISHED.equals(match.getMatchStatus())) {
+                    allFinished = false;
+                    break;
+                }
+            }
+            if (!allFinished) {
+                break;
+            }
+        }
+        if (allFinished) {
+            league.setLeagueStatus(Status.FINISHED);
+            leagueRepository.save(league);
+        }
     }
 }

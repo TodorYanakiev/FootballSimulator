@@ -55,6 +55,7 @@
       <th>Game Weeks</th>
       <th th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">View Standings</th>
       <th th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Start League</th>
+      <th th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Start New Season</th>
     </tr>
     </thead>
     <tbody>
@@ -66,6 +67,9 @@
       <td><a class="btn btn-info" th:href="@{/game-week/all/{leagueId}(leagueId=${league.id})}">Game weeks</a></td>
       <td th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"><a class="btn btn-success" th:href="@{/standings/view/{leagueId}(leagueId=${league.id})}">View standings</a></td>
       <td th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><a class="btn btn-danger" th:href="@{/league/start/{leagueId}(leagueId=${league.id})}">Start League</a></td>
+      <td th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') and league.leagueStatus == T(com.example.FootballSimulator.Constants.Status).FINISHED}">
+        <a class="btn btn-warning" th:href="@{/league/new-season/{leagueId}(leagueId=${league.id})}">Start New Season</a>
+      </td>
     </tr>
     </tbody>
   </table>

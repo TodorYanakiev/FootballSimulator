@@ -3,6 +3,7 @@ package com.example.FootballSimulator.League;
 import com.example.FootballSimulator.Constants.Status;
 import com.example.FootballSimulator.FootballTeam.FootballTeam;
 import com.example.FootballSimulator.GameWeek.GameWeek;
+import com.example.FootballSimulator.Season.Season;
 import com.example.FootballSimulator.Standings.Standing;
 import jakarta.persistence.*;
 
@@ -35,6 +36,11 @@ public class League {
 
     @OneToMany(mappedBy = "league")
     private List<Standing> standings;
+
+    private Integer currentSeason;
+
+    @OneToMany(mappedBy = "league")
+    private List<Season> seasons;
 
     public Long getId() {
         return id;
@@ -82,5 +88,21 @@ public class League {
 
     public void setStandings(List<Standing> standings) {
         this.standings = standings;
+    }
+
+    public Integer getCurrentSeason() {
+        return currentSeason;
+    }
+
+    public void setCurrentSeason(Integer currentSeason) {
+        this.currentSeason = currentSeason;
+    }
+
+    public List<Season> getSeasons() {
+        return seasons;
+    }
+
+    public void setSeasons(List<Season> seasons) {
+        this.seasons = seasons;
     }
 }
